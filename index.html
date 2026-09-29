@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-    <!-- Snapshot: FireFix V1.18 — כפתור הוספה לדף הבית בראש ההגדרות, מעל המדריך, וטקסט גדול יותר בתפריט -->
+    <!-- Snapshot: FireFix V1.19 — התראת דף הבית בהפעלה ראשונה ובראש המדריך, פורמט Excel למטה, תיקון ניסוח רדיוס בטיחות -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
     <meta id="themeColorMeta" name="theme-color" content="#0b69a3">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>FireFix V1.18 - Trajectory Correction Helper</title>
+    <title>FireFix V1.19 - Trajectory Correction Helper</title>
     <script>
         /* iOS only hands http(s) pages to Safari. A file opened from Files stays in
            Quick Look, where this script never runs. x-safari-https is the system scheme. */
@@ -743,9 +743,31 @@
             display: inline-block;
         }
         .guide-section p { font-size: 14px; line-height: 1.6; margin: 0 0 10px 0; color: var(--text-main); }
-        .guide-section ul { padding-right: 20px; margin: 0; }
+        .guide-section ul, .guide-section ol { padding-inline-start: 22px; margin: 0 0 10px; }
         .guide-section li { font-size: 14px; line-height: 1.6; margin-bottom: 6px; color: var(--text-main); }
         .guide-section strong { color: var(--text-main); }
+        .home-notice-card {
+            max-width: 440px;
+            margin-top: 10vh;
+            padding: 18px 18px 16px;
+        }
+        .home-notice-card h3 {
+            font-size: 18px;
+            margin: 0 0 10px;
+            text-align: center;
+            color: var(--primary);
+        }
+        .home-notice-card p,
+        .home-notice-card li {
+            font-size: 15px;
+            line-height: 1.45;
+            margin: 0 0 8px;
+        }
+        .home-notice-card ol {
+            margin: 2px 0 10px;
+            padding-inline-start: 1.25em;
+        }
+        .home-notice-card .btn { margin-top: 6px; }
 
         #mapContainer {
             width: 100%;
@@ -1242,7 +1264,7 @@
         </span>
     </div>
     <div class="header-bar">
-        <h2 class="app-title">FireFix<span class="app-subtitle">Trajectory Correction Helper · V1.18</span></h2>
+        <h2 class="app-title">FireFix<span class="app-subtitle">Trajectory Correction Helper · V1.19</span></h2>
         <div class="top-controls">
             <button type="button" class="icon-btn" aria-label="פתח ממיר אלפיות ומעלות" data-i18n-aria="aria.convBtn" data-i18n-title="aria.convBtn" title="ממיר אלפיות/מעלות" onclick="openConverter()">🔄</button>
             <button type="button" class="icon-btn" aria-label="פתח הגדרות" data-i18n-aria="aria.settingsBtn" data-i18n-title="aria.settingsBtn" title="הגדרות" onclick="openLocalToolsModal()">⚙️</button>
@@ -1608,6 +1630,50 @@
     </div>
 </div>
 
+<div id="homeNoticeModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="homeNoticeTitle" onclick="if(event.target === this) dismissHomeScreenNotice()">
+    <div class="modal-content home-notice-card">
+        <button type="button" class="close-btn" aria-label="סגור" data-i18n-aria="aria.close" onclick="dismissHomeScreenNotice()">&times;</button>
+        <h3 id="homeNoticeTitle" data-i18n="home.title">📲 הוספה לדף הבית</h3>
+        <div data-lang-block="he">
+            <p>כדי ש־FireFix יישב בדף הבית כמו אפליקציה, פותחים את הקישור בדפדפן. אחרי ההוספה האייקון נפתח בלי שורת כתובת.</p>
+            <p><strong>אייפון</strong></p>
+            <ol>
+                <li>פותחים את הקישור בספארי.</li>
+                <li>לוחצים על כפתור השיתוף (הריבוע עם החץ למעלה).</li>
+                <li>גוללים ובוחרים «הוסף למסך הבית».</li>
+                <li>לוחצים «הוסף».</li>
+            </ol>
+            <p><strong>אנדרואיד</strong></p>
+            <ol>
+                <li>פותחים את הקישור בכרום.</li>
+                <li>לוחצים על שלוש הנקודות ⋮ למעלה.</li>
+                <li>בוחרים «הוספה למסך הבית» או «התקנת אפליקציה».</li>
+                <li>מאשרים.</li>
+            </ol>
+            <p>המחשבון עובד גם בלי רשת אחרי שהדף נטען. המפה נטענת רק כשיש חיבור.</p>
+        </div>
+        <div data-lang-block="en" style="display:none">
+            <p>To keep FireFix on the home screen like an app, open the link in the browser. After you add it, the icon opens without the address bar.</p>
+            <p><strong>iPhone</strong></p>
+            <ol>
+                <li>Open the link in Safari.</li>
+                <li>Tap the Share button (the square with the arrow).</li>
+                <li>Scroll and choose “Add to Home Screen”.</li>
+                <li>Tap “Add”.</li>
+            </ol>
+            <p><strong>Android</strong></p>
+            <ol>
+                <li>Open the link in Chrome.</li>
+                <li>Tap the three dots ⋮ at the top.</li>
+                <li>Choose “Add to Home screen” or “Install app”.</li>
+                <li>Confirm.</li>
+            </ol>
+            <p>The calculator works without a network once the page has loaded. The map loads only while you are online.</p>
+        </div>
+        <button type="button" class="btn" onclick="dismissHomeScreenNotice()" data-i18n="home.ok">הבנתי</button>
+    </div>
+</div>
+
 <div id="guideModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="guideModalTitle" onclick="if(event.target === this) closeGuide()">
     <div class="modal-content">
         <button type="button" class="close-btn" aria-label="סגור מדריך" data-i18n-aria="aria.closeGuide" onclick="closeGuide()">&times;</button>
@@ -1615,21 +1681,30 @@
 <div data-lang-block="he">
 
         <div class="guide-section">
-            <h4>📊 פורמט קבוע לייבוא משימות מ-Excel</h4>
-            <ul>
-                <li><strong>מבנה הקובץ:</strong> הגיליון הראשון בלבד. שורה ראשונה = כותרות, שאר השורות = נתונים.</li>
-                <li><strong>שלוש עמודות בסדר קבוע:</strong> <code>שם משימה</code> | <code>נ"צ UTM</code> | <code>טווח</code></li>
-                <li><strong>עמודת "טווח":</strong> הערך <code>כן</code> מסמן משימה מטווחת. כל ערך אחר (כולל ריק) נקרא כ-<code>לא</code>.</li>
-                <li><strong>נ"צ UTM:</strong> באותו פורמט שהמחשבון מקבל, לדוגמה <code style="direction:ltr; display:inline-block;">36S E 650500 N 456700</code>. ספרת ה-3 בצפוניות אינה חובה.</li>
-                <li><strong>הדרך הבטוחה:</strong> ייצא קובץ בכפתור "⬇️ Excel", ערוך אותו, וייבא בחזרה - הפורמט מובטח תואם.</li>
-            </ul>
+            <h4>📲 הוספה לדף הבית</h4>
+            <p>כדי ש־FireFix יישב בדף הבית כמו אפליקציה, פותחים את הקישור בדפדפן. אחרי ההוספה האייקון נפתח בלי שורת כתובת.</p>
+            <p><strong>אייפון</strong></p>
+            <ol>
+                <li>פותחים את הקישור בספארי.</li>
+                <li>לוחצים על כפתור השיתוף (הריבוע עם החץ למעלה).</li>
+                <li>גוללים ובוחרים «הוסף למסך הבית».</li>
+                <li>לוחצים «הוסף».</li>
+            </ol>
+            <p><strong>אנדרואיד</strong></p>
+            <ol>
+                <li>פותחים את הקישור בכרום.</li>
+                <li>לוחצים על שלוש הנקודות ⋮ למעלה.</li>
+                <li>בוחרים «הוספה למסך הבית» או «התקנת אפליקציה».</li>
+                <li>מאשרים.</li>
+            </ol>
+            <p>המחשבון עובד גם בלי רשת אחרי שהדף נטען. המפה נטענת רק כשיש חיבור.</p>
         </div>
 
         <div class="guide-section">
             <h4>⚠️ מגבלות המערכת</h4>
             <ul>
                 <li><strong>מגבלת טווח קנה:</strong> חסימה אוטומטית אם המרחק בין הקנה למטרה עולה על 7,000 מטר.</li>
-                <li><strong>מגבלת תיקון בודד:</strong> תיקון העולה על 400 מטר ברכיב בודד ידרוש איפוס מחדש של היסטוריית המטרה עקב חריגה מספי.</li>
+                <li><strong>מגבלת תיקון בודד:</strong> תיקון העולה על 400 מטר ברכיב בודד ידרוש איפוס מחדש של היסטוריית המטרה עקב חריגה מרדיוס בטיחות.</li>
                 <li><strong>מגבלת תיקון מצטבר (עדכון 550 מ'):</strong> אם סכום הערכים המוחלטים של התיקון בצפוניות ובמזרחיות יחד (או סך ההיסט המצטבר) עולה על 550 מטר, המערכת תציג הודעת שגיאה ותדרוש חישוב ירי מחדש.</li>
                 <li><strong>תוקף נתונים:</strong> היסטוריית המטרות והתיקונים נשמרת מקומית ונמחקת אוטומטית לאחר 24 שעות.</li>
                 <li><strong>הרכיב היחיד הדורש אינטרנט:</strong> המפה האינטראקטיבית (Leaflet + אריחי מפה), הנטענת <em>רק</em> בלחיצה בפועל על כפתור המפה. כל שאר המחשבון - חישובי תיקון, צידוד, משימות, היסטוריה וייבוא/ייצוא JSON <strong>ו-Excel</strong> - פועל מקומית לחלוטין ללא רשת.</li>
@@ -1683,6 +1758,17 @@
             <button type="button" class="btn btn-secondary" style="width: auto; padding: 10px 30px; font-size: 16px;" onclick="closeGuide()">הבנתי, אפשר לסגור</button>
         </div>
 
+        <div class="guide-section">
+            <h4>📊 פורמט קבוע לייבוא משימות מ-Excel</h4>
+            <ul>
+                <li><strong>מבנה הקובץ:</strong> הגיליון הראשון בלבד. שורה ראשונה = כותרות, שאר השורות = נתונים.</li>
+                <li><strong>שלוש עמודות בסדר קבוע:</strong> <code>שם משימה</code> | <code>נ"צ UTM</code> | <code>טווח</code></li>
+                <li><strong>עמודת "טווח":</strong> הערך <code>כן</code> מסמן משימה מטווחת. כל ערך אחר (כולל ריק) נקרא כ-<code>לא</code>.</li>
+                <li><strong>נ"צ UTM:</strong> באותו פורמט שהמחשבון מקבל, לדוגמה <code style="direction:ltr; display:inline-block;">36S E 650500 N 456700</code>. ספרת ה-3 בצפוניות אינה חובה.</li>
+                <li><strong>הדרך הבטוחה:</strong> ייצא קובץ בכפתור "⬇️ Excel", ערוך אותו, וייבא בחזרה - הפורמט מובטח תואם.</li>
+            </ul>
+        </div>
+
         <div class="guide-section" style="border-top:2px solid var(--error-border); padding-top:12px; margin-top:8px;">
             <h4 style="color: var(--error-text);">⚠️ הצהרה ותנאי שימוש</h4>
             <p>מערכת זו היא כלי עזר אישי בלבד ואינה תחליף למערכות שו"ב רשמיות. אין לסמוך עליה ככלי מבצעי. חובת המשתמש לבדוק כל נתון וכל פלט, והשימוש באחריותו הבלעדית.</p>
@@ -1690,6 +1776,26 @@
         </div>
 </div>
 <div data-lang-block="en" style="display:none">
+        <div class="guide-section">
+            <h4>📲 Add to the home screen</h4>
+            <p>To keep FireFix on the home screen like an app, open the link in the browser. After you add it, the icon opens without the address bar.</p>
+            <p><strong>iPhone</strong></p>
+            <ol>
+                <li>Open the link in Safari.</li>
+                <li>Tap the Share button (the square with the arrow).</li>
+                <li>Scroll and choose “Add to Home Screen”.</li>
+                <li>Tap “Add”.</li>
+            </ol>
+            <p><strong>Android</strong></p>
+            <ol>
+                <li>Open the link in Chrome.</li>
+                <li>Tap the three dots ⋮ at the top.</li>
+                <li>Choose “Add to Home screen” or “Install app”.</li>
+                <li>Confirm.</li>
+            </ol>
+            <p>The calculator works without a network once the page has loaded. The map loads only while you are online.</p>
+        </div>
+
         <div class="guide-section">
             <h4>⚡ System capabilities</h4>
             <ul>
@@ -1703,21 +1809,10 @@
         </div>
 
         <div class="guide-section">
-            <h4>📊 Fixed format for importing tasks from Excel</h4>
-            <ul>
-                <li><strong>File structure:</strong> first sheet only. First row = headers, remaining rows = data.</li>
-                <li><strong>Three columns in fixed order:</strong> <code>Task name</code> | <code>UTM grid</code> | <code>Ranged</code></li>
-                <li><strong>The "Ranged" column:</strong> the value <code>כן</code> (or <code>Yes</code>) marks a ranged task. Any other value, including empty, is read as not ranged.</li>
-                <li><strong>UTM grid:</strong> in the same format the calculator accepts, for example <code style="direction:ltr; display:inline-block;">36S E 650500 N 456700</code>. The leading 3 in northing is optional.</li>
-                <li><strong>The safe route:</strong> export a file with the "⬇️ Excel" button, edit it, and import it back - the format is guaranteed to match.</li>
-            </ul>
-        </div>
-
-        <div class="guide-section">
             <h4>⚠️ System limitations</h4>
             <ul>
                 <li><strong>Gun range limit:</strong> automatically blocked if the distance between gun and target exceeds 7,000 metres.</li>
-                <li><strong>Single correction limit:</strong> a correction over 400 metres in a single component requires resetting the target history, as it exceeds the threshold.</li>
+                <li><strong>Single correction limit:</strong> a correction over 400 metres in a single component requires resetting the target history, because it exceeds the safety radius.</li>
                 <li><strong>Cumulative correction limit (550 m):</strong> if the sum of the absolute northing and easting corrections together (or the total cumulative offset) exceeds 550 metres, the system shows an error and requires the firing solution to be recomputed.</li>
                 <li><strong>Data validity:</strong> target and correction history is stored locally and deleted automatically after 24 hours.</li>
                 <li><strong>The only component requiring internet:</strong> the interactive map (Leaflet + map tiles), which loads <em>only</em> when you actually press the map button. Everything else - correction and traverse calculations, tasks, history, and both JSON <strong>and Excel</strong> import/export - runs entirely locally with no network.</li>
@@ -1766,7 +1861,18 @@
                 <li><strong>Step 5:</strong> you can share the report or copy the history straight from the results panel, and press <strong>"🗺️ Map"</strong> in the history panel to see the whole impact sequence drawn on the map.</li>
                 <li><strong>Step 6 (optional) - backing up the task list:</strong> in the tasks section, export the list to <strong>JSON</strong> (offline) or <strong>Excel</strong>, and import it back at any time - choosing between replacing the list or appending to it.</li>
             </ul>
-    
+
+        <div class="guide-section">
+            <h4>📊 Fixed format for importing tasks from Excel</h4>
+            <ul>
+                <li><strong>File structure:</strong> first sheet only. First row = headers, remaining rows = data.</li>
+                <li><strong>Three columns in fixed order:</strong> <code>Task name</code> | <code>UTM grid</code> | <code>Ranged</code></li>
+                <li><strong>The "Ranged" column:</strong> the value <code>כן</code> (or <code>Yes</code>) marks a ranged task. Any other value, including empty, is read as not ranged.</li>
+                <li><strong>UTM grid:</strong> in the same format the calculator accepts, for example <code style="direction:ltr; display:inline-block;">36S E 650500 N 456700</code>. The leading 3 in northing is optional.</li>
+                <li><strong>The safe route:</strong> export a file with the "⬇️ Excel" button, edit it, and import it back - the format is guaranteed to match.</li>
+            </ul>
+        </div>
+
         <div class="guide-section" style="border-top:2px solid var(--error-border); padding-top:12px; margin-top:8px;">
             <h4 style="color: var(--error-text);">⚠️ Disclaimer &amp; Terms of Use</h4>
             <p>This system is a personal aid only and is not a substitute for official command-and-control systems. It must not be relied upon as an operational tool. It is the user's duty to verify every value and every output, and use is at the user's sole responsibility.</p>
@@ -1789,12 +1895,13 @@ const CONFIG = {
     STORAGE_LANG_KEY: 'firefix_language',
     STORAGE_ROUND_STEP_KEY: 'firefix_round_step',
     STORAGE_TIME_LOCK_KEY: 'firefix_time_lock_unlocked_v1',
+    STORAGE_HOME_NOTICE_KEY: 'firefix_home_notice_seen_v1',
     DEFAULT_ZONE: '36S',
     MAX_GUN_RANGE: 7000,
     VECTOR_OBSERVER_SOUTH_M: 250,
     MAX_SINGLE_CORRECTION: 400,
     MAX_CUMULATIVE_CORRECTION: 550,
-    APP_VERSION: 'V1.18',
+    APP_VERSION: 'V1.19',
     STORAGE_TASKS_MERGED_KEY: 'firefix_tasks_merged_v110',
     ROUND_STEP: 50,                 // default correction rounding step (metres)
     ROUND_STEP_OPTIONS: [10, 25, 50, 100],
@@ -1897,6 +2004,9 @@ const I18N = {
         'settings.title': '⚙️ Settings',
         'settings.tools': 'Tools',
         'settings.openGuide': '📖 Guide',
+        'home.title': '📲 Add to the home screen',
+        'home.ok': 'Got it',
+        'aria.close': 'Close',
         'settings.openFuture': 'In upcoming versions...',
         'settings.targetExchange': 'Target list — import and export',
         'lbl.ranged': 'Ranged:',
@@ -2358,6 +2468,7 @@ function initTimeLock() {
         if (input.value === currentTimeLockCode()) {
             unlockTimeLock();
             showDisclaimerIfNeeded();
+            showHomeScreenNoticeIfNeeded();
             return;
         }
         input.setAttribute('aria-invalid', 'true');
@@ -2382,7 +2493,10 @@ document.addEventListener("DOMContentLoaded", function() {
     setupModalAccessibility();
     updateConnectivityState();
     setupInstallPrompt();
-    if (SafeStorage.get(CONFIG.STORAGE_TIME_LOCK_KEY) === 'true') showDisclaimerIfNeeded();
+    if (SafeStorage.get(CONFIG.STORAGE_TIME_LOCK_KEY) === 'true') {
+        showDisclaimerIfNeeded();
+        showHomeScreenNoticeIfNeeded();
+    }
 });
 
 window.addEventListener('online', updateConnectivityState);
@@ -2438,6 +2552,7 @@ function setupModalAccessibility() {
                 else if (modal.id === 'guideModal') closeGuide();
                 else if (modal.id === 'localToolsModal') closeLocalToolsModal();
                 else if (modal.id === 'futureModal') closeFutureModal();
+                else if (modal.id === 'homeNoticeModal') dismissHomeScreenNotice();
                 return;
             }
             if (event.key !== 'Tab') return;
@@ -2781,7 +2896,7 @@ async function importLocalBackup(event) {
 }
 
 async function downloadCalculatorFile() {
-    const filename = 'FireFix - Trajectory calculator ' + (CONFIG.APP_VERSION || 'V1.18') + '.html';
+    const filename = 'FireFix - Trajectory calculator ' + (CONFIG.APP_VERSION || 'V1.19') + '.html';
     let bytes;
     try {
         const response = await fetch(location.href, { cache: 'no-store' });
@@ -3027,6 +3142,25 @@ function openDisclaimer(isReview) {
 function acceptDisclaimer() {
     SafeStorage.set(CONFIG.STORAGE_DISCLAIMER_KEY, 'true');
     closeAccessibleModal(document.getElementById('disclaimerModal'));
+    showHomeScreenNoticeIfNeeded();
+}
+
+function hasSeenHomeScreenNotice() {
+    return SafeStorage.get(CONFIG.STORAGE_HOME_NOTICE_KEY) === 'true';
+}
+
+function showHomeScreenNoticeIfNeeded() {
+    if (hasSeenHomeScreenNotice()) return;
+    if (SafeStorage.get(CONFIG.STORAGE_TIME_LOCK_KEY) !== 'true') return;
+    if (!hasAcceptedDisclaimer()) return;
+    const disclaimer = document.getElementById('disclaimerModal');
+    if (disclaimer && disclaimer.style.display === 'block') return;
+    openAccessibleModal(document.getElementById('homeNoticeModal'));
+}
+
+function dismissHomeScreenNotice() {
+    SafeStorage.set(CONFIG.STORAGE_HOME_NOTICE_KEY, 'true');
+    closeAccessibleModal(document.getElementById('homeNoticeModal'));
 }
 
 function showDisclaimerIfNeeded() {
@@ -5089,7 +5223,7 @@ async function shareFiringReport() {
     const corrY = document.getElementById('corrY').innerText;
     const gunAdj = document.getElementById('gunAdjustment').innerText || i18nT('אין נתוני קנה','No gun data');
 
-    const version = CONFIG.APP_VERSION || 'V1.18';
+    const version = CONFIG.APP_VERSION || 'V1.19';
     const textReport = currentLang === 'en'
         ? `🎯 *UTM Fire Correction Report* 🎯\n` +
           `• Version: ${version}\n` +
