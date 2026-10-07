@@ -6,13 +6,14 @@
     <!-- Snapshot: FireFix V1.21 — 7 באוקטובר 2026: בדיקת העדכון משווה מזהה בנייה נפרד ממספר הגרסה, וחלון השינויים נפתח פעם אחת אחרי עדכון. אייקון הבטיחות הוא פיצוץ בתוך עיגול אדום עם מילוי אדום בהיר. אזימוט הצופה המדומה הוא מן הצופה אל המטרה. -->
     <!-- Snapshot: FireFix V1.22 — 7 באוקטובר 2026: טיוטת הטופס נשמרת אחרי נעילה וטעינה מחדש, ואיפוס מוחק אותה. אזימוט מחוץ ל-0–6399 ונ״צ שחסרה בו ספרה נעצרים על השדה. -->
     <!-- Snapshot: FireFix V1.23 — 7 באוקטובר 2026: פקלון טיווח נפתח מכפתור משקפת בשורת האייקונים. תיקוף מאי 2026. -->
+    <!-- Snapshot: FireFix V1.24 — 7 באוקטובר 2026: האפליקציה נפתחת בלי קוד. נ״צ קנה מה־GPS של הטלפון, בלי ייבוא וייצוא JSON. מעקב אחרי מצב התצוגה של המערכת, ופקלון טיווח נוח יותר לקריאה. -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
     <meta id="themeColorMeta" name="theme-color" content="#0b69a3">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>FireFix V1.23 - Trajectory Correction Helper</title>
+    <title>FireFix V1.24 - Trajectory Correction Helper</title>
     <script>
         /* iOS only hands http(s) pages to Safari. A file opened from Files stays in
            Quick Look, where this script never runs. x-safari-https is the system scheme. */
@@ -235,7 +236,6 @@
             min-height: var(--app-height, 100dvh);
             overscroll-behavior-y: none;
         }
-        html.is-touch .time-lock,
         html.is-touch .modal {
             height: var(--app-height, 100dvh);
         }
@@ -1164,19 +1164,56 @@
             letter-spacing: .2px;
             text-align: center;
         }
-        .booklet-section { margin: 0 0 18px; }
+        #bookletModal .modal-content { text-align: right; }
+        .booklet-section { margin: 0 0 20px; text-align: right; }
         .booklet-section h4 {
-            margin: 0 0 8px;
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text-main);
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            margin: 0 0 10px;
+            padding-bottom: 4px;
+            border-bottom: 2px solid var(--primary);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            text-align: right;
         }
-        .booklet-section p,
-        .booklet-section li { font-size: 14px; line-height: 1.65; }
-        .booklet-section p { margin: 0 0 8px; }
+        .booklet-section p:not(.radio-order),
+        .booklet-section li { font-size: 14px; line-height: 1.65; text-align: right; }
+        .booklet-section p:not(.radio-order) { margin: 0 0 8px; }
         .booklet-section ul { margin: 0 0 8px; padding-inline-start: 18px; }
         .booklet-section li { margin: 0 0 4px; }
         .booklet-section .safety-table { margin-top: 6px; }
+        .booklet-section .safety-table th,
+        .booklet-section .safety-table td { text-align: right; }
+        #bookletModal .radio-order {
+            direction: rtl;
+            text-align: right;
+            background: var(--results-bg);
+            border-inline-start: 4px solid var(--primary);
+            border-radius: 6px;
+            padding: 10px 12px;
+            margin: 6px 0 8px;
+            font-size: 14px;
+            line-height: 1.7;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        .gun-gps-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .gun-gps-row .btn-small { flex: 0 0 auto; }
+        .gun-gps-note {
+            flex: 1 1 180px;
+            margin: 0;
+            font-size: 12px;
+            line-height: 1.45;
+            color: var(--text-muted);
+        }
         .changelog-table td:first-child,
         .changelog-table th:first-child {
             white-space: nowrap;
@@ -1301,95 +1338,13 @@
 
 
 
-        /* Basic local time lock. This is a light deterrent, not cryptographic security. */
-        .time-lock {
-            position: fixed;
-            inset: 0;
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
-            background: var(--bg-color);
-            color: var(--text-main);
-        }
-        .time-lock[hidden] { display: none; }
-        .time-lock-card {
-            width: min(100%, 420px);
-            padding: 28px 24px;
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            background: var(--container-bg);
-            box-shadow: 0 8px 28px rgba(0,0,0,.18);
-            text-align: center;
-        }
-        .time-lock-mark {
-            width: 54px;
-            height: 54px;
-            display: grid;
-            place-items: center;
-            margin: 0 auto 14px;
-            border: 2px solid var(--primary);
-            border-radius: 50%;
-            color: var(--primary);
-            font-size: 25px;
-            line-height: 1;
-        }
-        .time-lock-title { margin: 0 0 8px; color: var(--primary); font-size: 22px; }
-        .time-lock-help { margin: 0 0 18px; color: var(--text-muted); font-size: 14px; line-height: 1.55; }
-        .time-lock-input {
-            width: 100%;
-            min-height: 50px;
-            padding: 10px 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            background: var(--input-bg);
-            color: var(--text-main);
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: .28em;
-            text-align: center;
-            direction: ltr;
-            font-variant-numeric: tabular-nums;
-        }
-        .time-lock-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            background: var(--container-bg);
-            box-shadow: 0 0 0 3px rgba(56, 189, 248, .2);
-        }
-        .time-lock-submit { width: 100%; margin-top: 12px; }
-        .time-lock-error {
-            min-height: 22px;
-            margin: 10px 0 -2px;
-            color: var(--error-text);
-            font-size: 13px;
-            font-weight: 600;
-        }
-        body.time-locked > .container { visibility: hidden; }
-
     </style>
 </head>
-<body class="time-locked">
-
-
-<div id="timeLock" class="time-lock" role="dialog" aria-modal="true" aria-labelledby="timeLockTitle">
-    <div class="time-lock-card">
-        <p class="ios-preview-note">האייפון פתח את הקובץ בלי ספארי, ולכן המחשבון לא רץ. אפל לא פותחת קובץ שמור בספארי. פתחו קישור של הדף מתוך ספארי, לא מתוך הקבצים.</p>
-        <div class="time-lock-mark" aria-hidden="true">&#128274;</div>
-        <h1 id="timeLockTitle" class="time-lock-title">FireFix נעול</h1>
-        <p class="time-lock-help">יש להזין קוד גישה בן 4 ספרות</p>
-        <form id="timeLockForm" novalidate>
-            <label for="timeLockCode">קוד פתיחה</label>
-            <input id="timeLockCode" class="time-lock-input" type="password" inputmode="numeric" autocomplete="off" maxlength="4" pattern="[0-9]{4}" aria-describedby="timeLockError">
-            <div id="timeLockError" class="time-lock-error" role="alert" aria-live="assertive"></div>
-            <button type="submit" class="btn time-lock-submit">פתיחה</button>
-        </form>
-    </div>
-</div>
+<body>
 
 
 <div class="container">
+    <p class="ios-preview-note">האייפון פתח את הקובץ בלי ספארי, ולכן המחשבון לא רץ. אפל לא פותחת קובץ שמור בספארי. פתחו קישור של הדף מתוך ספארי, לא מתוך הקבצים.</p>
     <div class="wipe-row">
         <button type="button" class="btn-wipe" onclick="wipeAllCalculatorData()" data-i18n="btn.wipeAll">מחיקת כל הנתונים</button>
         <button type="button" class="btn-download" onclick="downloadCalculatorFile()" data-i18n="btn.downloadFile">הורדת הקובץ</button>
@@ -1401,7 +1356,7 @@
         </span>
     </div>
     <div class="header-bar">
-        <h2 class="app-title">FireFix<span class="app-subtitle">Trajectory Correction Helper · V1.23</span></h2>
+        <h2 class="app-title">FireFix<span class="app-subtitle">Trajectory Correction Helper · V1.24</span></h2>
         <div class="top-controls">
             <button type="button" class="icon-btn" id="guideBtn" aria-label="פתח את המדריך" data-i18n-aria="aria.guideBtn" data-i18n-title="aria.guideBtn" title="פתח את המדריך" onclick="openGuide()">📖</button>
             <button type="button" class="icon-btn" id="bookletBtn" aria-label="פתח את פקלון הטיווח" data-i18n-aria="aria.bookletBtn" data-i18n-title="aria.bookletBtn" title="פקלון טיווח" onclick="openBooklet()"><svg class="booklet-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.15" cy="13.4" r="3.15"/><circle cx="16.85" cy="13.4" r="3.15"/><path d="M10.3 13.4h3.4"/><path d="M4.15 11.5 5.7 8.2h2.7"/><path d="M19.85 11.5 18.3 8.2h-2.7"/></g></svg></button>
@@ -1426,6 +1381,11 @@
                 <input type="text" id="gunInput" inputmode="text" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="לדוגמה: 36S 648000 455000" data-i18n-ph="ph.gun" onchange="saveGunLocation()">
                 <button type="button" class="btn-small" aria-label="פתח מפה לבחירת מיקום קנה" data-i18n-aria="aria.mapGun" onclick="openMapModal('gun')" data-i18n="btn.map">🗺️ מפה</button>
             </div>
+            <div class="gun-gps-row">
+                <button type="button" class="btn-small" id="gunGpsBtn" onclick="fixGunFromGps()" data-i18n="gun.gps">קבע נ״צ מה־GPS</button>
+                <p class="gun-gps-note" data-i18n="gun.gpsNote">זה אינו מדויק ואינו מחליף אמצעי תקן לקביעת מיקום.</p>
+            </div>
+            <p id="gunGpsStatus" class="gun-gps-note" style="margin-top: 6px;" role="status" aria-live="polite" hidden></p>
             <div class="gun-panel-actions">
                 <button type="button" class="btn-small btn-danger" onclick="clearGunLocation()" data-i18n="gun.clear">🗑️ מחק מיקום שמור</button>
             </div>
@@ -1623,14 +1583,14 @@
             <button type="button" class="btn btn-success" id="installBtn" onclick="promptInstall()">📲 הוסף לדף הבית</button>
             <p id="installHint" class="settings-install-hint" style="margin-top: 8px;">התקנה מאפשרת פתיחה כאפליקציה עצמאית, ללא שורת כתובת.</p>
             <div class="local-tools-note" style="display:flex; align-items:flex-start; gap:8px; margin-top:12px;">
-                <input id="resetDisplayModeOnClear" type="checkbox" style="width:18px; height:18px; min-height:18px; margin-top:1px; flex:0 0 auto; accent-color:var(--primary);">
-                <label for="resetDisplayModeOnClear" style="margin:0; line-height:1.5; cursor:pointer; color:var(--text-muted);" data-i18n="settings.resetMode">אפס גם את מצב התצוגה לברירת המחדל (🌙 לילה)</label>
+                <input id="followSystemDisplay" type="checkbox" style="width:18px; height:18px; min-height:18px; margin-top:1px; flex:0 0 auto; accent-color:var(--primary);">
+                <label for="followSystemDisplay" style="margin:0; line-height:1.5; cursor:pointer; color:var(--text-muted);" data-i18n="settings.followSystem">עקוב אחרי מצב תצוגת מערכת</label>
             </div>
         </div>
 
         <div class="settings-group" id="privacyToolsSection">
             <h4 class="settings-group-title" data-i18n="settings.device">מכשיר</h4>
-            <p class="privacy-note" data-i18n="settings.privacyNote">האפליקציה נשארת Local-first. נתוני האפליקציה נשמרים במכשיר בלבד ואינם נשלחים לשום שרת. רכיב מקוון אופציונלי אחד נטען <em>רק</em> בלחיצה בפועל על הכפתור המתאים: המפה האינטראקטיבית. כל השאר - חישובי התיקון, המשימות, ההיסטוריה וייבוא/ייצוא JSON ו-Excel - פועל במלואו ללא רשת. בדיקות התקינות אינן יוצרות בקשות רשת.</p>
+            <p class="privacy-note" data-i18n="settings.privacyNote">האפליקציה נשארת Local-first. נתוני האפליקציה נשמרים במכשיר בלבד ואינם נשלחים לשום שרת. רכיב מקוון אופציונלי אחד נטען <em>רק</em> בלחיצה בפועל על הכפתור המתאים: המפה האינטראקטיבית. כל השאר - חישובי התיקון, המשימות, ההיסטוריה וייבוא/ייצוא Excel - פועל במלואו ללא רשת. בדיקות התקינות אינן יוצרות בקשות רשת.</p>
             <button type="button" class="btn-small settings-wide-action" id="checkUpdateBtn" onclick="checkForPublishedUpdate()" data-i18n="settings.checkUpdate">בדוק עדכון גרסה</button>
             <p id="versionCheckStatus" class="settings-install-hint" style="margin-top: 8px;" role="status" aria-live="polite" hidden></p>
             <button type="button" class="btn-small settings-wide-action" id="versionUpdateBtn" onclick="reloadPublishedCopy()" data-i18n="settings.updateNow" hidden>עדכן</button>
@@ -1639,7 +1599,7 @@
             <div id="localToolsStatus" class="local-tools-status" role="status" aria-live="polite" aria-atomic="true"></div>
             <div class="settings-clear-block">
                 <button type="button" class="btn-small btn-danger" onclick="clearLocalAppData()" data-i18n="settings.clear">🗑️ מחיקת נתונים מקומיים</button>
-                <p class="local-tools-note" data-i18n="settings.clearNote">מחיקת נתונים אינה משנה את מצב התצוגה, אלא אם האיפוס סומן בתצוגה. שחזור מחליף את מצב האפליקציה המקומי רק לאחר שהקובץ עבר בדיקות מבנה ותקינות.</p>
+                <p class="local-tools-note" data-i18n="settings.clearNote">מחיקת נתונים אינה משנה את מצב התצוגה. שחזור מחליף את מצב האפליקציה המקומי רק לאחר שהקובץ עבר בדיקות מבנה ותקינות.</p>
             </div>
             <button type="button" class="settings-quiet-row" onclick="openFutureFromSettings()" data-i18n="settings.openFuture">בגרסאות הבאות...</button>
         </div>
@@ -1648,12 +1608,9 @@
             <h4 class="settings-group-title" data-i18n="settings.data">נתונים</h4>
             <h4 style="margin: 0 0 8px 0; color: var(--text-muted);" data-i18n="settings.targetExchange">רשימת מטרות — ייבוא וייצוא</h4>
             <div class="local-tools-grid">
-                <button type="button" class="btn-small" aria-label="ייצוא רשימת מטרות לקובץ JSON" data-i18n-aria="aria.expJson" onclick="exportTasksJSON()">⬇️ JSON</button>
-                <button type="button" class="btn-small" aria-label="ייבוא רשימת מטרות מקובץ JSON" data-i18n-aria="aria.impJson" onclick="document.getElementById('tasksImportInput').click()">⬆️ JSON</button>
                 <button type="button" class="btn-small" aria-label="ייצוא רשימת מטרות לקובץ Excel" data-i18n-aria="aria.expXlsx" onclick="exportTasksXLSX()">⬇️ Excel</button>
                 <button type="button" class="btn-small" aria-label="ייבוא רשימת מטרות מקובץ Excel" data-i18n-aria="aria.impXlsx" onclick="document.getElementById('tasksImportXLSXInput').click()">⬆️ Excel</button>
             </div>
-            <input id="tasksImportInput" type="file" accept="application/json,.json" style="display:none" onchange="importTasksJSON(event)">
             <input id="tasksImportXLSXInput" type="file" accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" style="display:none" onchange="importTasksXLSX(event)">
             <div class="hint" id="tasksImportExportStatus"></div>
             <div class="local-tools-grid">
@@ -1843,6 +1800,7 @@
                 <tr><td>V1.22</td><td>טיוטה באמצע עבודה נשמרת אחרי נעילת מסך, יציאה מהאפליקציה וטעינה מחדש. איפוס שדות מוחק אותה.</td></tr>
                 <tr><td>V1.22</td><td>אזימוט מחוץ ל-0–6399, ונ״צ שחסרה בו ספרה, נעצרים על השדה לפני שמופיעה תוצאה.</td></tr>
                 <tr><td>V1.23</td><td>פקלון טיווח נפתח מכפתור משקפת בשורת האייקונים. תיקוף מאי 2026.</td></tr>
+                <tr><td>V1.24</td><td>האפליקציה נפתחת בלי קוד. נ״צ קנה אפשר לקבוע מה־GPS של הטלפון, בלי ייבוא וייצוא JSON. אפשר לעקוב אחרי מצב התצוגה של המערכת. פקלון הטיווח יושר לקריאה, והפקודות בו נראות כמו הפקודות שבכפתור הבטיחות.</td></tr>
             </tbody></table></div>
         </div>
         <div data-lang-block="en" style="display:none">
@@ -1858,6 +1816,7 @@
                 <tr><td>V1.22</td><td>An in-progress draft survives screen lock, leaving the app, and reload. Resetting the fields clears it.</td></tr>
                 <tr><td>V1.22</td><td>An azimuth outside 0–6399, and a grid missing a digit, stop on that field before a result appears.</td></tr>
                 <tr><td>V1.23</td><td>The ranging booklet opens from a binoculars button on the icon row. Validated May 2026.</td></tr>
+                <tr><td>V1.24</td><td>The app opens with no code. A gun grid can be fixed from the phone GPS, and JSON target import and export are gone. Display can follow the system mode. The ranging booklet is easier to read, and its orders match the safety-button orders.</td></tr>
             </tbody></table></div>
         </div>
         <button type="button" class="btn" onclick="dismissChangelog()" data-i18n="changelog.ok">הבנתי</button>
@@ -1897,8 +1856,8 @@
                 <li><strong>מגבלת תיקון בודד:</strong> תיקון העולה על 400 מטר ברכיב בודד ידרוש איפוס מחדש של היסטוריית המטרה עקב חריגה מרדיוס בטיחות.</li>
                 <li><strong>מגבלת תיקון מצטבר (עדכון 550 מ'):</strong> אם סכום הערכים המוחלטים של התיקון בצפוניות ובמזרחיות יחד (או סך ההיסט המצטבר) עולה על 550 מטר, המערכת תציג הודעת שגיאה ותדרוש חישוב ירי מחדש.</li>
                 <li><strong>תוקף נתונים:</strong> היסטוריית המטרות והתיקונים נשמרת מקומית ונמחקת אוטומטית לאחר 24 שעות.</li>
-                <li><strong>הרכיב היחיד הדורש אינטרנט:</strong> המפה האינטראקטיבית (Leaflet + אריחי מפה), הנטענת <em>רק</em> בלחיצה בפועל על כפתור המפה. כל שאר המחשבון - חישובי תיקון, צידוד, משימות, היסטוריה וייבוא/ייצוא JSON <strong>ו-Excel</strong> - פועל מקומית לחלוטין ללא רשת.</li>
-                <li><strong>דרישת דפדפן לייבוא/ייצוא Excel:</strong> נדרש <strong>Chrome 103 ומעלה, Safari 16.4 ומעלה, או Firefox 113 ומעלה</strong>. קריאה וכתיבה של קובצי Excel מתבצעות באמצעות יכולות מובנות בדפדפן (<code style="direction:ltr; display:inline-block;">DecompressionStream</code>) ולא באמצעות ספרייה חיצונית - מה שמאפשר עבודה מלאה ללא אינטרנט. בדפדפן ישן יותר כפתורי ה-Excel ידווחו שאינם זמינים, וייבוא/ייצוא JSON ימשיך לעבוד כרגיל. ניתן לבדוק זאת בכל רגע דרך ⚙️ הגדרות ← בדיקת תקינות.</li>
+                <li><strong>הרכיב היחיד הדורש אינטרנט:</strong> המפה האינטראקטיבית (Leaflet + אריחי מפה), הנטענת <em>רק</em> בלחיצה בפועל על כפתור המפה. כל שאר המחשבון - חישובי תיקון, צידוד, משימות, היסטוריה וייבוא/ייצוא Excel - פועל מקומית לחלוטין ללא רשת.</li>
+                <li><strong>דרישת דפדפן לייבוא/ייצוא Excel:</strong> נדרש <strong>Chrome 103 ומעלה, Safari 16.4 ומעלה, או Firefox 113 ומעלה</strong>. קריאה וכתיבה של קובצי Excel מתבצעות באמצעות יכולות מובנות בדפדפן (<code style="direction:ltr; display:inline-block;">DecompressionStream</code>) ולא באמצעות ספרייה חיצונית - מה שמאפשר עבודה מלאה ללא אינטרנט. בדפדפן ישן יותר כפתורי ה-Excel ידווחו שאינם זמינים. ניתן לבדוק זאת בכל רגע דרך ⚙️ הגדרות ← בדיקת תקינות.</li>
             </ul>
         </div>
 
@@ -1910,12 +1869,12 @@
         <div class="guide-section">
             <h4>🛠️ מדריך שימוש שלב אחר שלב</h4>
             <ul>
-                <li><strong>שלב 1 (אופציונלי):</strong> הזן את נ"צ הקנה היורה בשדה הייעודי או בחר אותו מהמפה (נדרש אך ורק לצורך קבלת תיקוני צידוד).</li>
+                <li><strong>שלב 1 (אופציונלי):</strong> הזן את נ"צ הקנה היורה בשדה הייעודי, בחר אותו מהמפה, או קבע אותו מה־GPS של הטלפון. קריאת ה־GPS אינה מדויקת ואינה מחליפה אמצעי תקן לקביעת מיקום. הנ"צ נדרש אך ורק לצורך קבלת תיקוני צידוד.</li>
                 <li><strong>שלב 2:</strong> הזן את נ"צ המטרה המקורית (או בחר משימה מוכנה מראש מטבלת המשימות/רשימת המטרות - טעינה מהטבלה מעדכנת אוטומטית את שם המשימה והנ"צ, לחלופין הוסף משימה חדשה באמצעות דקירה במפה בטאב המשימות). ניתן לצרף שם תיאורי למטרה.</li>
                 <li><strong>שלב 3:</strong> הזן את נ"צ הפגיעה בפועל בשדה השלישי (או לחץ על כפתור "מפה" ובחר את נקודת הפגיעה).</li>
                 <li><strong>שלב 4:</strong> לחץ על <strong>"תיקון ברוחות שמים"</strong> לתיקון מזרח/מערב וצפון/דרום, או על <strong>"תיקון וקטורי בצליפה"</strong> לקבלת אזימוט וטווח למטרה ולפגיעה מהגורם הצופה שעל המטרה (אזימוט 0, טווח 0).</li>
                 <li><strong>שלב 5:</strong> באפשרותך לשתף את הדיווח או להעתיק את ההיסטוריה ישירות מלוח התוצאות, וכן ללחוץ על <strong>"🗺️ מפה"</strong> בלוח ההיסטוריה כדי לראות את כל רצף הפגיעות מצויר על גבי המפה.</li>
-                <li><strong>שלב 6 (אופציונלי) - גיבוי רשימת המשימות:</strong> בסעיף המשימות, ייצא את הרשימה ל-<strong>JSON</strong> (אופליין) או ל-<strong>Excel</strong>, וייבא בחזרה בכל עת - עם בחירה בין החלפת הרשימה להוספה אליה.</li>
+                <li><strong>שלב 6 (אופציונלי) - גיבוי רשימת המשימות:</strong> בסעיף הנתונים, ייצא את הרשימה ל-<strong>Excel</strong> וייבא בחזרה בכל עת - עם בחירה בין החלפת הרשימה להוספה אליה. גיבוי ושחזור של נתוני האפליקציה נשארים שם.</li>
             </ul>
         </div>
         
@@ -1969,7 +1928,7 @@
                 <li><strong>History and task management:</strong> stores the correction sequence for a target (up to 24 hours), manages a task table, and copies reports to the clipboard. Tasks can be added directly from the interactive map, or loaded from the table (which updates both the task name and the grid).</li>
                 <li><strong>Interactive map:</strong> supports picking points manually on a satellite/street map for the gun, target, impact, and for adding tasks.</li>
                 <li><strong>🗺️ Impact history on the map:</strong> the "Map" button in the correction-history panel opens a read-only graphical view showing the original target as a blue dot, every impact as a numbered red dot with its correction details on tap, and a dashed line connecting them in chronological order - so you can see the convergence toward the target visually.</li>
-                <li><strong>📥 Full task list import and export:</strong> two formats are supported - <strong>JSON</strong> (works entirely offline) and <strong>Excel / XLSX</strong>. On import you can choose between replacing the existing list or appending to it.</li>
+                <li><strong>📥 Task list import and export:</strong> the list is imported and exported as <strong>Excel / XLSX</strong>. On import you can choose between replacing the existing list or appending to it. Backup and restore of the app data stay separate.</li>
             </ul>
         </div>
 
@@ -1980,8 +1939,8 @@
                 <li><strong>Single correction limit:</strong> a correction over 400 metres in a single component requires resetting the target history, because it exceeds the safety radius.</li>
                 <li><strong>Cumulative correction limit (550 m):</strong> if the sum of the absolute northing and easting corrections together (or the total cumulative offset) exceeds 550 metres, the system shows an error and requires the firing solution to be recomputed.</li>
                 <li><strong>Data validity:</strong> target and correction history is stored locally and deleted automatically after 24 hours.</li>
-                <li><strong>The only component requiring internet:</strong> the interactive map (Leaflet + map tiles), which loads <em>only</em> when you actually press the map button. Everything else - correction and traverse calculations, tasks, history, and both JSON <strong>and Excel</strong> import/export - runs entirely locally with no network.</li>
-                <li><strong>Browser requirement for Excel import/export:</strong> needs <strong>Chrome 103+, Safari 16.4+, or Firefox 113+</strong>. Excel files are read and written using built-in browser capabilities (<code style="direction:ltr; display:inline-block;">DecompressionStream</code>) rather than an external library, which is what makes them work fully offline. On an older browser the Excel buttons report that they are unavailable, and JSON import/export keeps working normally. You can check this at any time via ⚙️ Settings → Run diagnostics.</li>
+                <li><strong>The only component requiring internet:</strong> the interactive map (Leaflet + map tiles), which loads <em>only</em> when you actually press the map button. Everything else - correction and traverse calculations, tasks, history, and Excel import/export - runs entirely locally with no network.</li>
+                <li><strong>Browser requirement for Excel import/export:</strong> needs <strong>Chrome 103+, Safari 16.4+, or Firefox 113+</strong>. Excel files are read and written using built-in browser capabilities (<code style="direction:ltr; display:inline-block;">DecompressionStream</code>) rather than an external library, which is what makes them work fully offline. On an older browser the Excel buttons report that they are unavailable. You can check this at any time via ⚙️ Settings → Run diagnostics.</li>
             </ul>
         </div>
 
@@ -1993,12 +1952,12 @@
         <div class="guide-section">
             <h4>🛠️ Step-by-step usage guide</h4>
             <ul>
-                <li><strong>Step 1 (optional):</strong> enter the firing gun grid in its field, or pick it from the map (required only to obtain traverse corrections).</li>
+                <li><strong>Step 1 (optional):</strong> enter the firing gun grid in its field, pick it from the map, or fix it from the phone GPS. The GPS reading is not accurate and does not replace standard means of fixing a position. The grid is required only to obtain traverse corrections.</li>
                 <li><strong>Step 2:</strong> enter the original target grid, or choose a prepared task from the task table / saved targets list - loading from the table updates both the task name and the grid. Alternatively add a new task by dropping a pin on the map in the tasks section. You can attach a descriptive name to the target.</li>
                 <li><strong>Step 3:</strong> enter the actual impact grid in the third field (or press the "Map" button and pick the impact point).</li>
                 <li><strong>Step 4:</strong> press <strong>"Cardinal correction"</strong> for east/west and north/south, or <strong>"Vector correction (sniper)"</strong> for azimuth and range to the target and to the impact, from the observer on the target at azimuth 0 and range 0.</li>
                 <li><strong>Step 5:</strong> you can share the report or copy the history straight from the results panel, and press <strong>"🗺️ Map"</strong> in the history panel to see the whole impact sequence drawn on the map.</li>
-                <li><strong>Step 6 (optional) - backing up the task list:</strong> in the tasks section, export the list to <strong>JSON</strong> (offline) or <strong>Excel</strong>, and import it back at any time - choosing between replacing the list or appending to it.</li>
+                <li><strong>Step 6 (optional) - backing up the task list:</strong> in Data, export the list to <strong>Excel</strong> and import it back at any time - choosing between replacing the list or appending to it. Backup and restore of the app data stay there too.</li>
             </ul>
 
         <div class="guide-section">
@@ -2202,7 +2161,7 @@ const CONFIG = {
     STORAGE_ROUND_STEP_KEY: 'firefix_round_step',
     STORAGE_OBSERVER_AZ_KEY: 'firefix_observer_az_mils',
     STORAGE_OBSERVER_RANGE_KEY: 'firefix_observer_range_m',
-    STORAGE_TIME_LOCK_KEY: 'firefix_time_lock_unlocked_v1',
+    STORAGE_FOLLOW_SYSTEM_KEY: 'firefix_follow_system_display',
     STORAGE_HOME_NOTICE_KEY: 'firefix_home_notice_seen_v1',
     STORAGE_CHANGELOG_PENDING_KEY: 'firefix_changelog_pending_build',
     STORAGE_CHANGELOG_SEEN_KEY: 'firefix_changelog_seen_build',
@@ -2212,8 +2171,8 @@ const CONFIG = {
     VECTOR_OBSERVER_SOUTH_M: 0, // coincident default; the live observer is the saved azimuth and range
     MAX_SINGLE_CORRECTION: 400,
     MAX_CUMULATIVE_CORRECTION: 550,
-    APP_VERSION: 'V1.23',
-    BUILD_ID: '20261007-v123-booklet',
+    APP_VERSION: 'V1.24',
+    BUILD_ID: '20261007-v124-open',
     STORAGE_TASKS_MERGED_KEY: 'firefix_tasks_merged_v110',
     ROUND_STEP: 50,                 // default correction rounding step (metres)
     ROUND_STEP_OPTIONS: [10, 25, 50, 100],
@@ -2344,9 +2303,9 @@ const I18N = {
         'settings.diag': '🔎 Run diagnostics',
         'settings.clear': '🗑️ Clear local data',
         'settings.privacy': '🔐 Privacy, Backup & Diagnostics',
-        'settings.privacyNote': 'The app stays local-first. Its data is stored on this device only and is never sent to any server. One optional online component loads <em>only</em> when you actually press the matching button: the interactive map. Everything else - correction calculations, tasks, history, and both JSON and Excel import/export - works fully offline. Diagnostics make no network requests.',
-        'settings.resetMode': 'Also reset the display mode to the default (🌙 Night)',
-        'settings.clearNote': 'Clearing data does not change the display mode unless the reset is checked in Display. Restoring replaces local app state only after the file passes structure and validity checks.',
+        'settings.privacyNote': 'The app stays local-first. Its data is stored on this device only and is never sent to any server. One optional online component loads <em>only</em> when you actually press the matching button: the interactive map. Everything else - correction calculations, tasks, history, and Excel import/export - works fully offline. Diagnostics make no network requests.',
+        'settings.followSystem': 'Follow system display mode',
+        'settings.clearNote': 'Clearing data does not change the display mode. Restoring replaces local app state only after the file passes structure and validity checks.',
         'btn.wipeAll': 'Delete all data',
         'btn.downloadFile': 'Download file',
         'btn.reset': 'Reset fields',
@@ -2368,6 +2327,13 @@ const I18N = {
         'opt.chooseTarget': '-- Choose a saved target or enter a new one --',
         'hint.scroll': 'On a narrow screen you can swipe the table horizontally.',
         'hint.gun': '💡 A gun grid is not required for the correction itself, but without it no traverse data is shown.',
+        'gun.gps': 'Fix grid from GPS',
+        'gun.gpsNote': 'This is not accurate and does not replace standard means of fixing a position.',
+        'gun.gpsBusy': 'Reading the phone location...',
+        'gun.gpsUnsupported': 'This phone cannot provide a GPS location.',
+        'gun.gpsDenied': 'Location permission was denied.',
+        'gun.gpsTimeout': 'The phone did not return a location in time.',
+        'gun.gpsFailed': 'The phone location could not be read.',
         'hint.format': 'Standard UTM format, spaced or continuous.',
         'tasks.colCoords': 'UTM grid',
         'tasks.hintFormat': 'Standard format: 36S E 650500 N 456700, or continuous entry. The leading 3 in northing is optional (456700 ≡ 3456700). You can also drop a pin on the map to add a task.',
@@ -2418,8 +2384,6 @@ const I18N = {
         'map.selected': 'Selected UTM grid: -',
         'aria.connPill': 'Checking connection status',
         'aria.displayMode': 'Display mode',
-        'aria.expJson': 'Export the full task list to a JSON file',
-        'aria.impJson': 'Import a task list from a JSON file',
         'aria.expXlsx': 'Export the full task list to an Excel file',
         'aria.impXlsx': 'Import a task list from an Excel file in the fixed format',
         'aria.tasksTable': 'Task table',
@@ -2763,59 +2727,9 @@ function promptInstall() {
 }
 
 
-// ===== BASIC TIME LOCK =====
-// This intentionally provides only a light barrier. The unlock state is kept
-// in this browser's local storage and is not included in app backups.
-function currentTimeLockCode(now = new Date()) {
-    return String(now.getHours()).padStart(2, '0') + String(now.getMinutes()).padStart(2, '0');
-}
-
-function unlockTimeLock() {
-    SafeStorage.set(CONFIG.STORAGE_TIME_LOCK_KEY, 'true');
-    document.body.classList.remove('time-locked');
-    const lock = document.getElementById('timeLock');
-    if (lock) lock.hidden = true;
-}
-
-function initTimeLock() {
-    const lock = document.getElementById('timeLock');
-    const form = document.getElementById('timeLockForm');
-    const input = document.getElementById('timeLockCode');
-    const error = document.getElementById('timeLockError');
-    if (!lock || !form || !input || !error) return;
-
-    if (SafeStorage.get(CONFIG.STORAGE_TIME_LOCK_KEY) === 'true') {
-        unlockTimeLock();
-        return;
-    }
-
-    lock.hidden = false;
-    document.body.classList.add('time-locked');
-    input.addEventListener('input', () => {
-        input.value = input.value.replace(/\D/g, '').slice(0, 4);
-        error.textContent = '';
-        input.removeAttribute('aria-invalid');
-    });
-    form.addEventListener('submit', event => {
-        event.preventDefault();
-        if (input.value === currentTimeLockCode()) {
-            unlockTimeLock();
-            showDisclaimerIfNeeded();
-            showHomeScreenNoticeIfNeeded();
-            showChangelogIfNeeded();
-            return;
-        }
-        input.setAttribute('aria-invalid', 'true');
-        error.textContent = 'קוד שגוי, נסו שוב.';
-        input.select();
-    });
-    requestAnimationFrame(() => input.focus());
-}
-
 document.addEventListener("DOMContentLoaded", function() {
     migrateTasksIntoPlanned();
     initLanguage();
-    initTimeLock();
     initDisplayMode();
     loadSavedGun();
     updateRoundStepUI();
@@ -2829,11 +2743,9 @@ document.addEventListener("DOMContentLoaded", function() {
     setupModalAccessibility();
     updateConnectivityState();
     setupInstallPrompt();
-    if (SafeStorage.get(CONFIG.STORAGE_TIME_LOCK_KEY) === 'true') {
-        showDisclaimerIfNeeded();
-        showHomeScreenNoticeIfNeeded();
-        showChangelogIfNeeded();
-    }
+    showDisclaimerIfNeeded();
+    showHomeScreenNoticeIfNeeded();
+    showChangelogIfNeeded();
 });
 
 window.addEventListener('online', updateConnectivityState);
@@ -3050,7 +2962,7 @@ function runLocalDiagnostics() {
             ? `Active: ${getStoredDisplayMode() === 'operational' ? 'Tactical AMOLED red' : getStoredDisplayMode() === 'night' ? 'Night' : 'Day'}.`
             : `פעיל: ${getStoredDisplayMode() === 'operational' ? 'מבצעי AMOLED אדום' : getStoredDisplayMode() === 'night' ? 'לילה' : 'יום'}.`)],
         ['ok', i18nT('מפה','Map'), leafletLoaded ? i18nT('Leaflet כבר נטען לאחר שימוש במפה.','Leaflet is already loaded after the map was used.') : i18nT('Leaflet טרם נטען - תקין; הוא נטען רק בעת פתיחת המפה.','Leaflet has not loaded yet - expected; it loads only when the map is opened.')],
-        [xlsxNative ? 'ok' : 'warn', i18nT('ייבוא/ייצוא Excel','Excel import/export'), xlsxNative ? i18nT('נתמך מקומית בדפדפן (DecompressionStream), ללא ספרייה חיצונית וללא אינטרנט.','Supported natively by the browser (DecompressionStream) - no external library and no internet needed.') : i18nT('הדפדפן אינו תומך ב-DecompressionStream; ייבוא/ייצוא Excel לא יעבוד. נדרש Chrome 103+, Safari 16.4+ או Firefox 113+. ייבוא/ייצוא JSON זמין בכל מקרה.','This browser lacks DecompressionStream, so Excel import/export will not work. Chrome 103+, Safari 16.4+ or Firefox 113+ is required. JSON import/export works regardless.')],
+        [xlsxNative ? 'ok' : 'warn', i18nT('ייבוא/ייצוא Excel','Excel import/export'), xlsxNative ? i18nT('נתמך מקומית בדפדפן (DecompressionStream), ללא ספרייה חיצונית וללא אינטרנט.','Supported natively by the browser (DecompressionStream) - no external library and no internet needed.') : i18nT('הדפדפן אינו תומך ב-DecompressionStream; ייבוא/ייצוא Excel לא יעבוד. נדרש Chrome 103+, Safari 16.4+ או Firefox 113+.','This browser lacks DecompressionStream, so Excel import/export will not work. Chrome 103+, Safari 16.4+ or Firefox 113+ is required.')],
         [navigator.clipboard || document.queryCommandSupported?.('copy') ? 'ok' : 'warn', i18nT('העתקה','Copy'), i18nT('קיימים מנגנוני fallback להעתקה במקרה שה-Clipboard API אינו זמין.','Fallback copy mechanisms exist in case the Clipboard API is unavailable.')],
         [navigator.share ? 'ok' : 'warn', i18nT('שיתוף','Share'), navigator.share ? i18nT('Web Share API זמין.','The Web Share API is available.') : i18nT('Web Share API אינו זמין; שיתוף ייפול להעתקה.','The Web Share API is unavailable; sharing falls back to copying.')],
         [navigator.onLine !== false ? 'ok' : 'warn', i18nT('חיבור רשת','Network connection'), navigator.onLine !== false ? i18nT('הדפדפן מדווח על חיבור. המפה יכולה לנסות להיטען לפי דרישה.','The browser reports a connection. The map can load on demand.') : i18nT('אופליין. המחשבון נשאר זמין והמפה לא תיטען.','Offline. The calculator stays available and the map will not load.')]
@@ -3237,7 +3149,7 @@ async function importLocalBackup(event) {
 }
 
 async function downloadCalculatorFile() {
-    const filename = 'FireFix - Trajectory calculator ' + (CONFIG.APP_VERSION || 'V1.23') + '.html';
+    const filename = 'FireFix - Trajectory calculator ' + (CONFIG.APP_VERSION || 'V1.24') + '.html';
     let bytes;
     try {
         const response = await fetch(location.href, { cache: 'no-store' });
@@ -3259,11 +3171,11 @@ async function downloadCalculatorFile() {
 
 function wipeAllCalculatorData() {
     const confirmed = window.confirm(i18nT(
-        'למחוק את כל הנתונים שהוזנו למחשבון?\n\nנ"צ הקנה, רשימת המטרות, היסטוריית התיקונים והשדות יימחקו.\nקוד הגישה לא יימחק.',
-        'Delete all data entered in the calculator?\n\nThe gun grid, target list, correction history and fields will be erased.\nThe access code will be kept.'
+        'למחוק את כל הנתונים שהוזנו למחשבון?\n\nנ"צ הקנה, רשימת המטרות, היסטוריית התיקונים והשדות יימחקו.',
+        'Delete all data entered in the calculator?\n\nThe gun grid, target list, correction history and fields will be erased.'
     ));
     if (!confirmed) return;
-    const keep = new Set([CONFIG.STORAGE_TIME_LOCK_KEY]);
+    const keep = new Set();
     const keys = [];
     try {
         for (let i = 0; i < localStorage.length; i++) {
@@ -3285,15 +3197,13 @@ function wipeAllCalculatorData() {
 }
 
 function clearLocalAppData() {
-    const resetDisplayModeCheckbox = document.getElementById('resetDisplayModeOnClear');
-    const resetDisplayMode = resetDisplayModeCheckbox?.checked === true;
     const displayModeBeforeClear = getStoredDisplayMode();
     const modeName = currentLang === 'en'
         ? (displayModeBeforeClear === 'operational' ? 'Tactical' : displayModeBeforeClear === 'night' ? 'Night' : 'Day')
         : (displayModeBeforeClear === 'operational' ? 'מבצעי' : displayModeBeforeClear === 'night' ? 'לילה' : 'יום');
-    const displayModeMessage = resetDisplayMode
-        ? i18nT('מצב התצוגה יאופס לברירת המחדל: לילה.', 'The display mode will be reset to the default: Night.')
-        : (currentLang === 'en' ? `The display mode will stay unchanged: ${modeName}.` : `מצב התצוגה יישאר ללא שינוי: ${modeName}.`);
+    const displayModeMessage = currentLang === 'en'
+        ? `The display mode will stay unchanged: ${modeName}.`
+        : `מצב התצוגה יישאר ללא שינוי: ${modeName}.`;
 
     const confirmed = window.confirm(currentLang === 'en'
         ? `Clear all of the app's local data?\n\n${displayModeMessage}\n\nCreating a backup first is recommended.`
@@ -3301,26 +3211,17 @@ function clearLocalAppData() {
     if (!confirmed) return;
 
     for (const key of MANAGED_STORAGE_KEYS) {
-        if (!resetDisplayMode && key === CONFIG.STORAGE_DISPLAY_MODE_KEY) continue;
+        if (key === CONFIG.STORAGE_DISPLAY_MODE_KEY) continue;
         SafeStorage.remove(key);
     }
 
     // The legacy boolean theme key is never needed once the three-mode model is active.
     SafeStorage.remove(CONFIG.STORAGE_THEME_LEGACY_KEY);
+    SafeStorage.set(CONFIG.STORAGE_DISPLAY_MODE_KEY, displayModeBeforeClear);
 
-    if (resetDisplayMode) {
-        SafeStorage.remove(CONFIG.STORAGE_DISPLAY_MODE_KEY);
-    } else {
-        // Re-persist the current mode so localStorage and the in-memory fallback stay aligned.
-        SafeStorage.set(CONFIG.STORAGE_DISPLAY_MODE_KEY, displayModeBeforeClear);
-    }
-
-    if (resetDisplayModeCheckbox) resetDisplayModeCheckbox.checked = false;
     refreshAppFromStoredState();
     runLocalDiagnostics();
-    setLocalToolsStatus(resetDisplayMode
-        ? i18nT('כל הנתונים המקומיים נמחקו ומצב התצוגה אופס ללילה.','All local data was cleared and the display mode was reset to Night.')
-        : i18nT('כל הנתונים המקומיים נמחקו. מצב התצוגה נשמר ללא שינוי.','All local data was cleared. The display mode was left unchanged.'));
+    setLocalToolsStatus(i18nT('כל הנתונים המקומיים נמחקו. מצב התצוגה נשמר ללא שינוי.','All local data was cleared. The display mode was left unchanged.'));
 }
 
 const DISPLAY_MODES = Object.freeze(['day', 'night', 'operational']);
@@ -3500,7 +3401,44 @@ function updateRoundStepUI() {
     if (label) label.textContent = correctionTitleText();
 }
 
+function systemDisplayMode() {
+    try {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'night' : 'day';
+    } catch (e) {
+        return 'day';
+    }
+}
+
+function isFollowingSystemDisplay() {
+    return SafeStorage.get(CONFIG.STORAGE_FOLLOW_SYSTEM_KEY) === 'true';
+}
+
+let systemDisplayListenerBound = false;
+function bindSystemDisplayListener() {
+    if (systemDisplayListenerBound || !window.matchMedia) return;
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    const onChange = () => {
+        if (isFollowingSystemDisplay()) applyDisplayMode(systemDisplayMode(), true);
+    };
+    if (media.addEventListener) media.addEventListener('change', onChange);
+    else if (media.addListener) media.addListener(onChange);
+    systemDisplayListenerBound = true;
+}
+
+function setFollowSystemDisplay(on) {
+    const box = document.getElementById('followSystemDisplay');
+    if (on) {
+        SafeStorage.set(CONFIG.STORAGE_FOLLOW_SYSTEM_KEY, 'true');
+        if (box) box.checked = true;
+        applyDisplayMode(systemDisplayMode(), true);
+    } else {
+        SafeStorage.remove(CONFIG.STORAGE_FOLLOW_SYSTEM_KEY);
+        if (box) box.checked = false;
+    }
+}
+
 function cycleDisplayMode() {
+    if (isFollowingSystemDisplay()) setFollowSystemDisplay(false);
     const current = getStoredDisplayMode();
     const idx = DISPLAY_MODES.indexOf(current);
     applyDisplayMode(DISPLAY_MODES[(idx + 1) % DISPLAY_MODES.length], true);
@@ -3534,7 +3472,15 @@ function applyDisplayMode(mode, persist = true) {
 }
 
 function initDisplayMode() {
-    applyDisplayMode(getStoredDisplayMode(), false);
+    const box = document.getElementById('followSystemDisplay');
+    if (box && box.dataset.bound !== '1') {
+        box.dataset.bound = '1';
+        box.addEventListener('change', () => setFollowSystemDisplay(box.checked));
+    }
+    if (box) box.checked = isFollowingSystemDisplay();
+    bindSystemDisplayListener();
+    if (isFollowingSystemDisplay()) applyDisplayMode(systemDisplayMode(), true);
+    else applyDisplayMode(getStoredDisplayMode(), false);
 }
 
 function setDisplayMode(mode) {
@@ -3752,7 +3698,6 @@ function hasSeenHomeScreenNotice() {
 
 function showHomeScreenNoticeIfNeeded() {
     if (hasSeenHomeScreenNotice()) return;
-    if (SafeStorage.get(CONFIG.STORAGE_TIME_LOCK_KEY) !== 'true') return;
     if (!hasAcceptedDisclaimer()) return;
     const disclaimer = document.getElementById('disclaimerModal');
     if (disclaimer && disclaimer.style.display === 'block') return;
@@ -3797,7 +3742,6 @@ function showChangelogIfNeeded() {
         clearUpdateReloadParam();
         return;
     }
-    if (SafeStorage.get(CONFIG.STORAGE_TIME_LOCK_KEY) !== 'true') return;
     if (!hasAcceptedDisclaimer()) return;
     const disclaimer = document.getElementById('disclaimerModal');
     const home = document.getElementById('homeNoticeModal');
@@ -4492,101 +4436,6 @@ function setTasksImportExportStatus(message, isError) {
     el.style.color = isError ? 'var(--error-text)' : 'var(--text-muted)';
 }
 
-function exportTasksJSON() {
-    const tasks = plannedAsTasks();
-    if (!tasks.length) {
-        setTasksImportExportStatus({ he: 'אין משימות לייצוא.', en: 'There are no tasks to export.' }, true);
-        return;
-    }
-
-    const payload = {
-        schema: 'artillery-tasks-v1',
-        exportedAt: new Date().toISOString(),
-        count: tasks.length,
-        tasks: tasks
-    };
-
-    try {
-        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        const dateStr = new Date().toISOString().slice(0, 10);
-        a.href = url;
-        a.download = `artillery-tasks-${dateStr}.json`;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
-        setTasksImportExportStatus({ he: `✅ יוצאו ${tasks.length} משימות לקובץ.`, en: `✅ Exported ${tasks.length} tasks to file.` }, false);
-    } catch (e) {
-        console.error('Task export failed', e);
-        setTasksImportExportStatus({ he: 'שגיאה בייצוא המשימות.', en: 'Error exporting tasks.' }, true);
-    }
-}
-
-function importTasksJSON(event) {
-    const file = event.target.files && event.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = function() {
-        let parsed;
-        try {
-            parsed = JSON.parse(String(reader.result));
-        } catch (e) {
-            setTasksImportExportStatus({ he: 'קובץ לא תקין - נדרש JSON שיוצא מהמחשבון.', en: 'Invalid file - a JSON file exported from this calculator is required.' }, true);
-            event.target.value = '';
-            return;
-        }
-
-        const importedRaw = Array.isArray(parsed) ? parsed : parsed.tasks;
-        if (!Array.isArray(importedRaw)) {
-            setTasksImportExportStatus({ he: 'מבנה קובץ לא תקין - חסרה רשימת משימות.', en: 'Invalid file structure - the task list is missing.' }, true);
-            event.target.value = '';
-            return;
-        }
-
-        // Sanitize each entry and assign fresh unique IDs to avoid collisions
-        // with whatever is already stored.
-        const cleanTasks = importedRaw
-            .filter(t => t && typeof t === 'object')
-            .map((t, i) => ({
-                id: Date.now() + i,
-                name: String(t.name || (currentLang === 'en' ? `Imported task ${i + 1}` : `משימה מיובאת ${i + 1}`)),
-                coords: String(t.coords || ''),
-                ranged: (t.ranged === 'כן') ? 'כן' : 'לא'
-            }));
-
-        if (!cleanTasks.length) {
-            setTasksImportExportStatus({ he: 'לא נמצאו משימות תקינות בקובץ.', en: 'No valid tasks were found in the file.' }, true);
-            event.target.value = '';
-            return;
-        }
-
-        const existingTasks = plannedAsTasks();
-        const replace = existingTasks.length === 0 || confirm(currentLang === 'en'
-            ? `Found ${cleanTasks.length} tasks in the file.\n\nOK = replace the existing list (${existingTasks.length} tasks).\nCancel = append to the existing list.`
-            : `נמצאו ${cleanTasks.length} משימות בקובץ.\n\nאישור = החלפת הרשימה הקיימת (${existingTasks.length} משימות).\nביטול = הוספה בנוסף לרשימה הקיימת.`
-        );
-
-        const finalTasks = replace ? cleanTasks : existingTasks.concat(cleanTasks);
-        saveTasks(finalTasks);
-        adoptImportedTasks(finalTasks, replace);
-        renderTasksTable(finalTasks);
-
-        const sec = document.getElementById('tasksSection');
-        if (sec) sec.style.display = 'block';
-
-        setTasksImportExportStatus({ he: `✅ יובאו ${cleanTasks.length} משימות (${replace ? 'הרשימה הוחלפה' : 'נוספו לרשימה הקיימת'}). סה"כ כעת: ${finalTasks.length}.`, en: `✅ Imported ${cleanTasks.length} tasks (${replace ? 'list replaced' : 'added to the existing list'}). Total now: ${finalTasks.length}.` }, false);
-        event.target.value = '';
-    };
-    reader.onerror = function() {
-        setTasksImportExportStatus({ he: 'שגיאה בקריאת הקובץ.', en: 'Error reading the file.' }, true);
-        event.target.value = '';
-    };
-    reader.readAsText(file);
-}
-
 // ===== TASK LIST XLSX (Excel) IMPORT / EXPORT =====
 // Fixed standard: first row headers "שם משימה" | "נ"צ UTM" | "טווח" (כן/לא).
 //
@@ -4887,8 +4736,8 @@ function exportTasksXLSX() {
     }
     if (!xlsxSupported()) {
         setTasksImportExportStatus({
-            he: 'הדפדפן אינו תומך ביצירת קובצי Excel. נדרש Chrome 103+, Safari 16.4+ או Firefox 113+. ניתן להשתמש בייצוא JSON, שעובד בכל דפדפן.',
-            en: 'This browser cannot build Excel files. Chrome 103+, Safari 16.4+ or Firefox 113+ is required. Use JSON export instead - it works everywhere.' }, true);
+            he: 'הדפדפן אינו תומך ביצירת קובצי Excel. נדרש Chrome 103+, Safari 16.4+ או Firefox 113+.',
+            en: 'This browser cannot build Excel files. Chrome 103+, Safari 16.4+ or Firefox 113+ is required.' }, true);
         return;
     }
 
@@ -4934,8 +4783,8 @@ function importTasksXLSX(event) {
 
     if (!xlsxSupported()) {
         setTasksImportExportStatus({
-            he: 'הדפדפן אינו תומך בקריאת קובצי Excel. נדרש Chrome 103+, Safari 16.4+ או Firefox 113+. ניתן להשתמש בייבוא JSON, שעובד בכל דפדפן.',
-            en: 'This browser cannot read Excel files. Chrome 103+, Safari 16.4+ or Firefox 113+ is required. Use JSON import instead - it works everywhere.' }, true);
+            he: 'הדפדפן אינו תומך בקריאת קובצי Excel. נדרש Chrome 103+, Safari 16.4+ או Firefox 113+.',
+            en: 'This browser cannot read Excel files. Chrome 103+, Safari 16.4+ or Firefox 113+ is required.' }, true);
         event.target.value = '';
         return;
     }
@@ -5342,6 +5191,51 @@ function saveGunLocation() {
     const gunStr = document.getElementById('gunInput').value;
     SafeStorage.set(CONFIG.STORAGE_GUN_KEY, gunStr);
     updateGunSummary(true);
+}
+
+function setGunGpsStatus(message, isError) {
+    const el = document.getElementById('gunGpsStatus');
+    if (!el) return;
+    if (!message) {
+        el.hidden = true;
+        el.textContent = '';
+        return;
+    }
+    rememberMsg(el, message);
+    el.textContent = resolveMsg(message);
+    el.hidden = false;
+    el.style.color = isError ? 'var(--error-text)' : 'var(--text-muted)';
+}
+
+function fixGunFromGps() {
+    const button = document.getElementById('gunGpsBtn');
+    if (!navigator.geolocation) {
+        setGunGpsStatus({ he: 'הטלפון הזה לא יכול לתת מיקום GPS.', en: 'This phone cannot provide a GPS location.' }, true);
+        return;
+    }
+    if (button) button.disabled = true;
+    setGunGpsStatus({ he: 'קורא את מיקום הטלפון...', en: 'Reading the phone location...' }, false);
+    navigator.geolocation.getCurrentPosition(position => {
+        if (button) button.disabled = false;
+        const coords = position && position.coords;
+        const utm = coords ? latLonToUTM(coords.latitude, coords.longitude) : null;
+        const input = document.getElementById('gunInput');
+        if (!utm || !input || !inspectUtmGrid(utm.raw) || inspectUtmGrid(utm.raw).state !== 'ok') {
+            setGunGpsStatus({ he: 'לא ניתן להמיר את המיקום לנ״צ.', en: 'The location could not be converted to a grid.' }, true);
+            return;
+        }
+        input.value = utm.raw;
+        clearFieldError(input);
+        saveGunLocation();
+        if (typeof saveFormDraft === 'function') saveFormDraft();
+        setGunGpsStatus(null);
+    }, error => {
+        if (button) button.disabled = false;
+        const code = error && error.code;
+        if (code === 1) setGunGpsStatus({ he: 'ההרשאה למיקום נדחתה.', en: 'Location permission was denied.' }, true);
+        else if (code === 3) setGunGpsStatus({ he: 'הטלפון לא החזיר מיקום בזמן.', en: 'The phone did not return a location in time.' }, true);
+        else setGunGpsStatus({ he: 'לא ניתן לקרוא את מיקום הטלפון.', en: 'The phone location could not be read.' }, true);
+    }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
 }
 
 function loadSavedGun() {
@@ -6120,7 +6014,7 @@ async function shareFiringReport() {
     const corrY = document.getElementById('corrY').innerText;
     const gunAdj = document.getElementById('gunAdjustment').innerText || i18nT('אין נתוני קנה','No gun data');
 
-    const version = CONFIG.APP_VERSION || 'V1.23';
+    const version = CONFIG.APP_VERSION || 'V1.24';
     const textReport = currentLang === 'en'
         ? `🎯 *UTM Fire Correction Report* 🎯\n` +
           `• Version: ${version}\n` +
