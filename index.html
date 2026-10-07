@@ -1396,7 +1396,7 @@
 
     <div class="results" id="vectorOutput" role="region" aria-label="תוצאות תיקון וקטורי בצליפה" data-i18n-aria="aria.vectorResults" aria-live="polite" style="display:none;">
         <h3 style="margin:0;" data-i18n="vec.title">תיקון וקטורי בצליפה</h3>
-        <p style="font-size:12px; color:var(--text-muted); margin:8px 0 10px;" data-i18n="vec.observerHint">צופה מדומה 250 מטר דרומית למטרה. אזימוט באלפיות (6400), טווח במטרים.</p>
+        <p style="font-size:12px; color:var(--text-muted); margin:8px 0 10px;" data-i18n="vec.observerHint">הגורם הצופה על המטרה: אזימוט 0, טווח 0. אזימוט באלפיות (6400), טווח במטרים.</p>
         <p style="margin-top:10px;"><strong data-i18n="res.bomb">מספר פצצה:</strong> <span id="vecBombNumber" class="highlight"></span></p>
         <p><strong data-i18n="vec.azTarget">אזימוט מטרה:</strong> <span id="vecAzTarget" class="highlight"></span> <span data-i18n="unit.mils">אלפיות</span></p>
         <p><strong data-i18n="vec.rangeTarget">טווח מטרה:</strong> <span id="vecRangeTarget" class="highlight"></span> <span data-i18n="unit.m">מטר</span></p>
@@ -1748,7 +1748,7 @@
                 <li><strong>שלב 1 (אופציונלי):</strong> הזן את נ"צ הקנה היורה בשדה הייעודי או בחר אותו מהמפה (נדרש אך ורק לצורך קבלת תיקוני צידוד).</li>
                 <li><strong>שלב 2:</strong> הזן את נ"צ המטרה המקורית (או בחר משימה מוכנה מראש מטבלת המשימות/רשימת המטרות - טעינה מהטבלה מעדכנת אוטומטית את שם המשימה והנ"צ, לחלופין הוסף משימה חדשה באמצעות דקירה במפה בטאב המשימות). ניתן לצרף שם תיאורי למטרה.</li>
                 <li><strong>שלב 3:</strong> הזן את נ"צ הפגיעה בפועל בשדה השלישי (או לחץ על כפתור "מפה" ובחר את נקודת הפגיעה).</li>
-                <li><strong>שלב 4:</strong> לחץ על <strong>"תיקון ברוחות שמים"</strong> לתיקון מזרח/מערב וצפון/דרום, או על <strong>"תיקון וקטורי בצליפה"</strong> לקבלת אזימוט וטווח למטרה ולפגיעה מצופה מדומה 250 מטר דרומית למטרה.</li>
+                <li><strong>שלב 4:</strong> לחץ על <strong>"תיקון ברוחות שמים"</strong> לתיקון מזרח/מערב וצפון/דרום, או על <strong>"תיקון וקטורי בצליפה"</strong> לקבלת אזימוט וטווח למטרה ולפגיעה מהגורם הצופה שעל המטרה (אזימוט 0, טווח 0).</li>
                 <li><strong>שלב 5:</strong> באפשרותך לשתף את הדיווח או להעתיק את ההיסטוריה ישירות מלוח התוצאות, וכן ללחוץ על <strong>"🗺️ מפה"</strong> בלוח ההיסטוריה כדי לראות את כל רצף הפגיעות מצויר על גבי המפה.</li>
                 <li><strong>שלב 6 (אופציונלי) - גיבוי רשימת המשימות:</strong> בסעיף המשימות, ייצא את הרשימה ל-<strong>JSON</strong> (אופליין) או ל-<strong>Excel</strong>, וייבא בחזרה בכל עת - עם בחירה בין החלפת הרשימה להוספה אליה.</li>
             </ul>
@@ -1857,7 +1857,7 @@
                 <li><strong>Step 1 (optional):</strong> enter the firing gun grid in its field, or pick it from the map (required only to obtain traverse corrections).</li>
                 <li><strong>Step 2:</strong> enter the original target grid, or choose a prepared task from the task table / saved targets list - loading from the table updates both the task name and the grid. Alternatively add a new task by dropping a pin on the map in the tasks section. You can attach a descriptive name to the target.</li>
                 <li><strong>Step 3:</strong> enter the actual impact grid in the third field (or press the "Map" button and pick the impact point).</li>
-                <li><strong>Step 4:</strong> press <strong>"Cardinal correction"</strong> for east/west and north/south, or <strong>"Vector correction (sniper)"</strong> for azimuth and range to the target and to the impact, from a simulated observer 250 m south of the target.</li>
+                <li><strong>Step 4:</strong> press <strong>"Cardinal correction"</strong> for east/west and north/south, or <strong>"Vector correction (sniper)"</strong> for azimuth and range to the target and to the impact, from the observer on the target at azimuth 0 and range 0.</li>
                 <li><strong>Step 5:</strong> you can share the report or copy the history straight from the results panel, and press <strong>"🗺️ Map"</strong> in the history panel to see the whole impact sequence drawn on the map.</li>
                 <li><strong>Step 6 (optional) - backing up the task list:</strong> in the tasks section, export the list to <strong>JSON</strong> (offline) or <strong>Excel</strong>, and import it back at any time - choosing between replacing the list or appending to it.</li>
             </ul>
@@ -1898,7 +1898,7 @@ const CONFIG = {
     STORAGE_HOME_NOTICE_KEY: 'firefix_home_notice_seen_v1',
     DEFAULT_ZONE: '36S',
     MAX_GUN_RANGE: 7000,
-    VECTOR_OBSERVER_SOUTH_M: 250,
+    VECTOR_OBSERVER_SOUTH_M: 0,
     MAX_SINGLE_CORRECTION: 400,
     MAX_CUMULATIVE_CORRECTION: 550,
     APP_VERSION: 'V1.19',
@@ -2030,7 +2030,7 @@ const I18N = {
         'hit.copy': 'Copy',
         'hit.whatsapp': 'Send on WhatsApp',
         'vec.title': 'Vector correction (sniper)',
-        'vec.observerHint': 'Simulated observer 250 m south of the target. Azimuth in mils (6400), range in metres.',
+        'vec.observerHint': 'The observer is on the target at azimuth 0 and range 0. Azimuth in mils (6400), range in metres.',
         'vec.azTarget': 'Target azimuth:',
         'vec.rangeTarget': 'Target range:',
         'vec.azImpact': 'Impact azimuth:',
