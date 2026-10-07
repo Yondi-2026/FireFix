@@ -3,14 +3,14 @@
 <head>
     <!-- Snapshot: FireFix V1.19 — התראת דף הבית בהפעלה ראשונה ובראש המדריך, פורמט Excel למטה, תיקון ניסוח רדיוס בטיחות -->
     <!-- Snapshot: FireFix V1.20 — 7 באוקטובר 2026: ההגדרות מקובצות לחישוב, תצוגה, נתונים ומכשיר. אזימוט וטווח הגורם הצופה המדומה נמצאים בחישוב, ברירת מחדל 0 ו-0. -->
-    <!-- Snapshot: FireFix V1.20 — 7 באוקטובר 2026: בדיקת העדכון משווה מזהה בנייה נפרד ממספר הגרסה, וחלון השינויים נפתח פעם אחת אחרי עדכון. אייקון הבטיחות הוא פיצוץ בתוך עיגול אדום עם מילוי אדום בהיר. -->
+    <!-- Snapshot: FireFix V1.21 — 7 באוקטובר 2026: בדיקת העדכון משווה מזהה בנייה נפרד ממספר הגרסה, וחלון השינויים נפתח פעם אחת אחרי עדכון. אייקון הבטיחות הוא פיצוץ בתוך עיגול אדום עם מילוי אדום בהיר. אזימוט הצופה המדומה הוא מן הצופה אל המטרה. -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
     <meta id="themeColorMeta" name="theme-color" content="#0b69a3">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>FireFix V1.20 - Trajectory Correction Helper</title>
+    <title>FireFix V1.21 - Trajectory Correction Helper</title>
     <script>
         /* iOS only hands http(s) pages to Safari. A file opened from Files stays in
            Quick Look, where this script never runs. x-safari-https is the system scheme. */
@@ -918,24 +918,20 @@
             grid-template-columns: 1fr 1fr;
             gap: 8px;
             margin-top: 12px;
+            align-items: stretch;
         }
-        .settings-observer-fields > div { min-width: 0; }
+        .settings-observer-fields > div {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
         .settings-observer-fields label { font-size: 15px; }
-        .settings-text-btn {
-            display: inline-block;
-            margin-top: 8px;
-            padding: 4px 0;
-            border: none;
-            background: none;
-            color: var(--primary);
-            font-family: inherit;
-            font-size: 17px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: underline;
-            text-underline-offset: 3px;
-            touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent;
+        .settings-observer-fields input {
+            width: 100%;
+            box-sizing: border-box;
+            min-height: 44px;
+            margin-top: 4px;
         }
         .settings-quiet-row {
             display: block;
@@ -1359,7 +1355,7 @@
         </span>
     </div>
     <div class="header-bar">
-        <h2 class="app-title">FireFix<span class="app-subtitle">Trajectory Correction Helper · V1.20</span></h2>
+        <h2 class="app-title">FireFix<span class="app-subtitle">Trajectory Correction Helper · V1.21</span></h2>
         <div class="top-controls">
             <button type="button" class="icon-btn" id="guideBtn" aria-label="פתח את המדריך" data-i18n-aria="aria.guideBtn" data-i18n-title="aria.guideBtn" title="פתח את המדריך" onclick="openGuide()">📖</button>
             <button type="button" class="icon-btn" aria-label="פתח ממיר אלפיות ומעלות" data-i18n-aria="aria.convBtn" data-i18n-title="aria.convBtn" title="ממיר אלפיות/מעלות" onclick="openConverter()">🔄</button>
@@ -1493,7 +1489,7 @@
 
     <div class="results" id="vectorOutput" role="region" aria-label="תוצאות תיקון וקטורי בצליפה" data-i18n-aria="aria.vectorResults" aria-live="polite" style="display:none;">
         <h3 style="margin:0;" data-i18n="vec.title">תיקון וקטורי בצליפה</h3>
-        <p style="font-size:12px; color:var(--text-muted); margin:8px 0 10px;" data-i18n="vec.observerHint">הגורם הצופה על המטרה: אזימוט 0, טווח 0. אזימוט באלפיות (6400), טווח במטרים.</p>
+        <p style="font-size:12px; color:var(--text-muted); margin:8px 0 10px;" data-i18n="vec.observerHint">המטרה נצפית מעמדת הצופה על המטרה: אזימוט 0, טווח 0. אזימוט באלפיות (6400) מן הצופה אל המטרה, טווח במטרים.</p>
         <p style="margin-top:10px;"><strong data-i18n="res.bomb">מספר פצצה:</strong> <span id="vecBombNumber" class="highlight"></span></p>
         <p><strong data-i18n="vec.azTarget">אזימוט מטרה:</strong> <span id="vecAzTarget" class="highlight"></span> <span data-i18n="unit.mils">אלפיות</span></p>
         <p><strong data-i18n="vec.rangeTarget">טווח מטרה:</strong> <span id="vecRangeTarget" class="highlight"></span> <span data-i18n="unit.m">מטר</span></p>
@@ -1562,16 +1558,16 @@
             <p class="settings-install-hint" style="margin-top: 8px;" data-i18n="settings.roundStepHint">התיקון המוצג מעוגל לכפולות של הערך הזה. ברירת המחדל היא 50 מ׳.</p>
             <div class="settings-observer-fields">
                 <div>
-                    <label for="observerAzInput" data-i18n="settings.observerAz">אזימוט הצופה מהמטרה (אלפיות, 6400):</label>
-                    <input type="text" id="observerAzInput" inputmode="numeric" autocomplete="off" spellcheck="false" value="0" aria-label="אזימוט הצופה מהמטרה באלפיות" data-i18n-aria="aria.observerAz" onchange="commitObserverFromInputs()">
+                    <label for="observerAzInput" data-i18n="settings.observerAz">אזימוט מן הצופה אל המטרה (אלפיות, 6400):</label>
+                    <input type="text" id="observerAzInput" inputmode="numeric" autocomplete="off" spellcheck="false" value="0" aria-label="אזימוט מן הצופה אל המטרה באלפיות" data-i18n-aria="aria.observerAz" onchange="commitObserverFromInputs()">
                 </div>
                 <div>
-                    <label for="observerRangeInput" data-i18n="settings.observerRange">טווח מהמטרה (מטרים):</label>
-                    <input type="text" id="observerRangeInput" inputmode="numeric" autocomplete="off" spellcheck="false" value="0" aria-label="טווח הצופה מהמטרה במטרים" data-i18n-aria="aria.observerRange" onchange="commitObserverFromInputs()">
+                    <label for="observerRangeInput" data-i18n="settings.observerRange">טווח אל המטרה (מטרים):</label>
+                    <input type="text" id="observerRangeInput" inputmode="numeric" autocomplete="off" spellcheck="false" value="0" aria-label="טווח מן הצופה אל המטרה במטרים" data-i18n-aria="aria.observerRange" onchange="commitObserverFromInputs()">
                 </div>
             </div>
-            <button type="button" class="settings-text-btn" onclick="resetObserverToTarget()" data-i18n="settings.observerOnTarget">על המטרה</button>
-            <p class="settings-install-hint" style="margin-top: 8px;" data-i18n="settings.observerPlaceHint">המיקום נמדד מהמטרה. 0 ו-0 משאירים את הצופה על המטרה.</p>
+            <button type="button" class="btn-small settings-wide-action" onclick="resetObserverToTarget()" data-i18n="settings.observerOnTarget">מקם צופה מדומה על המטרה</button>
+            <p class="settings-install-hint" style="margin-top: 8px;" data-i18n="settings.observerPlaceHint">המטרה נצפית מהמיקום הזה. האזימוט הוא מן הצופה אל המטרה, והטווח הוא המרחק ביניהם. טווח 0 משאיר את הצופה על המטרה.</p>
         </div>
 
         <div class="settings-group">
@@ -1579,6 +1575,26 @@
             <button type="button" class="btn-small settings-wide-action" id="languageToggle" onclick="toggleLanguage()" aria-label="החלף שפה" title="שפה">🇮🇱 עברית</button>
             <button type="button" class="btn btn-success" id="installBtn" onclick="promptInstall()">📲 הוסף לדף הבית</button>
             <p id="installHint" class="settings-install-hint" style="margin-top: 8px;">התקנה מאפשרת פתיחה כאפליקציה עצמאית, ללא שורת כתובת.</p>
+            <div class="local-tools-note" style="display:flex; align-items:flex-start; gap:8px; margin-top:12px;">
+                <input id="resetDisplayModeOnClear" type="checkbox" style="width:18px; height:18px; min-height:18px; margin-top:1px; flex:0 0 auto; accent-color:var(--primary);">
+                <label for="resetDisplayModeOnClear" style="margin:0; line-height:1.5; cursor:pointer; color:var(--text-muted);" data-i18n="settings.resetMode">אפס גם את מצב התצוגה לברירת המחדל (🌙 לילה)</label>
+            </div>
+        </div>
+
+        <div class="settings-group" id="privacyToolsSection">
+            <h4 class="settings-group-title" data-i18n="settings.device">מכשיר</h4>
+            <p class="privacy-note" data-i18n="settings.privacyNote">האפליקציה נשארת Local-first. נתוני האפליקציה נשמרים במכשיר בלבד ואינם נשלחים לשום שרת. רכיב מקוון אופציונלי אחד נטען <em>רק</em> בלחיצה בפועל על הכפתור המתאים: המפה האינטראקטיבית. כל השאר - חישובי התיקון, המשימות, ההיסטוריה וייבוא/ייצוא JSON ו-Excel - פועל במלואו ללא רשת. בדיקות התקינות אינן יוצרות בקשות רשת.</p>
+            <button type="button" class="btn-small settings-wide-action" id="checkUpdateBtn" onclick="checkForPublishedUpdate()" data-i18n="settings.checkUpdate">בדוק עדכון גרסה</button>
+            <p id="versionCheckStatus" class="settings-install-hint" style="margin-top: 8px;" role="status" aria-live="polite" hidden></p>
+            <button type="button" class="btn-small settings-wide-action" id="versionUpdateBtn" onclick="reloadPublishedCopy()" data-i18n="settings.updateNow" hidden>עדכן</button>
+            <button type="button" class="btn-small settings-wide-action" onclick="runLocalDiagnostics()" data-i18n="settings.diag">🔎 בדיקת תקינות</button>
+            <ul id="diagnosticsList" class="diagnostics-list" aria-live="polite" aria-label="תוצאות בדיקות תקינות" data-i18n-aria="aria.diagResults"></ul>
+            <div id="localToolsStatus" class="local-tools-status" role="status" aria-live="polite" aria-atomic="true"></div>
+            <div class="settings-clear-block">
+                <button type="button" class="btn-small btn-danger" onclick="clearLocalAppData()" data-i18n="settings.clear">🗑️ מחיקת נתונים מקומיים</button>
+                <p class="local-tools-note" data-i18n="settings.clearNote">מחיקת נתונים אינה משנה את מצב התצוגה, אלא אם האיפוס סומן בתצוגה. שחזור מחליף את מצב האפליקציה המקומי רק לאחר שהקובץ עבר בדיקות מבנה ותקינות.</p>
+            </div>
+            <button type="button" class="settings-quiet-row" onclick="openFutureFromSettings()" data-i18n="settings.openFuture">בגרסאות הבאות...</button>
         </div>
 
         <div class="settings-group">
@@ -1598,26 +1614,6 @@
                 <button type="button" class="btn-small" onclick="document.getElementById('localBackupInput').click()" data-i18n="settings.restore">⬆️ שחזור מגיבוי</button>
             </div>
             <input id="localBackupInput" type="file" accept="application/json,.json" hidden onchange="importLocalBackup(event)">
-        </div>
-
-        <div class="settings-group" id="privacyToolsSection">
-            <h4 class="settings-group-title" data-i18n="settings.device">מכשיר</h4>
-            <p class="privacy-note" data-i18n="settings.privacyNote">האפליקציה נשארת Local-first. נתוני האפליקציה נשמרים במכשיר בלבד ואינם נשלחים לשום שרת. רכיב מקוון אופציונלי אחד נטען <em>רק</em> בלחיצה בפועל על הכפתור המתאים: המפה האינטראקטיבית. כל השאר - חישובי התיקון, המשימות, ההיסטוריה וייבוא/ייצוא JSON ו-Excel - פועל במלואו ללא רשת. בדיקות התקינות אינן יוצרות בקשות רשת.</p>
-            <button type="button" class="btn-small settings-wide-action" id="checkUpdateBtn" onclick="checkForPublishedUpdate()" data-i18n="settings.checkUpdate">בדוק עדכון גרסה</button>
-            <p id="versionCheckStatus" class="settings-install-hint" style="margin-top: 8px;" role="status" aria-live="polite" hidden></p>
-            <button type="button" class="btn-small settings-wide-action" id="versionUpdateBtn" onclick="reloadPublishedCopy()" data-i18n="settings.updateNow" hidden>עדכן</button>
-            <button type="button" class="btn-small settings-wide-action" onclick="runLocalDiagnostics()" data-i18n="settings.diag">🔎 בדיקת תקינות</button>
-            <ul id="diagnosticsList" class="diagnostics-list" aria-live="polite" aria-label="תוצאות בדיקות תקינות" data-i18n-aria="aria.diagResults"></ul>
-            <div id="localToolsStatus" class="local-tools-status" role="status" aria-live="polite" aria-atomic="true"></div>
-            <div class="settings-clear-block">
-                <button type="button" class="btn-small btn-danger" onclick="clearLocalAppData()" data-i18n="settings.clear">🗑️ מחיקת נתונים מקומיים</button>
-                <div class="local-tools-note" style="display:flex; align-items:flex-start; gap:8px; margin-top:12px;">
-                    <input id="resetDisplayModeOnClear" type="checkbox" style="width:18px; height:18px; min-height:18px; margin-top:1px; flex:0 0 auto; accent-color:var(--primary);">
-                    <label for="resetDisplayModeOnClear" style="margin:0; line-height:1.5; cursor:pointer; color:var(--text-muted);" data-i18n="settings.resetMode">אפס גם את מצב התצוגה לברירת המחדל (🌙 לילה)</label>
-                </div>
-                <p class="local-tools-note" data-i18n="settings.clearNote">מחיקת נתונים אינה משנה את מצב התצוגה אלא אם האפשרות למעלה סומנה. שחזור מחליף את מצב האפליקציה המקומי רק לאחר שהקובץ עבר בדיקות מבנה ותקינות.</p>
-            </div>
-            <button type="button" class="settings-quiet-row" onclick="openFutureFromSettings()" data-i18n="settings.openFuture">בגרסאות הבאות...</button>
         </div>
     </div>
 </div>
@@ -1795,7 +1791,8 @@
                 <tr><td>V1.20</td><td>המדריך עבר לעמוד הראשי.</td></tr>
                 <tr><td>V1.20</td><td>טבלת הבטיחות ופקודות הטווחה והתיקון הוסרו מהמדריך ונשארו בכפתור הבטיחות.</td></tr>
                 <tr><td>V1.20</td><td>בדיקת גרסה.</td></tr>
-                <tr><td>V1.20</td><td>בדיקת העדכון מזהה עמוד חדש גם כשמספר הגרסה לא השתנה. אייקון הבטיחות הוא פיצוץ קטן, עיגול אדום סביבו, ומילוי אדום בהיר בתוך העיגול.</td></tr>
+                <tr><td>V1.21</td><td>בדיקת העדכון מזהה עמוד חדש גם כשמספר הגרסה לא השתנה. אייקון הבטיחות הוא פיצוץ קטן, עיגול אדום סביבו, ומילוי אדום בהיר בתוך העיגול.</td></tr>
+                <tr><td>V1.21</td><td>אזימוט הצופה המדומה הוא מן הצופה אל המטרה. האזימוט והטווח באותה שורה. נתונים בתחתית ההגדרות, ואיפוס מצב התצוגה בתצוגה.</td></tr>
             </tbody></table></div>
         </div>
         <div data-lang-block="en" style="display:none">
@@ -1806,7 +1803,8 @@
                 <tr><td>V1.20</td><td>The guide moved to the main page.</td></tr>
                 <tr><td>V1.20</td><td>The safety table and the ranging and correction orders were removed from the guide and kept on the safety button.</td></tr>
                 <tr><td>V1.20</td><td>Version check.</td></tr>
-                <tr><td>V1.20</td><td>The update check detects a new page even when the version number is unchanged. The safety icon is a small explosion, a red circle around it, and a light-red fill inside that circle.</td></tr>
+                <tr><td>V1.21</td><td>The update check detects a new page even when the version number is unchanged. The safety icon is a small explosion, a red circle around it, and a light-red fill inside that circle.</td></tr>
+                <tr><td>V1.21</td><td>The simulated-observer azimuth is from the observer to the target. Azimuth and range sit on one row. Data is at the bottom of Settings, and resetting the display mode is in Display.</td></tr>
             </tbody></table></div>
         </div>
         <button type="button" class="btn" onclick="dismissChangelog()" data-i18n="changelog.ok">הבנתי</button>
@@ -2049,7 +2047,7 @@ const CONFIG = {
     VECTOR_OBSERVER_SOUTH_M: 0, // coincident default; the live observer is the saved azimuth and range
     MAX_SINGLE_CORRECTION: 400,
     MAX_CUMULATIVE_CORRECTION: 550,
-    APP_VERSION: 'V1.20',
+    APP_VERSION: 'V1.21',
     BUILD_ID: '20261007-detect-page',
     STORAGE_TASKS_MERGED_KEY: 'firefix_tasks_merged_v110',
     ROUND_STEP: 50,                 // default correction rounding step (metres)
@@ -2116,8 +2114,8 @@ const SafeStorage = {
 };
 
 // ===== I18N (Hebrew / English) =====
-const OBSERVER_HINT_ON_TARGET_HE = 'הגורם הצופה על המטרה: אזימוט 0, טווח 0. אזימוט באלפיות (6400), טווח במטרים.';
-const OBSERVER_HINT_ON_TARGET_EN = 'The observer is on the target at azimuth 0 and range 0. Azimuth in mils (6400), range in metres.';
+const OBSERVER_HINT_ON_TARGET_HE = 'המטרה נצפית מעמדת הצופה על המטרה: אזימוט 0, טווח 0. אזימוט באלפיות (6400) מן הצופה אל המטרה, טווח במטרים.';
+const OBSERVER_HINT_ON_TARGET_EN = 'The target is observed from the observer on the target: azimuth 0, range 0. Azimuth in mils (6400) from the observer to the target, range in metres.';
 const I18N = {
     en: {
         'btn.tasks': '📋 Task Table',
@@ -2166,10 +2164,10 @@ const I18N = {
         'settings.device': 'Device',
         'settings.checkUpdate': 'Check for update',
         'settings.updateNow': 'Update',
-        'settings.observerAz': 'Observer azimuth from the target (mils, 6400):',
-        'settings.observerRange': 'Range from the target (metres):',
-        'settings.observerOnTarget': 'On the target',
-        'settings.observerPlaceHint': 'The position is measured from the target. 0 and 0 leave the observer on the target.',
+        'settings.observerAz': 'Azimuth from the observer to the target (mils, 6400):',
+        'settings.observerRange': 'Range to the target (metres):',
+        'settings.observerOnTarget': 'Place simulated observer on the target',
+        'settings.observerPlaceHint': 'The target is observed from this position. The azimuth runs from the observer to the target, and the range is the distance between them. A range of 0 leaves the observer on the target.',
         'settings.targetExchange': 'Target list — import and export',
         'lbl.ranged': 'Ranged:',
         'settings.language': '🌐 שפה / Language',
@@ -2183,7 +2181,7 @@ const I18N = {
         'settings.privacy': '🔐 Privacy, Backup & Diagnostics',
         'settings.privacyNote': 'The app stays local-first. Its data is stored on this device only and is never sent to any server. One optional online component loads <em>only</em> when you actually press the matching button: the interactive map. Everything else - correction calculations, tasks, history, and both JSON and Excel import/export - works fully offline. Diagnostics make no network requests.',
         'settings.resetMode': 'Also reset the display mode to the default (🌙 Night)',
-        'settings.clearNote': 'Clearing data does not change the display mode unless the option above is checked. Restoring replaces local app state only after the file passes structure and validity checks.',
+        'settings.clearNote': 'Clearing data does not change the display mode unless the reset is checked in Display. Restoring replaces local app state only after the file passes structure and validity checks.',
         'btn.wipeAll': 'Delete all data',
         'btn.downloadFile': 'Download file',
         'btn.reset': 'Reset fields',
@@ -2293,8 +2291,8 @@ const I18N = {
         'aria.addFromMap': 'Add a new task from the map',
         'hist.cumZero': '0 m',
         'settings.calc': 'Calculation',
-        'aria.observerAz': 'Observer azimuth from the target, in mils',
-        'aria.observerRange': 'Observer range from the target, in metres',
+        'aria.observerAz': 'Azimuth from the observer to the target, in mils',
+        'aria.observerRange': 'Range from the observer to the target, in metres',
         'settings.roundStep': 'Correction rounding step:',
         'settings.roundStepHint': 'The displayed correction is rounded to multiples of this value. The default is 50 m.',
         'gun.label': 'Gun',
@@ -3071,7 +3069,7 @@ async function importLocalBackup(event) {
 }
 
 async function downloadCalculatorFile() {
-    const filename = 'FireFix - Trajectory calculator ' + (CONFIG.APP_VERSION || 'V1.20') + '.html';
+    const filename = 'FireFix - Trajectory calculator ' + (CONFIG.APP_VERSION || 'V1.21') + '.html';
     let bytes;
     try {
         const response = await fetch(location.href, { cache: 'no-store' });
@@ -3250,8 +3248,8 @@ function observerHintPair(az, range) {
         return { he: OBSERVER_HINT_ON_TARGET_HE, en: OBSERVER_HINT_ON_TARGET_EN };
     }
     return {
-        he: 'הגורם הצופה מהמטרה: אזימוט ' + az + ', טווח ' + range + '. אזימוט באלפיות (6400), טווח במטרים.',
-        en: 'The observer is at azimuth ' + az + ' and range ' + range + ' from the target. Azimuth in mils (6400), range in metres.'
+        he: 'המטרה נצפית מהצופה המדומה: אזימוט ' + az + ', טווח ' + range + '. אזימוט באלפיות (6400) מן הצופה אל המטרה, טווח במטרים.',
+        en: 'The target is observed from the simulated observer: azimuth ' + az + ', range ' + range + '. Azimuth in mils (6400) from the observer to the target, range in metres.'
     };
 }
 
@@ -3293,8 +3291,9 @@ function resetObserverToTarget() {
     saveObserver(0, 0);
 }
 
-// UTM azimuth: 0 mils is north, clockwise, 6400 mils per circle.
-// Range 0 keeps the observer on the target no matter what the azimuth says.
+// The saved azimuth points from the observer to the target: 0 mils is north,
+// clockwise, 6400 mils per circle. The observer therefore sits on the reverse
+// bearing. Range 0 keeps the observer on the target no matter what the azimuth says.
 function simulatedObserverPoint(target) {
     const stored = getStoredObserver();
     if (stored.range === 0) {
@@ -3303,8 +3302,8 @@ function simulatedObserverPoint(target) {
     const rad = (stored.az / CONFIG.MILS_CIRCLE) * Math.PI * 2;
     return {
         zone: target.zone,
-        x: target.x + stored.range * Math.sin(rad),
-        y: target.y + stored.range * Math.cos(rad)
+        x: target.x - stored.range * Math.sin(rad),
+        y: target.y - stored.range * Math.cos(rad)
     };
 }
 
@@ -3589,11 +3588,30 @@ function dismissChangelog() {
     closeAccessibleModal(document.getElementById('changelogModal'));
 }
 
+function arrivedThroughUpdateReload() {
+    try {
+        return new URL(location.href).searchParams.has('_ff');
+    } catch (e) {
+        return false;
+    }
+}
+
+function clearUpdateReloadParam() {
+    try {
+        const url = new URL(location.href);
+        if (!url.searchParams.has('_ff')) return;
+        url.searchParams.delete('_ff');
+        history.replaceState(null, '', url.pathname + url.search + url.hash);
+    } catch (e) { /* the popup still shows once */ }
+}
+
 function showChangelogIfNeeded() {
     const pending = SafeStorage.get(CONFIG.STORAGE_CHANGELOG_PENDING_KEY);
-    if (!pending || pending !== CONFIG.BUILD_ID) return;
+    const fromThisBuild = pending === CONFIG.BUILD_ID || (!pending && arrivedThroughUpdateReload());
+    if (!fromThisBuild) return;
     if (SafeStorage.get(CONFIG.STORAGE_CHANGELOG_SEEN_KEY) === CONFIG.BUILD_ID) {
         SafeStorage.remove(CONFIG.STORAGE_CHANGELOG_PENDING_KEY);
+        clearUpdateReloadParam();
         return;
     }
     if (SafeStorage.get(CONFIG.STORAGE_TIME_LOCK_KEY) !== 'true') return;
@@ -3605,6 +3623,7 @@ function showChangelogIfNeeded() {
     if (!modal || modal.style.display === 'block') return;
     SafeStorage.set(CONFIG.STORAGE_CHANGELOG_SEEN_KEY, CONFIG.BUILD_ID);
     SafeStorage.remove(CONFIG.STORAGE_CHANGELOG_PENDING_KEY);
+    clearUpdateReloadParam();
     openAccessibleModal(modal);
 }
 
@@ -5663,7 +5682,7 @@ async function shareFiringReport() {
     const corrY = document.getElementById('corrY').innerText;
     const gunAdj = document.getElementById('gunAdjustment').innerText || i18nT('אין נתוני קנה','No gun data');
 
-    const version = CONFIG.APP_VERSION || 'V1.20';
+    const version = CONFIG.APP_VERSION || 'V1.21';
     const textReport = currentLang === 'en'
         ? `🎯 *UTM Fire Correction Report* 🎯\n` +
           `• Version: ${version}\n` +
