@@ -591,13 +591,15 @@
         }
         #targetNameInput { direction: rtl; text-align: right; }
         #targetInput,
-        #impactInput {
+        #impactInput,
+        #plannedGridInput {
             direction: ltr;
             text-align: center;
             font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
         }
         #targetInput::placeholder,
-        #impactInput::placeholder {
+        #impactInput::placeholder,
+        #plannedGridInput::placeholder {
             text-align: center;
         }
         .planned-menu-tools .input-with-btn { align-items: stretch; }
@@ -1178,6 +1180,30 @@
             color: var(--primary);
             text-align: right;
         }
+        .booklet-section h5.booklet-command {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            margin: 14px 0 8px;
+            padding-bottom: 3px;
+            border-bottom: 2px solid var(--primary);
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+            text-align: right;
+            line-height: 1.4;
+        }
+        .booklet-section p.booklet-limit {
+            margin: 14px 0 0;
+            padding: 12px 14px;
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            background: var(--results-bg);
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.6;
+            text-align: right;
+        }
         .booklet-section p:not(.radio-order),
         .booklet-section li { font-size: 14px; line-height: 1.65; text-align: right; }
         .booklet-section p:not(.radio-order) { margin: 0 0 8px; }
@@ -1410,6 +1436,10 @@
                 <div class="planned-menu-field">
                     <label for="targetNameInput" data-i18n="lbl.targetName">שם מטרה:</label>
                     <input type="text" id="targetNameInput" placeholder="לדוגמה: מטרה 101" data-i18n-ph="ph.targetName" style="direction: rtl; text-align: right;" autocomplete="off" spellcheck="false" oninput="updateTargetName()">
+                </div>
+                <div class="planned-menu-field">
+                    <label for="plannedGridInput" data-i18n="lbl.plannedGrid">נ״צ מטרה:</label>
+                    <input type="text" id="plannedGridInput" inputmode="text" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="36S 650500 456700" data-i18n-ph="ph.plannedGrid" aria-label="נ״צ מטרה" data-i18n-aria="lbl.plannedGrid">
                 </div>
                 <div class="planned-menu-field">
                     <label for="plannedFireInput" data-i18n="lbl.plannedFire">זמן ירי מתוכנן:</label>
@@ -2063,31 +2093,37 @@
         <section class="booklet-section">
             <h4>הפעלת אש</h4>
             <p>ירי המרגמות מתבצע בשני שלבים. בטיווח יורה רק הקנה הבכיר עד להשגת פגיעה, ושאר הקנים עוקבים ביבש. בתכלית יורים את תוכנית האש אחרי שהקנה הבכיר השיג פגיעה ווידא אותה.</p>
-            <p>פקודה תחילית</p>
+            <h5 class="booklet-command">📻 פקודה תחילית</h5>
             <p class="radio-order">״7 כאן ____, קבל מטרה ____ (סדורה/מזדמנת, דחופה) על (נ.צ / מטרה בשפה משותפת) ב (נפיץ / זרחן / תאורה / עשן) בכמות ____, משך ____ / פק״ל לפי פקודה.״</p>
-            <p>מטרה בהולכה. משתמשים בה כשרוצים לבצע היסט מנ״צ מפויים לנ״צ אחר, בלי לומר את נ״צ המטרה בקשר גלוי. לדוגמה: ״200 צפונה מאננס״.</p>
+            <h5 class="booklet-command">📻 מטרה בהולכה</h5>
+            <p>משתמשים בה כשרוצים לבצע היסט מנ״צ מפויים לנ״צ אחר, בלי לומר את נ״צ המטרה בקשר גלוי. לדוגמה: ״200 צפונה מאננס״.</p>
             <p class="radio-order">״7 כאן ____, קבל מטרה ____ (סוג מטרה) בהולכה מ (כחול / חום / מתג / אננס), אז׳ ____ (במעלות / אלפיות), ____ (ימינה / שמאלה, מזרחה / מערבה), ____ (יותר / פחות, צפונה / דרומה), ב (סוג פצמ״ר), לפי פקודה עבור.״</p>
-            <p>פקודה לתוכנית אש</p>
+            <h5 class="booklet-command">📻 פקודה לתוכנית אש</h5>
             <p class="radio-order">״7 כאן ____, לפקודתי תכנית אש מזדמנת, על מטרת/יעדי ____, לפי פקודה עבור.״</p>
         </section>
 
         <section class="booklet-section">
             <h4>פק״ל תורתי</h4>
-            <p>ציריך. צרור: 5 פצצות בקצב מקסימלי מקנה בודד.</p>
+            <h5 class="booklet-command">📻 ציריך</h5>
+            <p>צרור: 5 פצצות בקצב מקסימלי מקנה בודד.</p>
             <p class="radio-order">״7 כאן ____, לפקודתי ציריך על מטרת/יעדי ____, ב (סוג פצצה), לפי פקודה עבור.״</p>
-            <p>הוליווד. הטרדה: 2 פצצות לדקה, למשך הזמן שהגורם המטווח מקצה, מקנה בודד.</p>
+            <h5 class="booklet-command">📻 הוליווד</h5>
+            <p>הטרדה: 2 פצצות לדקה, למשך הזמן שהגורם המטווח מקצה, מקנה בודד.</p>
             <p class="radio-order">״7 כאן ____, לפקודתי הוליווד משך ____, על מטרת/יעדי ____, ב (סוג פצצה), לפי פקודה עבור.״</p>
         </section>
 
         <section class="booklet-section">
             <h4>שיטות תיקון</h4>
-            <p>אומדנה. הבקר מותח במצפן קו דמיוני בינו לבין המטרה, קו תצפית־מטרה (קו ת״מ). מהפגיעה מורידים אנך אל קו הת״מ, ואומדים את המרחק אל המטרה: ימינה, שמאלה, יותר, פחות.</p>
+            <h5 class="booklet-command">אומדנה</h5>
+            <p>הבקר מותח במצפן קו דמיוני בינו לבין המטרה, קו תצפית־מטרה (קו ת״מ). מהפגיעה מורידים אנך אל קו הת״מ, ואומדים את המרחק אל המטרה: ימינה, שמאלה, יותר, פחות.</p>
             <p class="radio-order">״7 כאן ____, קבל תיקון באומדנה, אז׳ ____ האזימוט של קו ת״מ (במעלות / באלפיות), ____ (ימינה / שמאלה), ____ (יותר / פחות), ב (סוג פצמ״ר), לפי פקודה עבור.״</p>
-            <p>רוחות שמיים. הבקר עומד מול רוח שמיים מרכזית, מותח קו ת״מ, מוריד אנך מהפגיעה, ואומד את המרחק בצפון, דרום, מזרח ומערב.</p>
+            <h5 class="booklet-command">רוחות שמיים</h5>
+            <p>הבקר עומד מול רוח שמיים מרכזית, מותח קו ת״מ, מוריד אנך מהפגיעה, ואומד את המרחק בצפון, דרום, מזרח ומערב.</p>
             <p class="radio-order">״7 כאן ____, קבל תיקון רוחות שמיים ____ (מזרחה / מערבה), ____ (צפונה / דרומה), ב (סוג פצמ״ר), לפי פקודה עבור.״</p>
-            <p>וקטורי. במט״ל הבקר מזריז אל המטרה ואל הפגיעה, ומעביר אזימוט וטווח לכל נקודה: מהבקר אל המטרה, ומהבקר אל הפגיעה.</p>
+            <h5 class="booklet-command">וקטורי</h5>
+            <p>במט״ל הבקר מזריז אל המטרה ואל הפגיעה, ומעביר אזימוט וטווח לכל נקודה: מהבקר אל המטרה, ומהבקר אל הפגיעה.</p>
             <p class="radio-order">״7 כאן ____, א׳ מטרה במעלות ____, טווח ____. א׳ פגיעה במעלות ____, טווח ____, ב (סוג פצמ״ר), לפי פקודה עבור.״</p>
-            <p>התיקון המקסימלי במרגמות הוא 400 מ׳. בתיקון מצטבר, סכום שני התיקונים עד 550 מ׳. תיקון מעל המקסימום מצריך ירי תכלית בעמדה, או הפעלה מחדש.</p>
+            <p class="booklet-limit">התיקון המקסימלי במרגמות הוא 400 מ׳. בתיקון מצטבר, סכום שני התיקונים עד 550 מ׳. תיקון מעל המקסימום מצריך ירי תכלית בעמדה, או הפעלה מחדש.</p>
         </section>
 
         <section class="booklet-section">
@@ -2098,8 +2134,11 @@
                 <li>דו־מוקדי: נ״צ מטרה, שמשני צדדיה נפתחות התאורות, אזימוט הפתיחה, ומשך הארה.</li>
                 <li>תק״י: תאורה שנפתחת כ־50 מ׳ מעל הקרקע ומציתה את השטח.</li>
             </ul>
+            <h5 class="booklet-command">📻 הארה חד־מוקדי</h5>
             <p class="radio-order">״7 כאן ____, קבל מטרת הארה, מטרה ____ (סוג מטרה) על (נ.צ / מטרה בשפה משותפת), למשך ____ דקות, בהארה לפי פקודה.״</p>
+            <h5 class="booklet-command">📻 הארה דו־מוקדי</h5>
             <p class="radio-order">״7 כאן ____, מטרת הארה בדו־מוקדי, מטרה ____ (סוג מטרה) על (נ.צ / מטרה בשפה משותפת), אז׳ פתיחת התאורות ____ (במעלות / אלפיות), למשך ____ דקות, בהארה לפי פקודה.״</p>
+            <h5 class="booklet-command">📻 תק״י</h5>
             <p class="radio-order">״7 כאן ____, קבל מטרת הצתה, מטרה ____ (סוג מטרה) על ____ (מיקום), בתק״י לפי פקודה.״</p>
         </section>
 
@@ -2111,7 +2150,9 @@
                 <li>ציר מיסוך: נ״צ תחילת הציר, אורך הציר (50 / 100 / 150 / 200 מטר), אזימוט הציר, ומשך המיסוך.</li>
             </ul>
             <p>בציר יורים עד 4 מוקדים, 50 מטר מיסוך לכל מוקד, ובכך ציר של עד 200 מטר. כל קנה יורה למוקד אחד בלבד.</p>
+            <h5 class="booklet-command">📻 מיסוך חד־מוקדי</h5>
             <p class="radio-order">״7 כאן ____, קבל מטרת מיסוך, מטרה ____ (סוג מטרה) על (נ.צ / מטרה בשפה משותפת), למשך ____ דקות, בעשן לפי פקודה.״</p>
+            <h5 class="booklet-command">📻 ציר מיסוך</h5>
             <p class="radio-order">״7 כאן ____, קבל מטרת מיסוך, מטרה ____ (סוג מטרה) על (נ.צ תחילת ציר / מטרה בשפה משותפת), אז׳ הציר ____ (מעלות / אלפיות), אורך ____ (עד 200 מטר), למשך ____ דקות, בעשן לפי פקודה.״</p>
         </section>
 
@@ -2141,7 +2182,9 @@
                 <li>מונקו: ירי חוזר על המטרה.</li>
             </ul>
             <p>ירי ב־GPS עם לייזר מקטין את הסיכוי לנפלים, מגדיל את טווח הירי, ומביא את הפצמ״ר בזווית אנכית יותר.</p>
+            <h5 class="booklet-command">📻 הנחיה GPS ולייזר</h5>
             <p class="radio-order">״7 כאן קודקוד, מטרה מדויקת על נשר ציפור / ____, מגדיר ____, הנחיה GPS+לייזר, קו״צ ____, על פי פקודה.״</p>
+            <h5 class="booklet-command">📻 הנחיית לייזר</h5>
             <p class="radio-order">״7 כאן קודקוד, מטרה מדויקת על נשר ציפור / ____, מגדיר ____, הנחיית לייזר, קו״צ ____, על פי פקודה.״</p>
             <p>מרגמות הן נשק זמין, יעיל ומהיר. אם יש פער בידע על עוצמתן או על הפעלת האש, פונים למ״מ המחלקה בקשר.</p>
         </section>
@@ -2172,7 +2215,7 @@ const CONFIG = {
     MAX_SINGLE_CORRECTION: 400,
     MAX_CUMULATIVE_CORRECTION: 550,
     APP_VERSION: 'V1.24',
-    BUILD_ID: '20261007-v124-open',
+    BUILD_ID: '20261007-v124-fresh-check',
     STORAGE_TASKS_MERGED_KEY: 'firefix_tasks_merged_v110',
     ROUND_STEP: 50,                 // default correction rounding step (metres)
     ROUND_STEP_OPTIONS: [10, 25, 50, 100],
@@ -2259,7 +2302,7 @@ const I18N = {
         'lbl.targetName': 'Target name:',
         'lbl.plannedList': 'Target list:',
         'lbl.plannedName': 'Target name:',
-        'lbl.plannedGrid': 'Grid (UTM):',
+        'lbl.plannedGrid': 'Target grid:',
         'lbl.plannedFire': 'Planned firing time:',
         'opt.choosePlanned': '-- Choose a target from the list --',
         'btn.savePlanned': '💾 Add / update in list',
@@ -3574,14 +3617,34 @@ function readPublishedBuildId(html) {
     return match ? match[1] : '';
 }
 
-async function fetchPublishedBuildId() {
-    const url = PUBLISHED_APP_URL + '?update-check=' + Date.now();
-    const response = await fetch(url, { cache: 'no-store' });
+// Pages answers index.html from a shared cache for up to 10 minutes
+// (cache-control max-age=600, x-cache HIT) and ignores the query string, so
+// cache: 'no-store' on that URL still returns a stale copy. The contents API
+// with a unique query is a different request. The decision uses only that body.
+const PUBLISHED_SOURCE_URL = 'https://api.github.com/repos/Yondi-2026/FireFix/contents/index.html';
+
+function publishedFreshUrl() {
+    const url = new URL(PUBLISHED_SOURCE_URL);
+    url.searchParams.set('ref', 'main');
+    url.searchParams.set('update-check', Date.now().toString(36) + Math.random().toString(36).slice(2));
+    return url.href;
+}
+
+function decodeGitHubBase64(content) {
+    const binary = atob(String(content || '').replace(/\s/g, ''));
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return new TextDecoder('utf-8').decode(bytes);
+}
+
+async function fetchPublishedPage() {
+    const response = await fetch(publishedFreshUrl(), { cache: 'no-store' });
     if (!response.ok) throw new Error('published page unavailable');
-    const html = await response.text();
+    const data = await response.json();
+    const html = data && data.content ? decodeGitHubBase64(data.content) : '';
     const buildId = readPublishedBuildId(html);
-    if (!buildId) throw new Error('published build id missing');
-    return buildId;
+    if (!html || !buildId) throw new Error('published build id missing');
+    return { buildId, html };
 }
 
 async function checkForPublishedUpdate() {
@@ -3590,10 +3653,10 @@ async function checkForPublishedUpdate() {
     versionCheckState = { kind: 'checking' };
     renderVersionCheck();
     try {
-        const publishedBuildId = await fetchPublishedBuildId();
-        versionCheckState = publishedBuildId !== CONFIG.BUILD_ID
-            ? { kind: 'newer', buildId: publishedBuildId }
-            : { kind: 'current' };
+        const published = await fetchPublishedPage();
+        versionCheckState = published.buildId !== CONFIG.BUILD_ID
+            ? { kind: 'newer', buildId: published.buildId, html: published.html }
+            : { kind: 'current', buildId: published.buildId, html: published.html };
     } catch (e) {
         console.warn('Version check failed', e);
         versionCheckState = { kind: 'error' };
@@ -3603,10 +3666,11 @@ async function checkForPublishedUpdate() {
     }
 }
 
-function publishedReloadUrl() {
-    const next = new URL(PUBLISHED_APP_URL);
-    next.searchParams.set('_ff', String(Date.now()));
-    return next.href;
+function installFetchedPage(html) {
+    const publishedId = readPublishedBuildId(html);
+    if (publishedId) SafeStorage.set(CONFIG.STORAGE_CHANGELOG_PENDING_KEY, String(publishedId));
+    const blob = new Blob([html], { type: 'text/html' });
+    location.replace(URL.createObjectURL(blob));
 }
 
 async function refreshServiceWorkerAndCaches() {
@@ -3637,30 +3701,19 @@ async function refreshServiceWorkerAndCaches() {
     }
 }
 
-function navigateViaUncontrolledBounce(url) {
-    const bounce = '<!DOCTYPE html><meta charset="utf-8"><title>FireFix</title><script>location.replace('
-        + JSON.stringify(url) + ')<\/script>';
-    const blob = new Blob([bounce], { type: 'text/html' });
-    location.replace(URL.createObjectURL(blob));
-}
-
-function loadFreshPage(url, hadController) {
-    if (hadController) navigateViaUncontrolledBounce(url);
-    else location.replace(url);
-}
-
 async function reloadPublishedCopy() {
-    const publishedId = versionCheckState && versionCheckState.buildId;
-    if (publishedId) SafeStorage.set(CONFIG.STORAGE_CHANGELOG_PENDING_KEY, String(publishedId));
-    const nextUrl = publishedReloadUrl();
-    let hadController = false;
+    const html = versionCheckState && versionCheckState.html;
+    if (!html || !readPublishedBuildId(html)) {
+        versionCheckState = { kind: 'error' };
+        renderVersionCheck();
+        return;
+    }
     try {
-        hadController = !!(navigator.serviceWorker && navigator.serviceWorker.controller);
         await refreshServiceWorkerAndCaches();
     } catch (e) {
         console.warn('Could not refresh the installed copy before reload', e);
     }
-    loadFreshPage(nextUrl, hadController);
+    installFetchedPage(html);
 }
 
 function closeGuide() { 
@@ -4864,7 +4917,7 @@ function importTasksXLSX(event) {
 
 
 function setupAutoClearErrors() {
-    ['gunInput', 'targetInput', 'impactInput', 'targetNameInput', 'observerAzInput'].forEach(id => {
+    ['gunInput', 'targetInput', 'impactInput', 'plannedGridInput', 'targetNameInput', 'observerAzInput'].forEach(id => {
         const el = document.getElementById(id);
         if (!el) return;
         el.addEventListener('input', () => {
@@ -4875,7 +4928,7 @@ function setupAutoClearErrors() {
 }
 
 const DRAFT_FIELD_IDS = Object.freeze([
-    'gunInput', 'targetNameInput', 'plannedFireInput', 'plannedRangedSelect',
+    'gunInput', 'targetNameInput', 'plannedGridInput', 'plannedFireInput', 'plannedRangedSelect',
     'plannedTargetsSelect', 'targetInput', 'impactInput'
 ]);
 let draftWriteLock = false;
@@ -4887,7 +4940,7 @@ function saveFormDraft() {
         const el = document.getElementById(id);
         if (el) data[id] = el.value;
     });
-    const hasWork = ['gunInput', 'targetNameInput', 'plannedFireInput', 'targetInput', 'impactInput', 'plannedTargetsSelect']
+    const hasWork = ['gunInput', 'targetNameInput', 'plannedGridInput', 'plannedFireInput', 'targetInput', 'impactInput', 'plannedTargetsSelect']
         .some(id => data[id] && String(data[id]).trim()) || data.plannedRangedSelect === 'כן';
     if (!hasWork) {
         discardFormDraft();
@@ -4940,7 +4993,7 @@ function setupFormDraft() {
     });
     window.addEventListener('pagehide', saveFormDraft);
     restoreFormDraft();
-    ['gunInput', 'targetInput', 'impactInput'].forEach(id => {
+    ['gunInput', 'targetInput', 'impactInput', 'plannedGridInput'].forEach(id => {
         const el = document.getElementById(id);
         if (!el) return;
         el.addEventListener('blur', () => {
@@ -4993,7 +5046,7 @@ function clearFieldError(input) {
 }
 
 function clearAllFieldErrors() {
-    ['gunInput', 'targetInput', 'impactInput', 'observerAzInput'].forEach(id => {
+    ['gunInput', 'targetInput', 'impactInput', 'plannedGridInput', 'observerAzInput'].forEach(id => {
         clearFieldError(document.getElementById(id));
     });
 }
@@ -5509,7 +5562,7 @@ function setupPlannedMenu() {
         if (!menu || menu.contains(e.target)) return;
         const mapModal = document.getElementById('mapModal');
         if (mapModal && mapModal.contains(e.target)) return;
-        const keepOpen = ['plannedFireInput', 'targetNameInput', 'targetInput', 'plannedRangedSelect'];
+        const keepOpen = ['plannedFireInput', 'targetNameInput', 'plannedGridInput', 'targetInput', 'plannedRangedSelect'];
         if (keepOpen.some(id => document.getElementById(id) === document.activeElement)) return;
         setPlannedMenuOpen(false);
     });
@@ -5524,6 +5577,12 @@ function loadPlannedTarget() {
     const rec = getPlannedTargets().find(t => t.id === select.value);
     if (!rec) return;
     document.getElementById('targetInput').value = rec.coords || '';
+    const plannedGrid = document.getElementById('plannedGridInput');
+    if (plannedGrid) {
+        plannedGrid.value = rec.coords || '';
+        clearFieldError(plannedGrid);
+    }
+    clearFieldError(document.getElementById('targetInput'));
     document.getElementById('targetNameInput').value = rec.name || '';
     document.getElementById('plannedFireInput').value = rec.plannedAt || '';
     const ranged = document.getElementById('plannedRangedSelect');
@@ -5537,16 +5596,21 @@ function loadPlannedTarget() {
 
 function saveCurrentToPlannedList(silent) {
     const nameInput = document.getElementById('targetNameInput');
-    const gridInput = document.getElementById('targetInput');
+    const gridInput = document.getElementById('plannedGridInput');
+    const mainGrid = document.getElementById('targetInput');
     const name = nameInput ? nameInput.value.trim() : '';
-    const gridText = gridInput ? gridInput.value.trim() : '';
-    const parsed = parseCoordinates(gridText);
+    const source = silent ? mainGrid : gridInput;
+    const problem = gridProblem(source, !silent);
+    const info = inspectUtmGrid(source ? source.value : '');
+    const parsed = !problem && info.state === 'ok' ? info.parsed : null;
     if (!parsed) {
-        if (!silent) {
-            showError({ he: 'יש להזין נ"צ מטרה תקין לפני הוספה לרשימה.', en: 'Enter a valid target grid before adding it to the list.' });
+        if (!silent && source) {
+            setFieldError(source, gridProblemMessage(problem || 'invalid'));
+            try { source.focus(); } catch (e) { /* focus is optional */ }
         }
         return null;
     }
+    if (source) clearFieldError(source);
     const plannedAt = document.getElementById('plannedFireInput').value || '';
     const rangedEl = document.getElementById('plannedRangedSelect');
     const list = getPlannedTargets();
@@ -5571,9 +5635,15 @@ function saveCurrentToPlannedList(silent) {
     if (select) select.value = rec.id;
     syncPlannedMenuLabel();
     if (!silent) {
-        if (nameInput) nameInput.value = name;
         if (gridInput) gridInput.value = parsed.raw;
+        if (nameInput) nameInput.value = name;
+        if (mainGrid) {
+            mainGrid.value = parsed.raw;
+            clearFieldError(mainGrid);
+        }
         onTargetInputChange(true);
+    } else if (gridInput && !String(gridInput.value || '').trim() && document.activeElement !== gridInput) {
+        gridInput.value = parsed.raw;
     }
     return rec;
 }
@@ -5597,6 +5667,37 @@ function nextBombNo(history) {
         if (n > max) max = n;
     });
     return max + 1;
+}
+
+function impactGridOf(raw) {
+    const info = inspectUtmGrid(raw);
+    if (info.state === 'ok') return info.parsed;
+    return parseCoordinates(raw);
+}
+
+function sameImpactGrid(a, b) {
+    return !!(a && b && a.zone === b.zone && a.x === b.x && a.y === b.y);
+}
+
+// A round is one impact. Cardinal and vector corrections of that same grid
+// keep its number. Only a grid that has not been recorded yet advances it.
+function bombNoForImpact(history, impactRaw) {
+    const impact = impactGridOf(impactRaw);
+    if (impact) {
+        for (let i = 0; i < (history || []).length; i++) {
+            const item = history[i];
+            if (sameImpactGrid(impactGridOf(item && item.impactStr), impact)) {
+                return displayBombNo(item, i);
+            }
+        }
+    }
+    return nextBombNo(history);
+}
+
+function bombsFiredCount(history) {
+    const seen = new Set();
+    (history || []).forEach((item, index) => seen.add(displayBombNo(item, index)));
+    return seen.size;
 }
 
 function displayBombNo(item, index) {
@@ -5674,6 +5775,14 @@ function onTargetInputChange(preserveName) {
     const targetStr = document.getElementById('targetInput').value;
     const target = parseCoordinates(targetStr);
     if (target) {
+        const plannedGrid = document.getElementById('plannedGridInput');
+        if (plannedGrid && document.activeElement !== plannedGrid) {
+            const info = inspectUtmGrid(targetStr);
+            if (info.state === 'ok') {
+                plannedGrid.value = info.parsed.raw;
+                clearFieldError(plannedGrid);
+            }
+        }
         const targets = getStoredTargets();
         const t = targets[target.raw];
         // When the caller has just supplied a name (e.g. loading a task from
@@ -5736,12 +5845,19 @@ function appendTargetHistory(target, entry) {
     const targetName = document.getElementById('targetNameInput').value.trim();
     if (targetName) currentTargetData.name = targetName;
     if (!currentTargetData.history) currentTargetData.history = [];
-    const bombNo = entry.bombNo || nextBombNo(currentTargetData.history);
-    currentTargetData.history.push(Object.assign({
+    const impact = impactGridOf(entry.impactStr);
+    const sameModeIndex = impact
+        ? currentTargetData.history.findIndex(item =>
+            item && item.mode === entry.mode && sameImpactGrid(impactGridOf(item.impactStr), impact))
+        : -1;
+    const bombNo = entry.bombNo || bombNoForImpact(currentTargetData.history, entry.impactStr);
+    const record = Object.assign({
         time: new Date().toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
         timestamp: Date.now(),
         bombNo
-    }, entry, { bombNo }));
+    }, entry, { bombNo });
+    if (sameModeIndex >= 0) currentTargetData.history[sameModeIndex] = record;
+    else currentTargetData.history.push(record);
     currentTargetData.lastUpdated = Date.now();
     targets[target.raw] = currentTargetData;
     saveStoredTargets(targets);
@@ -5834,7 +5950,7 @@ function clearCurrentTargetHistory() {
 
 function clearInputs() {
     draftWriteLock = true;
-    ['targetNameInput', 'targetInput', 'impactInput', 'plannedTargetsSelect', 'plannedFireInput'].forEach(id => {
+    ['targetNameInput', 'plannedGridInput', 'targetInput', 'impactInput', 'plannedTargetsSelect', 'plannedFireInput'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = '';
     });
@@ -5869,6 +5985,20 @@ function syncHitButton() {
         const box = document.getElementById('hitReport');
         if (box) box.hidden = true;
     }
+}
+
+function hebrewDirectionLabel(dir, fallback) {
+    if (dir === 'מזרח') return 'מזרחיות';
+    if (dir === 'מערב') return 'מערביות';
+    if (dir === 'צפון') return 'צפוניות';
+    if (dir === 'דרום') return 'דרומיות';
+    return fallback;
+}
+
+function hebrewCardinalClause(val, dir, fallback) {
+    const label = val ? hebrewDirectionLabel(dir, fallback) : fallback;
+    if (val === undefined || val === null) return label + ': —';
+    return label + ': ' + val + ' ' + mUnit();
 }
 
 function formatHitCorr(val, dir) {
@@ -5911,7 +6041,7 @@ function buildHitReportText() {
         const east = formatHitCorr(item.corrX_val, item.corrDirX);
         const north = formatHitCorr(item.corrY_val, item.corrDirY);
         return i18nT(
-            `פצצה ${n}: מזרחיות ${east}, צפוניות ${north}`,
+            `פצצה ${n}: ${hebrewCardinalClause(item.corrX_val, item.corrDirX, 'מזרחיות')}, ${hebrewCardinalClause(item.corrY_val, item.corrDirY, 'צפוניות')}`,
             `Bomb ${n}: easting ${east}, northing ${north}`
         );
     });
@@ -5919,7 +6049,7 @@ function buildHitReportText() {
     const nameLine = name
         ? i18nT(`מטרה: ${name}`, `Target: ${name}`)
         : i18nT(`מטרה מזדמנת: ${target.raw}`, `Ad-hoc target: ${target.raw}`);
-    const countLine = i18nT(`מספר פצצות שנורו: ${history.length}`, `Bombs fired: ${history.length}`);
+    const countLine = i18nT(`מספר פצצות שנורו: ${bombsFiredCount(history)}`, `Bombs fired: ${bombsFiredCount(history)}`);
     return { text: `${lines.join('\n')}\n${nameLine}\n${countLine}` };
 }
 
