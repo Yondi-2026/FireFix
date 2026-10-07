@@ -3,6 +3,7 @@
 <head>
     <!-- Snapshot: FireFix V1.19 — התראת דף הבית בהפעלה ראשונה ובראש המדריך, פורמט Excel למטה, תיקון ניסוח רדיוס בטיחות -->
     <!-- Snapshot: FireFix V1.20 — 7 באוקטובר 2026: ההגדרות מקובצות לחישוב, תצוגה, נתונים ומכשיר. אזימוט וטווח הגורם הצופה המדומה נמצאים בחישוב, ברירת מחדל 0 ו-0. -->
+    <!-- Snapshot: FireFix V1.20 — 7 באוקטובר 2026: בדיקת העדכון משווה מזהה בנייה נפרד ממספר הגרסה, וחלון השינויים נפתח פעם אחת אחרי עדכון. אייקון הבטיחות הוא פיצוץ בתוך עיגול אדום עם מילוי אדום בהיר. -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
     <meta id="themeColorMeta" name="theme-color" content="#0b69a3">
@@ -1134,6 +1135,13 @@
             width: 22px;
             height: 22px;
         }
+        .changelog-table td:first-child,
+        .changelog-table th:first-child {
+            white-space: nowrap;
+            width: 4.5em;
+        }
+        .changelog-table td,
+        .changelog-table th { text-align: start; font-variant-numeric: normal; }
         #versionUpdateBtn[hidden],
         #versionCheckStatus[hidden] { display: none !important; }
 
@@ -1357,7 +1365,7 @@
             <button type="button" class="icon-btn" aria-label="פתח ממיר אלפיות ומעלות" data-i18n-aria="aria.convBtn" data-i18n-title="aria.convBtn" title="ממיר אלפיות/מעלות" onclick="openConverter()">🔄</button>
             <button type="button" class="icon-btn" aria-label="פתח הגדרות" data-i18n-aria="aria.settingsBtn" data-i18n-title="aria.settingsBtn" title="הגדרות" onclick="openLocalToolsModal()">⚙️</button>
             <button type="button" class="icon-btn" id="displayModeToggle" aria-label="החלף מצב תצוגה" data-i18n-aria="aria.displayMode" data-i18n-title="aria.displayMode" title="מצב תצוגה" onclick="cycleDisplayMode()">🌙</button>
-            <button type="button" class="icon-btn" id="safetyCardBtn" aria-label="פתח טבלת טווחי הבטיחות ופקודות הטווחה והתיקון" data-i18n-aria="aria.safetyBtn" data-i18n-title="aria.safetyBtn" title="פתח טבלת טווחי הבטיחות ופקודות הטווחה והתיקון" onclick="openSafetyCard()"><svg class="safety-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9" fill="#d9381e"/><path d="M12 6.4v11.2M6.4 12h11.2" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round"/></svg></button>
+            <button type="button" class="icon-btn" id="safetyCardBtn" aria-label="פתח טבלת טווחי הבטיחות ופקודות הטווחה והתיקון" data-i18n-aria="aria.safetyBtn" data-i18n-title="aria.safetyBtn" title="פתח טבלת טווחי הבטיחות ופקודות הטווחה והתיקון" onclick="openSafetyCard()"><svg class="safety-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10.15" fill="#f8d0c8" stroke="#d9381e" stroke-width="1.6"/><path fill="#d9381e" d="M12 6.4l.92 3.38 3.04-1.74-1.74 3.04L17.6 12l-3.38.92 1.74 3.04-3.04-1.74L12 17.6l-.92-3.38-3.04 1.74 1.74-3.04L6.4 12l3.38-.92-1.74-3.04 3.04 1.74z"/></svg></button>
         </div>
     </div>
 
@@ -1775,6 +1783,36 @@
     </div>
 </div>
 
+<div id="changelogModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="changelogTitle" onclick="if(event.target === this) dismissChangelog()">
+    <div class="modal-content" style="max-width: 640px;">
+        <button type="button" class="close-btn" aria-label="סגור" data-i18n-aria="aria.close" onclick="dismissChangelog()">&times;</button>
+        <h3 id="changelogTitle" style="font-size: 20px; color: var(--primary); text-align: center; margin-top: 0; margin-bottom: 12px;" data-i18n="changelog.title">מה השתנה</h3>
+        <div data-lang-block="he">
+            <div class="table-scroll"><table class="safety-table changelog-table"><thead><tr><th>גרסה</th><th>שינוי</th></tr></thead><tbody>
+                <tr><td>V1.19</td><td>התראת דף הבית בהפעלה ראשונה ובראש המדריך, פורמט Excel למטה, ותיקון ניסוח רדיוס הבטיחות.</td></tr>
+                <tr><td>V1.20</td><td>ההגדרות מקובצות לחישוב, תצוגה, נתונים ומכשיר.</td></tr>
+                <tr><td>V1.20</td><td>גורם צופה מדומה בחישוב, ברירת מחדל אזימוט 0 וטווח 0.</td></tr>
+                <tr><td>V1.20</td><td>המדריך עבר לעמוד הראשי.</td></tr>
+                <tr><td>V1.20</td><td>טבלת הבטיחות ופקודות הטווחה והתיקון הוסרו מהמדריך ונשארו בכפתור הבטיחות.</td></tr>
+                <tr><td>V1.20</td><td>בדיקת גרסה.</td></tr>
+                <tr><td>V1.20</td><td>בדיקת העדכון מזהה עמוד חדש גם כשמספר הגרסה לא השתנה. אייקון הבטיחות הוא פיצוץ קטן, עיגול אדום סביבו, ומילוי אדום בהיר בתוך העיגול.</td></tr>
+            </tbody></table></div>
+        </div>
+        <div data-lang-block="en" style="display:none">
+            <div class="table-scroll"><table class="safety-table changelog-table"><thead><tr><th>Version</th><th>Change</th></tr></thead><tbody>
+                <tr><td>V1.19</td><td>A home-screen notice on first launch and at the top of the guide, an Excel format at the bottom, and a safety-radius wording fix.</td></tr>
+                <tr><td>V1.20</td><td>Settings are grouped into calculation, display, data, and device.</td></tr>
+                <tr><td>V1.20</td><td>A simulated observer in calculation, defaulting to azimuth 0 and range 0.</td></tr>
+                <tr><td>V1.20</td><td>The guide moved to the main page.</td></tr>
+                <tr><td>V1.20</td><td>The safety table and the ranging and correction orders were removed from the guide and kept on the safety button.</td></tr>
+                <tr><td>V1.20</td><td>Version check.</td></tr>
+                <tr><td>V1.20</td><td>The update check detects a new page even when the version number is unchanged. The safety icon is a small explosion, a red circle around it, and a light-red fill inside that circle.</td></tr>
+            </tbody></table></div>
+        </div>
+        <button type="button" class="btn" onclick="dismissChangelog()" data-i18n="changelog.ok">הבנתי</button>
+    </div>
+</div>
+
 <div id="guideModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="guideModalTitle" onclick="if(event.target === this) closeGuide()">
     <div class="modal-content">
         <button type="button" class="close-btn" aria-label="סגור מדריך" data-i18n-aria="aria.closeGuide" onclick="closeGuide()">&times;</button>
@@ -2004,12 +2042,15 @@ const CONFIG = {
     STORAGE_OBSERVER_RANGE_KEY: 'firefix_observer_range_m',
     STORAGE_TIME_LOCK_KEY: 'firefix_time_lock_unlocked_v1',
     STORAGE_HOME_NOTICE_KEY: 'firefix_home_notice_seen_v1',
+    STORAGE_CHANGELOG_PENDING_KEY: 'firefix_changelog_pending_build',
+    STORAGE_CHANGELOG_SEEN_KEY: 'firefix_changelog_seen_build',
     DEFAULT_ZONE: '36S',
     MAX_GUN_RANGE: 7000,
     VECTOR_OBSERVER_SOUTH_M: 0, // coincident default; the live observer is the saved azimuth and range
     MAX_SINGLE_CORRECTION: 400,
     MAX_CUMULATIVE_CORRECTION: 550,
     APP_VERSION: 'V1.20',
+    BUILD_ID: '20261007-detect-page',
     STORAGE_TASKS_MERGED_KEY: 'firefix_tasks_merged_v110',
     ROUND_STEP: 50,                 // default correction rounding step (metres)
     ROUND_STEP_OPTIONS: [10, 25, 50, 100],
@@ -2116,6 +2157,8 @@ const I18N = {
         'settings.openGuide': '📖 Guide',
         'home.title': '📲 Add to the home screen',
         'home.ok': 'Got it',
+        'changelog.title': 'What changed',
+        'changelog.ok': 'Got it',
         'aria.close': 'Close',
         'settings.openFuture': 'In upcoming versions...',
         'settings.display': 'Display',
@@ -2595,6 +2638,7 @@ function initTimeLock() {
             unlockTimeLock();
             showDisclaimerIfNeeded();
             showHomeScreenNoticeIfNeeded();
+            showChangelogIfNeeded();
             return;
         }
         input.setAttribute('aria-invalid', 'true');
@@ -2623,6 +2667,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (SafeStorage.get(CONFIG.STORAGE_TIME_LOCK_KEY) === 'true') {
         showDisclaimerIfNeeded();
         showHomeScreenNoticeIfNeeded();
+        showChangelogIfNeeded();
     }
 });
 
@@ -2681,6 +2726,7 @@ function setupModalAccessibility() {
                 else if (modal.id === 'localToolsModal') closeLocalToolsModal();
                 else if (modal.id === 'futureModal') closeFutureModal();
                 else if (modal.id === 'homeNoticeModal') dismissHomeScreenNotice();
+                else if (modal.id === 'changelogModal') dismissChangelog();
                 return;
             }
             if (event.key !== 'Tab') return;
@@ -3374,7 +3420,7 @@ function renderVersionCheck() {
     }
     status.hidden = false;
     if (versionCheckState.kind === 'checking') {
-        status.textContent = i18nT('בודק את הגרסה שפורסמה...', 'Checking the published version...');
+        status.textContent = i18nT('בודק את העמוד שפורסם...', 'Checking the published page...');
         if (updateBtn) updateBtn.hidden = true;
         return;
     }
@@ -3385,8 +3431,8 @@ function renderVersionCheck() {
     }
     if (versionCheckState.kind === 'newer') {
         status.textContent = i18nT(
-            'פורסמה גרסה חדשה יותר (' + versionCheckState.published + ').',
-            'A newer version is published (' + versionCheckState.published + ').'
+            'פורסם עמוד חדש. אפשר לעדכן עכשיו.',
+            'A new page is published. You can update now.'
         );
         if (updateBtn) updateBtn.hidden = false;
         return;
@@ -3395,14 +3441,19 @@ function renderVersionCheck() {
     if (updateBtn) updateBtn.hidden = true;
 }
 
-async function fetchPublishedVersion() {
+function readPublishedBuildId(html) {
+    const match = String(html || '').match(/BUILD_ID:\s*'([^']+)'/);
+    return match ? match[1] : '';
+}
+
+async function fetchPublishedBuildId() {
     const url = PUBLISHED_APP_URL + '?update-check=' + Date.now();
     const response = await fetch(url, { cache: 'no-store' });
     if (!response.ok) throw new Error('published page unavailable');
     const html = await response.text();
-    const match = html.match(/APP_VERSION:\s*'([^']+)'/);
-    if (!match) throw new Error('published version missing');
-    return match[1];
+    const buildId = readPublishedBuildId(html);
+    if (!buildId) throw new Error('published build id missing');
+    return buildId;
 }
 
 async function checkForPublishedUpdate() {
@@ -3411,10 +3462,10 @@ async function checkForPublishedUpdate() {
     versionCheckState = { kind: 'checking' };
     renderVersionCheck();
     try {
-        const published = await fetchPublishedVersion();
-        const cmp = compareVersionLabels(published, CONFIG.APP_VERSION);
-        if (cmp === null) throw new Error('version compare failed');
-        versionCheckState = cmp > 0 ? { kind: 'newer', published: published } : { kind: 'current' };
+        const publishedBuildId = await fetchPublishedBuildId();
+        versionCheckState = publishedBuildId !== CONFIG.BUILD_ID
+            ? { kind: 'newer', buildId: publishedBuildId }
+            : { kind: 'current' };
     } catch (e) {
         console.warn('Version check failed', e);
         versionCheckState = { kind: 'error' };
@@ -3424,28 +3475,64 @@ async function checkForPublishedUpdate() {
     }
 }
 
+function publishedReloadUrl() {
+    const next = new URL(PUBLISHED_APP_URL);
+    next.searchParams.set('_ff', String(Date.now()));
+    return next.href;
+}
+
+async function refreshServiceWorkerAndCaches() {
+    if (navigator.serviceWorker && navigator.serviceWorker.getRegistrations) {
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(registrations.map(async (registration) => {
+            try { await registration.update(); } catch (e) { /* reload anyway */ }
+            if (registration.waiting) {
+                try { registration.waiting.postMessage({ type: 'SKIP_WAITING' }); } catch (e) { /* ignore */ }
+            }
+        }));
+        if (navigator.serviceWorker.controller) {
+            await new Promise((resolve) => {
+                const timer = setTimeout(resolve, 1500);
+                navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    clearTimeout(timer);
+                    resolve();
+                }, { once: true });
+            });
+        }
+        await Promise.all(registrations.map(async (registration) => {
+            try { await registration.unregister(); } catch (e) { /* reload anyway */ }
+        }));
+    }
+    if (window.caches && caches.keys) {
+        const keys = await caches.keys();
+        await Promise.all(keys.map(key => caches.delete(key)));
+    }
+}
+
+function navigateViaUncontrolledBounce(url) {
+    const bounce = '<!DOCTYPE html><meta charset="utf-8"><title>FireFix</title><script>location.replace('
+        + JSON.stringify(url) + ')<\/script>';
+    const blob = new Blob([bounce], { type: 'text/html' });
+    location.replace(URL.createObjectURL(blob));
+}
+
+function loadFreshPage(url, hadController) {
+    if (hadController) navigateViaUncontrolledBounce(url);
+    else location.replace(url);
+}
+
 async function reloadPublishedCopy() {
+    const publishedId = versionCheckState && versionCheckState.buildId;
+    if (publishedId) SafeStorage.set(CONFIG.STORAGE_CHANGELOG_PENDING_KEY, String(publishedId));
+    const nextUrl = publishedReloadUrl();
+    let hadController = false;
     try {
-        if (navigator.serviceWorker && navigator.serviceWorker.getRegistrations) {
-            const registrations = await navigator.serviceWorker.getRegistrations();
-            await Promise.all(registrations.map(async (registration) => {
-                try { await registration.update(); } catch (e) { /* reload anyway */ }
-                if (registration.waiting) {
-                    try { registration.waiting.postMessage({ type: 'SKIP_WAITING' }); } catch (e) { /* ignore */ }
-                }
-                try { await registration.unregister(); } catch (e) { /* reload anyway */ }
-            }));
-        }
-        if (window.caches && caches.keys) {
-            const keys = await caches.keys();
-            await Promise.all(keys.map(key => caches.delete(key)));
-        }
+        hadController = !!(navigator.serviceWorker && navigator.serviceWorker.controller);
+        await refreshServiceWorkerAndCaches();
     } catch (e) {
         console.warn('Could not refresh the installed copy before reload', e);
     }
-    const next = new URL(location.href);
-    next.searchParams.set('_ff', String(Date.now()));
-    location.replace(next.href);
+    loadFreshPage(nextUrl, hadController);
 }
 
 function closeGuide() { 
@@ -3474,6 +3561,7 @@ function acceptDisclaimer() {
     SafeStorage.set(CONFIG.STORAGE_DISCLAIMER_KEY, 'true');
     closeAccessibleModal(document.getElementById('disclaimerModal'));
     showHomeScreenNoticeIfNeeded();
+    showChangelogIfNeeded();
 }
 
 function hasSeenHomeScreenNotice() {
@@ -3492,6 +3580,32 @@ function showHomeScreenNoticeIfNeeded() {
 function dismissHomeScreenNotice() {
     SafeStorage.set(CONFIG.STORAGE_HOME_NOTICE_KEY, 'true');
     closeAccessibleModal(document.getElementById('homeNoticeModal'));
+    showChangelogIfNeeded();
+}
+
+function dismissChangelog() {
+    SafeStorage.set(CONFIG.STORAGE_CHANGELOG_SEEN_KEY, CONFIG.BUILD_ID);
+    SafeStorage.remove(CONFIG.STORAGE_CHANGELOG_PENDING_KEY);
+    closeAccessibleModal(document.getElementById('changelogModal'));
+}
+
+function showChangelogIfNeeded() {
+    const pending = SafeStorage.get(CONFIG.STORAGE_CHANGELOG_PENDING_KEY);
+    if (!pending || pending !== CONFIG.BUILD_ID) return;
+    if (SafeStorage.get(CONFIG.STORAGE_CHANGELOG_SEEN_KEY) === CONFIG.BUILD_ID) {
+        SafeStorage.remove(CONFIG.STORAGE_CHANGELOG_PENDING_KEY);
+        return;
+    }
+    if (SafeStorage.get(CONFIG.STORAGE_TIME_LOCK_KEY) !== 'true') return;
+    if (!hasAcceptedDisclaimer()) return;
+    const disclaimer = document.getElementById('disclaimerModal');
+    const home = document.getElementById('homeNoticeModal');
+    if ((disclaimer && disclaimer.style.display === 'block') || (home && home.style.display === 'block')) return;
+    const modal = document.getElementById('changelogModal');
+    if (!modal || modal.style.display === 'block') return;
+    SafeStorage.set(CONFIG.STORAGE_CHANGELOG_SEEN_KEY, CONFIG.BUILD_ID);
+    SafeStorage.remove(CONFIG.STORAGE_CHANGELOG_PENDING_KEY);
+    openAccessibleModal(modal);
 }
 
 function showDisclaimerIfNeeded() {
