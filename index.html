@@ -5,13 +5,14 @@
     <!-- Snapshot: FireFix V1.20 — 7 באוקטובר 2026: ההגדרות מקובצות לחישוב, תצוגה, נתונים ומכשיר. אזימוט וטווח הגורם הצופה המדומה נמצאים בחישוב, ברירת מחדל 0 ו-0. -->
     <!-- Snapshot: FireFix V1.21 — 7 באוקטובר 2026: בדיקת העדכון משווה מזהה בנייה נפרד ממספר הגרסה, וחלון השינויים נפתח פעם אחת אחרי עדכון. אייקון הבטיחות הוא פיצוץ בתוך עיגול אדום עם מילוי אדום בהיר. אזימוט הצופה המדומה הוא מן הצופה אל המטרה. -->
     <!-- Snapshot: FireFix V1.22 — 7 באוקטובר 2026: טיוטת הטופס נשמרת אחרי נעילה וטעינה מחדש, ואיפוס מוחק אותה. אזימוט מחוץ ל-0–6399 ונ״צ שחסרה בו ספרה נעצרים על השדה. -->
+    <!-- Snapshot: FireFix V1.23 — 7 באוקטובר 2026: פקלון טיווח נפתח מכפתור משקפת בשורת האייקונים. תיקוף מאי 2026. -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
     <meta id="themeColorMeta" name="theme-color" content="#0b69a3">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>FireFix V1.22 - Trajectory Correction Helper</title>
+    <title>FireFix V1.23 - Trajectory Correction Helper</title>
     <script>
         /* iOS only hands http(s) pages to Safari. A file opened from Files stays in
            Quick Look, where this script never runs. x-safari-https is the system scheme. */
@@ -1144,6 +1145,38 @@
             width: 22px;
             height: 22px;
         }
+        #bookletBtn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #bookletBtn .booklet-mark {
+            display: block;
+            width: 22px;
+            height: 22px;
+        }
+        .booklet-kicker {
+            display: block;
+            font-weight: 400;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin: -6px 0 16px;
+            letter-spacing: .2px;
+            text-align: center;
+        }
+        .booklet-section { margin: 0 0 18px; }
+        .booklet-section h4 {
+            margin: 0 0 8px;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        .booklet-section p,
+        .booklet-section li { font-size: 14px; line-height: 1.65; }
+        .booklet-section p { margin: 0 0 8px; }
+        .booklet-section ul { margin: 0 0 8px; padding-inline-start: 18px; }
+        .booklet-section li { margin: 0 0 4px; }
+        .booklet-section .safety-table { margin-top: 6px; }
         .changelog-table td:first-child,
         .changelog-table th:first-child {
             white-space: nowrap;
@@ -1368,9 +1401,10 @@
         </span>
     </div>
     <div class="header-bar">
-        <h2 class="app-title">FireFix<span class="app-subtitle">Trajectory Correction Helper · V1.22</span></h2>
+        <h2 class="app-title">FireFix<span class="app-subtitle">Trajectory Correction Helper · V1.23</span></h2>
         <div class="top-controls">
             <button type="button" class="icon-btn" id="guideBtn" aria-label="פתח את המדריך" data-i18n-aria="aria.guideBtn" data-i18n-title="aria.guideBtn" title="פתח את המדריך" onclick="openGuide()">📖</button>
+            <button type="button" class="icon-btn" id="bookletBtn" aria-label="פתח את פקלון הטיווח" data-i18n-aria="aria.bookletBtn" data-i18n-title="aria.bookletBtn" title="פקלון טיווח" onclick="openBooklet()"><svg class="booklet-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.15" cy="13.4" r="3.15"/><circle cx="16.85" cy="13.4" r="3.15"/><path d="M10.3 13.4h3.4"/><path d="M4.15 11.5 5.7 8.2h2.7"/><path d="M19.85 11.5 18.3 8.2h-2.7"/></g></svg></button>
             <button type="button" class="icon-btn" aria-label="פתח ממיר אלפיות ומעלות" data-i18n-aria="aria.convBtn" data-i18n-title="aria.convBtn" title="ממיר אלפיות/מעלות" onclick="openConverter()">🔄</button>
             <button type="button" class="icon-btn" aria-label="פתח הגדרות" data-i18n-aria="aria.settingsBtn" data-i18n-title="aria.settingsBtn" title="הגדרות" onclick="openLocalToolsModal()">⚙️</button>
             <button type="button" class="icon-btn" id="displayModeToggle" aria-label="החלף מצב תצוגה" data-i18n-aria="aria.displayMode" data-i18n-title="aria.displayMode" title="מצב תצוגה" onclick="cycleDisplayMode()">🌙</button>
@@ -1808,6 +1842,7 @@
                 <tr><td>V1.21</td><td>אזימוט הצופה המדומה הוא מן הצופה אל המטרה. האזימוט והטווח באותה שורה. נתונים בתחתית ההגדרות, ואיפוס מצב התצוגה בתצוגה.</td></tr>
                 <tr><td>V1.22</td><td>טיוטה באמצע עבודה נשמרת אחרי נעילת מסך, יציאה מהאפליקציה וטעינה מחדש. איפוס שדות מוחק אותה.</td></tr>
                 <tr><td>V1.22</td><td>אזימוט מחוץ ל-0–6399, ונ״צ שחסרה בו ספרה, נעצרים על השדה לפני שמופיעה תוצאה.</td></tr>
+                <tr><td>V1.23</td><td>פקלון טיווח נפתח מכפתור משקפת בשורת האייקונים. תיקוף מאי 2026.</td></tr>
             </tbody></table></div>
         </div>
         <div data-lang-block="en" style="display:none">
@@ -1822,6 +1857,7 @@
                 <tr><td>V1.21</td><td>The simulated-observer azimuth is from the observer to the target. Azimuth and range sit on one row. Data is at the bottom of Settings, and resetting the display mode is in Display.</td></tr>
                 <tr><td>V1.22</td><td>An in-progress draft survives screen lock, leaving the app, and reload. Resetting the fields clears it.</td></tr>
                 <tr><td>V1.22</td><td>An azimuth outside 0–6399, and a grid missing a digit, stop on that field before a result appears.</td></tr>
+                <tr><td>V1.23</td><td>The ranging booklet opens from a binoculars button on the icon row. Validated May 2026.</td></tr>
             </tbody></table></div>
         </div>
         <button type="button" class="btn" onclick="dismissChangelog()" data-i18n="changelog.ok">הבנתי</button>
@@ -2042,6 +2078,117 @@
     </div>
 </div>
 
+<div id="bookletModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="bookletModalTitle" onclick="if(event.target === this) closeBooklet()">
+    <div class="modal-content" style="max-width: 680px;">
+        <button type="button" class="close-btn" aria-label="סגור" data-i18n-aria="aria.close" onclick="closeBooklet()">&times;</button>
+        <h3 id="bookletModalTitle" style="font-size: 22px; color: var(--primary); text-align: center; margin-top: 0; margin-bottom: 4px;">פקלון טיווח</h3>
+        <p class="booklet-kicker">תיקוף מאי 2026</p>
+
+        <section class="booklet-section">
+            <h4>ייעוד</h4>
+            <p>מחלקת ה-7 ייעודה לשמש כארטילריית כיס, כדי להשיג מטרות של הטרדה, חסימה, הארה, מיסוך והצתה. הפעלת האש מהירה מאוד ותלויה באישור מג״ד.</p>
+            <p>מרגמה היא נשק סטטיסטי. פגיעה בטווח של כ־50 מ׳ מהמטרה נחשבת כהשגת פגיעה. שטח הכיסוי 75×50. תיקונים במחלקה הם לכל הפחות 50 מ׳.</p>
+            <p>טווח ירי מינימלי 500 מ׳, וטווח מקסימלי 7,000 מ׳.</p>
+        </section>
+
+        <section class="booklet-section">
+            <h4>תוכניות אש</h4>
+            <p>כשמפעילים את מחלקת המרגמות מורידים לה את תוכנית האש. התוכנית יכולה להיות כמות פצצות ומשך, או פק״ל תורתי. כשמגדירים כמות ומשך, הם לא עולים על קצבי האש המותרים.</p>
+            <div class="table-scroll"><table class="safety-table"><thead><tr><th></th><th>מהיר</th><th>בינוני</th></tr></thead><tbody>
+                <tr><th>כמות</th><td>9–12 פצצות לדקה</td><td>2–8 פצצות לדקה</td></tr>
+                <tr><th>משך</th><td>עד 2 דקות</td><td>עד 10 דקות</td></tr>
+            </tbody></table></div>
+            <p>במערכת מזינים משך וכמות. לדוגמה: 20 פצמ״רים, משך 5.</p>
+        </section>
+
+        <section class="booklet-section">
+            <h4>הפעלת אש</h4>
+            <p>ירי המרגמות מתבצע בשני שלבים. בטיווח יורה רק הקנה הבכיר עד להשגת פגיעה, ושאר הקנים עוקבים ביבש. בתכלית יורים את תוכנית האש אחרי שהקנה הבכיר השיג פגיעה ווידא אותה.</p>
+            <p>פקודה תחילית</p>
+            <p class="radio-order">״7 כאן ____, קבל מטרה ____ (סדורה/מזדמנת, דחופה) על (נ.צ / מטרה בשפה משותפת) ב (נפיץ / זרחן / תאורה / עשן) בכמות ____, משך ____ / פק״ל לפי פקודה.״</p>
+            <p>מטרה בהולכה. משתמשים בה כשרוצים לבצע היסט מנ״צ מפויים לנ״צ אחר, בלי לומר את נ״צ המטרה בקשר גלוי. לדוגמה: ״200 צפונה מאננס״.</p>
+            <p class="radio-order">״7 כאן ____, קבל מטרה ____ (סוג מטרה) בהולכה מ (כחול / חום / מתג / אננס), אז׳ ____ (במעלות / אלפיות), ____ (ימינה / שמאלה, מזרחה / מערבה), ____ (יותר / פחות, צפונה / דרומה), ב (סוג פצמ״ר), לפי פקודה עבור.״</p>
+            <p>פקודה לתוכנית אש</p>
+            <p class="radio-order">״7 כאן ____, לפקודתי תכנית אש מזדמנת, על מטרת/יעדי ____, לפי פקודה עבור.״</p>
+        </section>
+
+        <section class="booklet-section">
+            <h4>פק״ל תורתי</h4>
+            <p>ציריך. צרור: 5 פצצות בקצב מקסימלי מקנה בודד.</p>
+            <p class="radio-order">״7 כאן ____, לפקודתי ציריך על מטרת/יעדי ____, ב (סוג פצצה), לפי פקודה עבור.״</p>
+            <p>הוליווד. הטרדה: 2 פצצות לדקה, למשך הזמן שהגורם המטווח מקצה, מקנה בודד.</p>
+            <p class="radio-order">״7 כאן ____, לפקודתי הוליווד משך ____, על מטרת/יעדי ____, ב (סוג פצצה), לפי פקודה עבור.״</p>
+        </section>
+
+        <section class="booklet-section">
+            <h4>שיטות תיקון</h4>
+            <p>אומדנה. הבקר מותח במצפן קו דמיוני בינו לבין המטרה, קו תצפית־מטרה (קו ת״מ). מהפגיעה מורידים אנך אל קו הת״מ, ואומדים את המרחק אל המטרה: ימינה, שמאלה, יותר, פחות.</p>
+            <p class="radio-order">״7 כאן ____, קבל תיקון באומדנה, אז׳ ____ האזימוט של קו ת״מ (במעלות / באלפיות), ____ (ימינה / שמאלה), ____ (יותר / פחות), ב (סוג פצמ״ר), לפי פקודה עבור.״</p>
+            <p>רוחות שמיים. הבקר עומד מול רוח שמיים מרכזית, מותח קו ת״מ, מוריד אנך מהפגיעה, ואומד את המרחק בצפון, דרום, מזרח ומערב.</p>
+            <p class="radio-order">״7 כאן ____, קבל תיקון רוחות שמיים ____ (מזרחה / מערבה), ____ (צפונה / דרומה), ב (סוג פצמ״ר), לפי פקודה עבור.״</p>
+            <p>וקטורי. במט״ל הבקר מזריז אל המטרה ואל הפגיעה, ומעביר אזימוט וטווח לכל נקודה: מהבקר אל המטרה, ומהבקר אל הפגיעה.</p>
+            <p class="radio-order">״7 כאן ____, א׳ מטרה במעלות ____, טווח ____. א׳ פגיעה במעלות ____, טווח ____, ב (סוג פצמ״ר), לפי פקודה עבור.״</p>
+            <p>התיקון המקסימלי במרגמות הוא 400 מ׳. בתיקון מצטבר, סכום שני התיקונים עד 550 מ׳. תיקון מעל המקסימום מצריך ירי תכלית בעמדה, או הפעלה מחדש.</p>
+        </section>
+
+        <section class="booklet-section">
+            <h4>הארה</h4>
+            <p>פצצת תאורה אחת מאירה לקוטר של 1,200 מטר.</p>
+            <ul>
+                <li>חד־מוקדי: נ״צ מטרה ומשך הארה. רלוונטי גם לתק״י.</li>
+                <li>דו־מוקדי: נ״צ מטרה, שמשני צדדיה נפתחות התאורות, אזימוט הפתיחה, ומשך הארה.</li>
+                <li>תק״י: תאורה שנפתחת כ־50 מ׳ מעל הקרקע ומציתה את השטח.</li>
+            </ul>
+            <p class="radio-order">״7 כאן ____, קבל מטרת הארה, מטרה ____ (סוג מטרה) על (נ.צ / מטרה בשפה משותפת), למשך ____ דקות, בהארה לפי פקודה.״</p>
+            <p class="radio-order">״7 כאן ____, מטרת הארה בדו־מוקדי, מטרה ____ (סוג מטרה) על (נ.צ / מטרה בשפה משותפת), אז׳ פתיחת התאורות ____ (במעלות / אלפיות), למשך ____ דקות, בהארה לפי פקודה.״</p>
+            <p class="radio-order">״7 כאן ____, קבל מטרת הצתה, מטרה ____ (סוג מטרה) על ____ (מיקום), בתק״י לפי פקודה.״</p>
+        </section>
+
+        <section class="booklet-section">
+            <h4>מיסוך</h4>
+            <p>פצצת עשן אחת ממסכת לקוטר של 50 מטר.</p>
+            <ul>
+                <li>חד־מוקדי: נ״צ מטרה ומשך מיסוך.</li>
+                <li>ציר מיסוך: נ״צ תחילת הציר, אורך הציר (50 / 100 / 150 / 200 מטר), אזימוט הציר, ומשך המיסוך.</li>
+            </ul>
+            <p>בציר יורים עד 4 מוקדים, 50 מטר מיסוך לכל מוקד, ובכך ציר של עד 200 מטר. כל קנה יורה למוקד אחד בלבד.</p>
+            <p class="radio-order">״7 כאן ____, קבל מטרת מיסוך, מטרה ____ (סוג מטרה) על (נ.צ / מטרה בשפה משותפת), למשך ____ דקות, בעשן לפי פקודה.״</p>
+            <p class="radio-order">״7 כאן ____, קבל מטרת מיסוך, מטרה ____ (סוג מטרה) על (נ.צ תחילת ציר / מטרה בשפה משותפת), אז׳ הציר ____ (מעלות / אלפיות), אורך ____ (עד 200 מטר), למשך ____ דקות, בעשן לפי פקודה.״</p>
+        </section>
+
+        <section class="booklet-section">
+            <h4>תחמושת</h4>
+            <div class="table-scroll"><table class="safety-table"><thead><tr><th>סוג תחמושת</th><th>טווח מקסימלי, קשת</th><th>טווח מקסימלי, חנית</th><th>סוגי משימות</th></tr></thead><tbody>
+                <tr><td>נפיץ, טווח רגיל</td><td>6,300 מטר</td><td>6,500 מטר</td><td>מטרות תכלית</td></tr>
+                <tr><td>נפיץ, טווח מוגדל</td><td>7,000 מטר</td><td>7,300 מטר</td><td></td></tr>
+                <tr><td>נפיץ סרבי</td><td>6,500 מטר</td><td>6,500 מטר</td><td></td></tr>
+                <tr><td>עשן, טווח רגיל</td><td>6,300 מטר</td><td>6,550 מטר</td><td>מיסוך חד־מוקדי / ציר מיסוך</td></tr>
+                <tr><td>עשן, טווח מוגדל</td><td>6,600 מטר</td><td>7,000 מטר</td><td></td></tr>
+                <tr><td>תאורה, טווח רגיל</td><td>5,800 מטר</td><td>6,100 מטר</td><td>הארה חד־מוקדי / דו־מוקדי, תק״י</td></tr>
+                <tr><td>תאורה, טווח מוגדל</td><td>6,700 מטר</td><td>6,850 מטר</td><td></td></tr>
+            </tbody></table></div>
+        </section>
+
+        <section class="booklet-section">
+            <h4>עוקץ פלדה</h4>
+            <p>טווח מינימום 1,500 מטר. טווח מקסימום בלייזר 5,750 מטר, וב־GPS עם לייזר 7,000 מטר. טווח הבטיחות מכוחותינו, בפעילות מבצעית בלבד, 300 מטר.</p>
+            <ul>
+                <li>מגדיר: מאפיין המטרה. חי״ר גלוי, חי״ר מחופר, חי״ר ביצורים, רכב רך, מבנה (חזית / גג).</li>
+                <li>הנחיה: לייזר בלבד, או לייזר עם GPS.</li>
+                <li>קו״צ: קוד ציון, 4 ספרות.</li>
+                <li>אלפא: פגיעה במטרה.</li>
+                <li>החטאה ב־ג: נפילה ברדיוס של 10 מ׳ ממרכז המטרה.</li>
+                <li>החטאה מחוץ ל־ג: נפילה מחוץ לרדיוס 10 מ׳.</li>
+                <li>מונקו: ירי חוזר על המטרה.</li>
+            </ul>
+            <p>ירי ב־GPS עם לייזר מקטין את הסיכוי לנפלים, מגדיל את טווח הירי, ומביא את הפצמ״ר בזווית אנכית יותר.</p>
+            <p class="radio-order">״7 כאן קודקוד, מטרה מדויקת על נשר ציפור / ____, מגדיר ____, הנחיה GPS+לייזר, קו״צ ____, על פי פקודה.״</p>
+            <p class="radio-order">״7 כאן קודקוד, מטרה מדויקת על נשר ציפור / ____, מגדיר ____, הנחיית לייזר, קו״צ ____, על פי פקודה.״</p>
+            <p>מרגמות הן נשק זמין, יעיל ומהיר. אם יש פער בידע על עוצמתן או על הפעלת האש, פונים למ״מ המחלקה בקשר.</p>
+        </section>
+    </div>
+</div>
+
 <script>
 const CONFIG = {
     STORAGE_GUN_KEY: 'artillery_gun_coords_utm',
@@ -2065,8 +2212,8 @@ const CONFIG = {
     VECTOR_OBSERVER_SOUTH_M: 0, // coincident default; the live observer is the saved azimuth and range
     MAX_SINGLE_CORRECTION: 400,
     MAX_CUMULATIVE_CORRECTION: 550,
-    APP_VERSION: 'V1.22',
-    BUILD_ID: '20261007-v122-draft',
+    APP_VERSION: 'V1.23',
+    BUILD_ID: '20261007-v123-booklet',
     STORAGE_TASKS_MERGED_KEY: 'firefix_tasks_merged_v110',
     ROUND_STEP: 50,                 // default correction rounding step (metres)
     ROUND_STEP_OPTIONS: [10, 25, 50, 100],
@@ -2302,6 +2449,7 @@ const I18N = {
         'aria.convBtn': 'Open the mils/degrees converter',
         'aria.settingsBtn': 'Open settings',
         'aria.guideBtn': 'Open the user guide',
+        'aria.bookletBtn': 'Open the ranging booklet',
         'aria.safetyBtn': 'Open the safety-ranges table and the ranging and correction orders',
         'aria.closeSafety': 'Close',
         'safety.title': 'Safety-ranges table and ranging and correction orders',
@@ -2740,6 +2888,7 @@ function setupModalAccessibility() {
                 else if (modal.id === 'converterModal') closeConverter();
                 else if (modal.id === 'guideModal') closeGuide();
                 else if (modal.id === 'safetyModal') closeSafetyCard();
+                else if (modal.id === 'bookletModal') closeBooklet();
                 else if (modal.id === 'localToolsModal') closeLocalToolsModal();
                 else if (modal.id === 'futureModal') closeFutureModal();
                 else if (modal.id === 'homeNoticeModal') dismissHomeScreenNotice();
@@ -3088,7 +3237,7 @@ async function importLocalBackup(event) {
 }
 
 async function downloadCalculatorFile() {
-    const filename = 'FireFix - Trajectory calculator ' + (CONFIG.APP_VERSION || 'V1.22') + '.html';
+    const filename = 'FireFix - Trajectory calculator ' + (CONFIG.APP_VERSION || 'V1.23') + '.html';
     let bytes;
     try {
         const response = await fetch(location.href, { cache: 'no-store' });
@@ -3410,6 +3559,14 @@ function openSafetyCard() {
 
 function closeSafetyCard() {
     closeAccessibleModal(document.getElementById('safetyModal'));
+}
+
+function openBooklet() {
+    openAccessibleModal(document.getElementById('bookletModal'));
+}
+
+function closeBooklet() {
+    closeAccessibleModal(document.getElementById('bookletModal'));
 }
 
 const PUBLISHED_APP_URL = 'https://yondi-2026.github.io/FireFix/index.html';
@@ -5963,7 +6120,7 @@ async function shareFiringReport() {
     const corrY = document.getElementById('corrY').innerText;
     const gunAdj = document.getElementById('gunAdjustment').innerText || i18nT('אין נתוני קנה','No gun data');
 
-    const version = CONFIG.APP_VERSION || 'V1.22';
+    const version = CONFIG.APP_VERSION || 'V1.23';
     const textReport = currentLang === 'en'
         ? `🎯 *UTM Fire Correction Report* 🎯\n` +
           `• Version: ${version}\n` +
