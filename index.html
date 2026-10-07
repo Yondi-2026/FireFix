@@ -1124,28 +1124,18 @@
         .icon-btn:hover { background: var(--btn-sec-hover); }
         .icon-btn:active { transform: scale(0.94); }
         .top-controls { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; }
-        .main-guide-btn {
-            display: flex;
+        #safetyCardBtn {
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 100%;
-            max-width: 280px;
-            min-height: 40px;
-            margin: 0;
-            padding: 8px 14px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background: var(--results-bg);
-            color: var(--text-main);
-            font-family: inherit;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent;
         }
-        .main-guide-btn:hover { border-color: var(--primary); }
-        html.is-touch .main-guide-btn { min-height: 44px; }
+        #safetyCardBtn .safety-mark {
+            display: block;
+            width: 22px;
+            height: 22px;
+        }
+        #versionUpdateBtn[hidden],
+        #versionCheckStatus[hidden] { display: none !important; }
 
         /* Gun position: one-line summary that expands on demand */
         .gun-bar { margin-bottom: 14px; }
@@ -1363,12 +1353,12 @@
     <div class="header-bar">
         <h2 class="app-title">FireFix<span class="app-subtitle">Trajectory Correction Helper · V1.20</span></h2>
         <div class="top-controls">
+            <button type="button" class="icon-btn" id="guideBtn" aria-label="פתח את המדריך" data-i18n-aria="aria.guideBtn" data-i18n-title="aria.guideBtn" title="פתח את המדריך" onclick="openGuide()">📖</button>
             <button type="button" class="icon-btn" aria-label="פתח ממיר אלפיות ומעלות" data-i18n-aria="aria.convBtn" data-i18n-title="aria.convBtn" title="ממיר אלפיות/מעלות" onclick="openConverter()">🔄</button>
             <button type="button" class="icon-btn" aria-label="פתח הגדרות" data-i18n-aria="aria.settingsBtn" data-i18n-title="aria.settingsBtn" title="הגדרות" onclick="openLocalToolsModal()">⚙️</button>
             <button type="button" class="icon-btn" id="displayModeToggle" aria-label="החלף מצב תצוגה" data-i18n-aria="aria.displayMode" data-i18n-title="aria.displayMode" title="מצב תצוגה" onclick="cycleDisplayMode()">🌙</button>
-            <button type="button" class="icon-btn" id="safetyCardBtn" aria-label="פתח טבלת טווחי הבטיחות ופקודות הטווחה והתיקון" data-i18n-aria="aria.safetyBtn" data-i18n-title="aria.safetyBtn" title="פתח טבלת טווחי הבטיחות ופקודות הטווחה והתיקון" onclick="openSafetyCard()">🛡️</button>
+            <button type="button" class="icon-btn" id="safetyCardBtn" aria-label="פתח טבלת טווחי הבטיחות ופקודות הטווחה והתיקון" data-i18n-aria="aria.safetyBtn" data-i18n-title="aria.safetyBtn" title="פתח טבלת טווחי הבטיחות ופקודות הטווחה והתיקון" onclick="openSafetyCard()"><svg class="safety-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9" fill="#d9381e"/><path d="M12 6.4v11.2M6.4 12h11.2" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round"/></svg></button>
         </div>
-        <button type="button" class="main-guide-btn" onclick="openGuide()" data-i18n="btn.guide" data-i18n-aria="aria.guideBtn" aria-label="פתח את המדריך">📖 מדריך</button>
     </div>
 
 
@@ -1605,6 +1595,9 @@
         <div class="settings-group" id="privacyToolsSection">
             <h4 class="settings-group-title" data-i18n="settings.device">מכשיר</h4>
             <p class="privacy-note" data-i18n="settings.privacyNote">האפליקציה נשארת Local-first. נתוני האפליקציה נשמרים במכשיר בלבד ואינם נשלחים לשום שרת. רכיב מקוון אופציונלי אחד נטען <em>רק</em> בלחיצה בפועל על הכפתור המתאים: המפה האינטראקטיבית. כל השאר - חישובי התיקון, המשימות, ההיסטוריה וייבוא/ייצוא JSON ו-Excel - פועל במלואו ללא רשת. בדיקות התקינות אינן יוצרות בקשות רשת.</p>
+            <button type="button" class="btn-small settings-wide-action" id="checkUpdateBtn" onclick="checkForPublishedUpdate()" data-i18n="settings.checkUpdate">בדוק עדכון גרסה</button>
+            <p id="versionCheckStatus" class="settings-install-hint" style="margin-top: 8px;" role="status" aria-live="polite" hidden></p>
+            <button type="button" class="btn-small settings-wide-action" id="versionUpdateBtn" onclick="reloadPublishedCopy()" data-i18n="settings.updateNow" hidden>עדכן</button>
             <button type="button" class="btn-small settings-wide-action" onclick="runLocalDiagnostics()" data-i18n="settings.diag">🔎 בדיקת תקינות</button>
             <ul id="diagnosticsList" class="diagnostics-list" aria-live="polite" aria-label="תוצאות בדיקות תקינות" data-i18n-aria="aria.diagResults"></ul>
             <div id="localToolsStatus" class="local-tools-status" role="status" aria-live="polite" aria-atomic="true"></div>
@@ -2135,6 +2128,8 @@ const I18N = {
         'settings.display': 'Display',
         'settings.data': 'Data',
         'settings.device': 'Device',
+        'settings.checkUpdate': 'Check for update',
+        'settings.updateNow': 'Update',
         'settings.observerAz': 'Observer azimuth from the target (mils, 6400):',
         'settings.observerRange': 'Range from the target (metres):',
         'settings.observerOnTarget': 'On the target',
@@ -2416,6 +2411,7 @@ function applyLanguage(lang) {
             || window.navigator.standalone === true;
         updateInstallUI(standalone ? 'installed' : (deferredInstallPrompt ? 'ready' : 'unavailable'));
     }
+    if (typeof renderVersionCheck === 'function') renderVersionCheck();
 
     // Long-form prose blocks swap wholesale rather than key-by-key.
     document.querySelectorAll('[data-lang-block]').forEach(el => {
@@ -3365,6 +3361,113 @@ function openSafetyCard() {
 
 function closeSafetyCard() {
     closeAccessibleModal(document.getElementById('safetyModal'));
+}
+
+const PUBLISHED_APP_URL = 'https://yondi-2026.github.io/FireFix/index.html';
+let versionCheckState = null;
+
+function versionParts(label) {
+    const match = String(label || '').match(/(\d+(?:\.\d+)*)/);
+    if (!match) return null;
+    return match[1].split('.').map(part => parseInt(part, 10));
+}
+
+function compareVersionLabels(left, right) {
+    const a = versionParts(left);
+    const b = versionParts(right);
+    if (!a || !b) return null;
+    const length = Math.max(a.length, b.length);
+    for (let i = 0; i < length; i++) {
+        const diff = (a[i] || 0) - (b[i] || 0);
+        if (diff !== 0) return diff;
+    }
+    return 0;
+}
+
+function renderVersionCheck() {
+    const status = document.getElementById('versionCheckStatus');
+    const updateBtn = document.getElementById('versionUpdateBtn');
+    if (!status) return;
+    if (!versionCheckState) {
+        status.textContent = '';
+        status.hidden = true;
+        if (updateBtn) updateBtn.hidden = true;
+        return;
+    }
+    status.hidden = false;
+    if (versionCheckState.kind === 'checking') {
+        status.textContent = i18nT('בודק את הגרסה שפורסמה...', 'Checking the published version...');
+        if (updateBtn) updateBtn.hidden = true;
+        return;
+    }
+    if (versionCheckState.kind === 'current') {
+        status.textContent = i18nT('העותק הזה עדכני.', 'This copy is current.');
+        if (updateBtn) updateBtn.hidden = true;
+        return;
+    }
+    if (versionCheckState.kind === 'newer') {
+        status.textContent = i18nT(
+            'פורסמה גרסה חדשה יותר (' + versionCheckState.published + ').',
+            'A newer version is published (' + versionCheckState.published + ').'
+        );
+        if (updateBtn) updateBtn.hidden = false;
+        return;
+    }
+    status.textContent = i18nT('לא ניתן לבדוק את העדכון כרגע.', 'Could not check for an update right now.');
+    if (updateBtn) updateBtn.hidden = true;
+}
+
+async function fetchPublishedVersion() {
+    const url = PUBLISHED_APP_URL + '?update-check=' + Date.now();
+    const response = await fetch(url, { cache: 'no-store' });
+    if (!response.ok) throw new Error('published page unavailable');
+    const html = await response.text();
+    const match = html.match(/APP_VERSION:\s*'([^']+)'/);
+    if (!match) throw new Error('published version missing');
+    return match[1];
+}
+
+async function checkForPublishedUpdate() {
+    const btn = document.getElementById('checkUpdateBtn');
+    if (btn) btn.disabled = true;
+    versionCheckState = { kind: 'checking' };
+    renderVersionCheck();
+    try {
+        const published = await fetchPublishedVersion();
+        const cmp = compareVersionLabels(published, CONFIG.APP_VERSION);
+        if (cmp === null) throw new Error('version compare failed');
+        versionCheckState = cmp > 0 ? { kind: 'newer', published: published } : { kind: 'current' };
+    } catch (e) {
+        console.warn('Version check failed', e);
+        versionCheckState = { kind: 'error' };
+    } finally {
+        if (btn) btn.disabled = false;
+        renderVersionCheck();
+    }
+}
+
+async function reloadPublishedCopy() {
+    try {
+        if (navigator.serviceWorker && navigator.serviceWorker.getRegistrations) {
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            await Promise.all(registrations.map(async (registration) => {
+                try { await registration.update(); } catch (e) { /* reload anyway */ }
+                if (registration.waiting) {
+                    try { registration.waiting.postMessage({ type: 'SKIP_WAITING' }); } catch (e) { /* ignore */ }
+                }
+                try { await registration.unregister(); } catch (e) { /* reload anyway */ }
+            }));
+        }
+        if (window.caches && caches.keys) {
+            const keys = await caches.keys();
+            await Promise.all(keys.map(key => caches.delete(key)));
+        }
+    } catch (e) {
+        console.warn('Could not refresh the installed copy before reload', e);
+    }
+    const next = new URL(location.href);
+    next.searchParams.set('_ff', String(Date.now()));
+    location.replace(next.href);
 }
 
 function closeGuide() { 
