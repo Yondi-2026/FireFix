@@ -8,6 +8,7 @@
     <!-- Snapshot: FireFix V1.23 — 7 באוקטובר 2026: פקלון טיווח נפתח מכפתור משקפת בשורת האייקונים. תיקוף מאי 2026. -->
     <!-- Snapshot: FireFix V1.24 — 7 באוקטובר 2026: האפליקציה נפתחת בלי קוד. נ״צ קנה מה־GPS של הטלפון, בלי ייבוא וייצוא JSON. מעקב אחרי מצב התצוגה של המערכת, ופקלון טיווח נוח יותר לקריאה. -->
     <!-- Snapshot: FireFix V1.24 — 8 באוקטובר 2026: מעקב התצוגה הוא מצב במחזור כפתור התצוגה. כיתובים קטנים מתחת לאייקונים. המדריך עודכן. כפתור שיתוף המחשבון. -->
+    <!-- Snapshot: FireFix V1.24 — 8 באוקטובר 2026: ששת כפתורי השורה העליונה נשארים בשורה אחת בכל רוחב מסך. -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
     <meta id="themeColorMeta" name="theme-color" content="#0b69a3">
@@ -261,7 +262,7 @@
         .top-controls {
             display: flex;
             gap: 6px;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
         }
 
         h2 { text-align: center; color: var(--primary); margin: 0; font-size: 20px; }
@@ -1053,8 +1054,7 @@
                 box-shadow: none;
             }
             .header-bar h2 { width: 100%; line-height: 1.3; }
-            .top-controls { width: 100%; justify-content: center; }
-            .top-controls .icon-btn { width: 42px; height: 42px; min-height: 42px; font-size: 17px; }
+            .top-controls { width: 100%; justify-content: center; flex-wrap: nowrap; }
             .btn-group { flex-direction: column; }
             .btn, .btn-small { min-height: 44px; }
             .input-with-btn { align-items: stretch; }
@@ -1139,33 +1139,43 @@
         .icon-btn:active { transform: scale(0.94); }
         .top-controls {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             justify-content: center;
             align-items: flex-start;
-            gap: 8px 6px;
+            gap: 4px;
             width: 100%;
-        }
-        @media (max-width: 560px) {
-            .top-controls { max-width: 276px; margin-inline: auto; }
+            max-width: 100%;
         }
         .top-control {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 3px;
-            flex: 0 0 84px;
-            width: 84px;
+            gap: 2px;
+            flex: 1 1 0;
+            width: auto;
+            min-width: 0;
             max-width: 96px;
         }
         .top-caption {
             display: block;
-            max-width: 84px;
+            width: 100%;
+            max-width: 100%;
             margin: 0;
-            font-size: 9px;
+            font-size: clamp(7px, 2.35vw, 9px);
             font-weight: 600;
-            line-height: 1.2;
+            line-height: 1.15;
             text-align: center;
             color: var(--text-muted);
+            overflow-wrap: break-word;
+        }
+        html.is-touch .top-controls .icon-btn,
+        .top-controls .icon-btn {
+            width: min(38px, 100%);
+            height: auto;
+            aspect-ratio: 1;
+            min-width: 0;
+            min-height: 0;
+            font-size: clamp(13px, 4.2vw, 16px);
         }
         .share-calculator-btn {
             display: inline-block;
@@ -1191,8 +1201,10 @@
         }
         #safetyCardBtn .safety-mark {
             display: block;
-            width: 22px;
-            height: 22px;
+            width: 18px;
+            height: 18px;
+            max-width: 70%;
+            max-height: 70%;
         }
         #bookletBtn {
             display: inline-flex;
@@ -1201,8 +1213,10 @@
         }
         #bookletBtn .booklet-mark {
             display: block;
-            width: 22px;
-            height: 22px;
+            width: 18px;
+            height: 18px;
+            max-width: 70%;
+            max-height: 70%;
         }
         .booklet-kicker {
             display: block;
@@ -1988,7 +2002,7 @@
                 <li>מצב תצוגה. המחזור הוא יום, לילה, מבצעי, ואז «עקוב אחרי מצב תצוגת מערכת». כשהמעקב פעיל, מצב כהה של הטלפון נותן לילה ומצב בהיר נותן יום. בחירה ביד של יום, לילה או מבצעי מפסיקה את המעקב.</li>
                 <li>בטיחות. עיגול אדום סביב צורת פיצוץ, עם מילוי אדום בהיר. הכפתור פותח את טבלת טווחי הבטיחות בטיווח ואת פקודות הטווחה והתיקון. החומר הזה אינו במדריך ואינו בפקלון.</li>
             </ul>
-            <p>מתחת לכל כפתור יש כיתוב קצר: מדריך, פקלון טיווח, ממיר זוויות, הגדרות, מצב תצוגה, טווחי בטיחות. אם השורה צרה, הכפתורים יורדים לשתי שורות.</p>
+            <p>מתחת לכל כפתור יש כיתוב קצר: מדריך, פקלון טיווח, ממיר זוויות, הגדרות, מצב תצוגה, טווחי בטיחות. ששת הכפתורים נשארים בשורה אחת.</p>
         </div>
 
         <div class="guide-section">
@@ -2107,7 +2121,7 @@
                 <li>Display mode. The cycle is day, night, tactical, then “Follow system” («עקוב אחרי מצב תצוגת מערכת»). While follow is active, a dark phone appearance selects night and a light appearance selects day. Choosing day, night, or tactical by hand stops following.</li>
                 <li>Safety. A red circle around an explosion shape, with a light-red fill. The button opens the ranging safety-distance table together with the ranging and correction orders. That material is not in the guide and not in the booklet.</li>
             </ul>
-            <p>Each button has a short caption: Guide, Ranging booklet, Angle converter, Settings, Display mode, Safety ranges. If the row is narrow, the buttons wrap onto two rows.</p>
+            <p>Each button has a short caption: Guide, Ranging booklet, Angle converter, Settings, Display mode, Safety ranges. All six buttons stay on one row.</p>
         </div>
 
         <div class="guide-section">
@@ -2364,7 +2378,7 @@ const CONFIG = {
     MAX_SINGLE_CORRECTION: 400,
     MAX_CUMULATIVE_CORRECTION: 550,
     APP_VERSION: 'V1.24',
-    BUILD_ID: '20261008-v124-captions',
+    BUILD_ID: '20261008-v124-one-row',
     STORAGE_TASKS_MERGED_KEY: 'firefix_tasks_merged_v110',
     ROUND_STEP: 50,                 // default correction rounding step (metres)
     ROUND_STEP_OPTIONS: [10, 25, 50, 100],
