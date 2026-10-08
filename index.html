@@ -7,6 +7,7 @@
     <!-- Snapshot: FireFix V1.22 — 7 באוקטובר 2026: טיוטת הטופס נשמרת אחרי נעילה וטעינה מחדש, ואיפוס מוחק אותה. אזימוט מחוץ ל-0–6399 ונ״צ שחסרה בו ספרה נעצרים על השדה. -->
     <!-- Snapshot: FireFix V1.23 — 7 באוקטובר 2026: פקלון טיווח נפתח מכפתור משקפת בשורת האייקונים. תיקוף מאי 2026. -->
     <!-- Snapshot: FireFix V1.24 — 7 באוקטובר 2026: האפליקציה נפתחת בלי קוד. נ״צ קנה מה־GPS של הטלפון, בלי ייבוא וייצוא JSON. מעקב אחרי מצב התצוגה של המערכת, ופקלון טיווח נוח יותר לקריאה. -->
+    <!-- Snapshot: FireFix V1.24 — 8 באוקטובר 2026: מעקב התצוגה הוא מצב במחזור כפתור התצוגה. כיתובים קטנים מתחת לאייקונים. המדריך עודכן. כפתור שיתוף המחשבון. -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
     <meta id="themeColorMeta" name="theme-color" content="#0b69a3">
@@ -1136,7 +1137,53 @@
         }
         .icon-btn:hover { background: var(--btn-sec-hover); }
         .icon-btn:active { transform: scale(0.94); }
-        .top-controls { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; }
+        .top-controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 8px 6px;
+            width: 100%;
+        }
+        @media (max-width: 560px) {
+            .top-controls { max-width: 276px; margin-inline: auto; }
+        }
+        .top-control {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            flex: 0 0 84px;
+            width: 84px;
+            max-width: 96px;
+        }
+        .top-caption {
+            display: block;
+            max-width: 84px;
+            margin: 0;
+            font-size: 9px;
+            font-weight: 600;
+            line-height: 1.2;
+            text-align: center;
+            color: var(--text-muted);
+        }
+        .share-calculator-btn {
+            display: inline-block;
+            margin: 0 0 10px;
+            padding: 5px 12px;
+            min-height: 30px;
+            border: 1px solid var(--primary);
+            border-radius: 6px;
+            background: transparent;
+            color: var(--primary);
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 1.3;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+        .share-calculator-btn:hover { background: var(--results-bg); }
         #safetyCardBtn {
             display: inline-flex;
             align-items: center;
@@ -1384,12 +1431,30 @@
     <div class="header-bar">
         <h2 class="app-title">FireFix<span class="app-subtitle">Trajectory Correction Helper · V1.24</span></h2>
         <div class="top-controls">
-            <button type="button" class="icon-btn" id="guideBtn" aria-label="פתח את המדריך" data-i18n-aria="aria.guideBtn" data-i18n-title="aria.guideBtn" title="פתח את המדריך" onclick="openGuide()">📖</button>
-            <button type="button" class="icon-btn" id="bookletBtn" aria-label="פתח את פקלון הטיווח" data-i18n-aria="aria.bookletBtn" data-i18n-title="aria.bookletBtn" title="פקלון טיווח" onclick="openBooklet()"><svg class="booklet-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.15" cy="13.4" r="3.15"/><circle cx="16.85" cy="13.4" r="3.15"/><path d="M10.3 13.4h3.4"/><path d="M4.15 11.5 5.7 8.2h2.7"/><path d="M19.85 11.5 18.3 8.2h-2.7"/></g></svg></button>
-            <button type="button" class="icon-btn" aria-label="פתח ממיר אלפיות ומעלות" data-i18n-aria="aria.convBtn" data-i18n-title="aria.convBtn" title="ממיר אלפיות/מעלות" onclick="openConverter()">🔄</button>
-            <button type="button" class="icon-btn" aria-label="פתח הגדרות" data-i18n-aria="aria.settingsBtn" data-i18n-title="aria.settingsBtn" title="הגדרות" onclick="openLocalToolsModal()">⚙️</button>
-            <button type="button" class="icon-btn" id="displayModeToggle" aria-label="החלף מצב תצוגה" data-i18n-aria="aria.displayMode" data-i18n-title="aria.displayMode" title="מצב תצוגה" onclick="cycleDisplayMode()">🌙</button>
-            <button type="button" class="icon-btn" id="safetyCardBtn" aria-label="פתח טבלת טווחי הבטיחות ופקודות הטווחה והתיקון" data-i18n-aria="aria.safetyBtn" data-i18n-title="aria.safetyBtn" title="פתח טבלת טווחי הבטיחות ופקודות הטווחה והתיקון" onclick="openSafetyCard()"><svg class="safety-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10.15" fill="#f8d0c8" stroke="#d9381e" stroke-width="1.6"/><path fill="#d9381e" d="M12 6.4l.92 3.38 3.04-1.74-1.74 3.04L17.6 12l-3.38.92 1.74 3.04-3.04-1.74L12 17.6l-.92-3.38-3.04 1.74 1.74-3.04L6.4 12l3.38-.92-1.74-3.04 3.04 1.74z"/></svg></button>
+            <div class="top-control">
+                <button type="button" class="icon-btn" id="guideBtn" aria-label="פתח את המדריך" data-i18n-aria="aria.guideBtn" data-i18n-title="aria.guideBtn" title="פתח את המדריך" onclick="openGuide()">📖</button>
+                <span class="top-caption" data-i18n="cap.guide" aria-hidden="true">מדריך</span>
+            </div>
+            <div class="top-control">
+                <button type="button" class="icon-btn" id="bookletBtn" aria-label="פתח את פקלון הטיווח" data-i18n-aria="aria.bookletBtn" data-i18n-title="aria.bookletBtn" title="פקלון טיווח" onclick="openBooklet()"><svg class="booklet-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.15" cy="13.4" r="3.15"/><circle cx="16.85" cy="13.4" r="3.15"/><path d="M10.3 13.4h3.4"/><path d="M4.15 11.5 5.7 8.2h2.7"/><path d="M19.85 11.5 18.3 8.2h-2.7"/></g></svg></button>
+                <span class="top-caption" data-i18n="cap.booklet" aria-hidden="true">פקלון טיווח</span>
+            </div>
+            <div class="top-control">
+                <button type="button" class="icon-btn" aria-label="פתח ממיר אלפיות ומעלות" data-i18n-aria="aria.convBtn" data-i18n-title="aria.convBtn" title="ממיר אלפיות/מעלות" onclick="openConverter()">🔄</button>
+                <span class="top-caption" data-i18n="cap.converter" aria-hidden="true">ממיר זוויות</span>
+            </div>
+            <div class="top-control">
+                <button type="button" class="icon-btn" aria-label="פתח הגדרות" data-i18n-aria="aria.settingsBtn" data-i18n-title="aria.settingsBtn" title="הגדרות" onclick="openLocalToolsModal()">⚙️</button>
+                <span class="top-caption" data-i18n="cap.settings" aria-hidden="true">הגדרות</span>
+            </div>
+            <div class="top-control">
+                <button type="button" class="icon-btn" id="displayModeToggle" aria-label="החלף מצב תצוגה" data-i18n-aria="aria.displayMode" data-i18n-title="aria.displayMode" title="מצב תצוגה" onclick="cycleDisplayMode()">🌙</button>
+                <span class="top-caption" data-i18n="cap.display" aria-hidden="true">מצב תצוגה</span>
+            </div>
+            <div class="top-control">
+                <button type="button" class="icon-btn" id="safetyCardBtn" aria-label="פתח טבלת טווחי הבטיחות ופקודות הטווחה והתיקון" data-i18n-aria="aria.safetyBtn" data-i18n-title="aria.safetyBtn" title="פתח טבלת טווחי הבטיחות ופקודות הטווחה והתיקון" onclick="openSafetyCard()"><svg class="safety-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10.15" fill="#f8d0c8" stroke="#d9381e" stroke-width="1.6"/><path fill="#d9381e" d="M12 6.4l.92 3.38 3.04-1.74-1.74 3.04L17.6 12l-3.38.92 1.74 3.04-3.04-1.74L12 17.6l-.92-3.38-3.04 1.74 1.74-3.04L6.4 12l3.38-.92-1.74-3.04 3.04 1.74z"/></svg></button>
+                <span class="top-caption" data-i18n="cap.safety" aria-hidden="true">טווחי בטיחות</span>
+            </div>
         </div>
     </div>
 
@@ -1575,6 +1640,7 @@
     </div>
 
     <div style="margin-top: 24px; padding-top: 12px; border-top: 1px solid var(--section-border); text-align: center; font-size: 11px; color: var(--text-muted); line-height: 1.6;">
+        <button type="button" class="share-calculator-btn" id="shareCalculatorBtn" onclick="shareCalculator()" data-i18n="btn.shareCalculator">שתף את המחשבון</button><br>
         <button type="button" onclick="openDisclaimer(true)" style="background:none; border:none; padding:0 0 8px 0; color: var(--primary); font-size: 11px; font-weight:600; text-decoration: underline; cursor:pointer; font-family: inherit;" data-i18n="footer.disclaimer">⚠️ הצהרה ותנאי שימוש</button><br>
         <span data-i18n="footer.credit">כל הזכויות שמורות, מ"מ 7, 630.<br>
         פיתוח ואבטחת קוד: </span><a href="https://github.com/yuvalg72/FireFix_Trajectory_Correction_Helper" target="_blank" rel="noopener noreferrer" style="color: var(--primary); font-weight: 600; text-decoration: underline;">yuvalg72</a>
@@ -1612,10 +1678,6 @@
             <button type="button" class="btn-small settings-wide-action" id="languageToggle" onclick="toggleLanguage()" aria-label="החלף שפה" title="שפה">🇮🇱 עברית</button>
             <button type="button" class="btn btn-success" id="installBtn" onclick="promptInstall()">📲 הוסף לדף הבית</button>
             <p id="installHint" class="settings-install-hint" style="margin-top: 8px;">התקנה מאפשרת פתיחה כאפליקציה עצמאית, ללא שורת כתובת.</p>
-            <div class="local-tools-note" style="display:flex; align-items:flex-start; gap:8px; margin-top:12px;">
-                <input id="followSystemDisplay" type="checkbox" style="width:18px; height:18px; min-height:18px; margin-top:1px; flex:0 0 auto; accent-color:var(--primary);">
-                <label for="followSystemDisplay" style="margin:0; line-height:1.5; cursor:pointer; color:var(--text-muted);" data-i18n="settings.followSystem">עקוב אחרי מצב תצוגת מערכת</label>
-            </div>
         </div>
 
         <div class="settings-group" id="privacyToolsSection">
@@ -1862,6 +1924,7 @@
         <div class="guide-section">
             <h4>📲 הוספה לדף הבית</h4>
             <p>כדי ש־FireFix יישב בדף הבית כמו אפליקציה, פותחים את הקישור בדפדפן. אחרי ההוספה האייקון נפתח בלי שורת כתובת.</p>
+            <p>האפליקציה נפתחת ישר. אין קוד כניסה ואין נעילת שעה.</p>
             <p><strong>אייפון</strong></p>
             <ol>
                 <li>פותחים את הקישור בספארי.</li>
@@ -1876,63 +1939,111 @@
                 <li>בוחרים «הוספה למסך הבית» או «התקנת אפליקציה».</li>
                 <li>מאשרים.</li>
             </ol>
-            <p>המחשבון עובד גם בלי רשת אחרי שהדף נטען. המפה נטענת רק כשיש חיבור.</p>
+            <p>המחשבון עובד גם בלי רשת אחרי שהדף נטען. המפה נטענת רק כשיש חיבור. קביעת נ״צ מה־GPS ובדיקת עדכון גרסה גם הן צריכות רשת, ורק כשלוחצים עליהן.</p>
+        </div>
+
+        <div class="guide-section">
+            <h4>⚡ יכולות המערכת</h4>
+            <ul>
+                <li><strong>חישוב תיקון:</strong> השוואה בין נ״צ המטרה לנ״צ הפגיעה. התיקון הוא הפיצוי הנדרש, מזרח או מערב וצפון או דרום, מעוגל לכפולות של מדרגת העיגול. ברירת המחדל היא 50 מטר.</li>
+                <li><strong>מספר פצצה:</strong> עולה רק כשנ״צ הפגיעה משתנה. הפגיעה הראשונה נספרת כאחת. תיקון נוסף ברוחות שמיים או תיקון וקטורי על אותה פגיעה לא מגדיל את המספר. פגיעה שכבר נספרה שומרת על המספר שלה גם אם חוזרים אליה.</li>
+                <li><strong>סיכום פגיעה:</strong> בשורת התיקון ברוחות שמיים יש נקודתיים מיד אחרי מילת הכיוון. המילים הן מזרחיות, מערביות, צפוניות ודרומיות, לפי הכיוון של אותו רכיב. המספרים עצמם לא משתנים. לדוגמה: <span style="direction:rtl; display:inline-block;">מערביות: 100 מטר, צפוניות: 0 מטר</span>.</li>
+                <li><strong>צידוד קנה (רשות):</strong> אם הוזן נ״צ קנה, המערכת מחשבת אזימוטים וצידוד במעלות ובאלפיות (6400). נ״צ קנה אינו נדרש לתיקון עצמו.</li>
+                <li><strong>צופה מדומה:</strong> בהגדרות, בקבוצת חישוב. האזימוט הוא מן הצופה אל המטרה, 0 אלפיות לצפון ובכיוון השעון. טווח 0 משאיר את הצופה על המטרה. הכפתור «מקם צופה מדומה על המטרה» מאפס את האזימוט ואת הטווח ל־0.</li>
+                <li><strong>היסטוריה ורשימת מטרות:</strong> רצף התיקונים למטרה נשמר במכשיר עד 24 שעות. ברשימת המטרות יש שדה נ״צ מטרה, באותם פורמטים ובאותה בדיקה כמו נ״צ המטרה הראשי. שמירה שומרת את הנ״צ הזה, ובחירת מטרה מהרשימה ממלאת ממנו את נ״צ המטרה הראשי. אפשר להעתיק דיווח ללוח.</li>
+                <li><strong>טיוטה:</strong> נ״צ מטרה, נ״צ פגיעה ושאר שדות העבודה נשמרים אחרי יציאה או טעינה מחדש. «איפוס שדות» מוחק אותם, והם נשארים ריקים גם אחרי טעינה נוספת. איפוס השדות אינו מוחק את נ״צ הקנה.</li>
+                <li><strong>בדיקת שדות:</strong> נ״צ קצר או לא תקין, ואזימוט מחוץ ל־0 עד 6399, נעצרים על השדה עצמו. לא מוצגת תוצאה.</li>
+                <li><strong>מפה:</strong> בחירת נקודה לקנה, למטרה, לפגיעה ולהוספת מטרה. כפתור המפה בלוח ההיסטוריה מציג את המטרה ואת הפגיעות על המפה, בלי לשנות נתונים. המטרה מוצגת כנקודה כחולה, וכל פגיעה כנקודה אדומה ממוספרת, עם קו מקווקו לפי הסדר.</li>
+                <li><strong>רשימת מטרות ב־Excel, וגיבוי:</strong> הייבוא והייצוא של הרשימה הם Excel. בייבוא אפשר להחליף את הרשימה או להוסיף אליה. גיבוי ושחזור של נתוני האפליקציה נפרדים ונשארים בקבוצת הנתונים.</li>
+                <li><strong>פקלון טיווח:</strong> כפתור המשקפת בשורה העליונה. הכותרת פקלון טיווח, ומתחתיה תיקוף מאי 2026. כותרות הפקודות מודגשות, כחולות, עם קו תחתון וסימן 📻. אומדנה, רוחות שמיים ווקטורי הן כותרות משנה באותו סגנון, בלי 📻. ההערה על התיקון המקסימלי מוקפת במסגרת. טבלת טווחי הבטיחות אינה בפקלון.</li>
+                <li><strong>שיתוף המחשבון:</strong> כפתור קטן בתחתית המסך משתף את הקישור הציבורי של FireFix. אם שיתוף המערכת אינו זמין, הקישור מועתק.</li>
+            </ul>
         </div>
 
         <div class="guide-section">
             <h4>⚠️ מגבלות המערכת</h4>
             <ul>
                 <li><strong>מגבלת טווח קנה:</strong> חסימה אוטומטית אם המרחק בין הקנה למטרה עולה על 7,000 מטר.</li>
-                <li><strong>מגבלת תיקון בודד:</strong> תיקון העולה על 400 מטר ברכיב בודד ידרוש איפוס מחדש של היסטוריית המטרה עקב חריגה מרדיוס בטיחות.</li>
-                <li><strong>מגבלת תיקון מצטבר (עדכון 550 מ'):</strong> אם סכום הערכים המוחלטים של התיקון בצפוניות ובמזרחיות יחד (או סך ההיסט המצטבר) עולה על 550 מטר, המערכת תציג הודעת שגיאה ותדרוש חישוב ירי מחדש.</li>
-                <li><strong>תוקף נתונים:</strong> היסטוריית המטרות והתיקונים נשמרת מקומית ונמחקת אוטומטית לאחר 24 שעות.</li>
-                <li><strong>הרכיב היחיד הדורש אינטרנט:</strong> המפה האינטראקטיבית (Leaflet + אריחי מפה), הנטענת <em>רק</em> בלחיצה בפועל על כפתור המפה. כל שאר המחשבון - חישובי תיקון, צידוד, משימות, היסטוריה וייבוא/ייצוא Excel - פועל מקומית לחלוטין ללא רשת.</li>
-                <li><strong>דרישת דפדפן לייבוא/ייצוא Excel:</strong> נדרש <strong>Chrome 103 ומעלה, Safari 16.4 ומעלה, או Firefox 113 ומעלה</strong>. קריאה וכתיבה של קובצי Excel מתבצעות באמצעות יכולות מובנות בדפדפן (<code style="direction:ltr; display:inline-block;">DecompressionStream</code>) ולא באמצעות ספרייה חיצונית - מה שמאפשר עבודה מלאה ללא אינטרנט. בדפדפן ישן יותר כפתורי ה-Excel ידווחו שאינם זמינים. ניתן לבדוק זאת בכל רגע דרך ⚙️ הגדרות ← בדיקת תקינות.</li>
+                <li><strong>מגבלת תיקון בודד:</strong> תיקון מעל 400 מטר ברכיב בודד עוצר את החישוב ומבקש חישוב ירי מחדש.</li>
+                <li><strong>מגבלת תיקון מצטבר (550 מ׳):</strong> אם סכום הערכים המוחלטים של תיקון המזרחיות והצפוניות עולה על 550 מטר, המערכת מציגה שגיאה ומבקשת חישוב ירי מחדש.</li>
+                <li><strong>תוקף נתונים:</strong> היסטוריית המטרות והתיקונים נשמרת במכשיר ונמחקת אוטומטית אחרי 24 שעות.</li>
+                <li><strong>רשת:</strong> המפה נטענת רק בלחיצה על כפתור המפה. קביעת נ״צ מה־GPS ובדיקת עדכון גרסה פונות לרשת רק כשלוחצים עליהן. חישובי התיקון, הצידוד, הרשימה, ההיסטוריה ו־Excel פועלים בלי רשת.</li>
+                <li><strong>דפדפן ל־Excel:</strong> נדרש Chrome 103 ומעלה, Safari 16.4 ומעלה, או Firefox 113 ומעלה. הקריאה והכתיבה נעשות ביכולות הדפדפן (<code style="direction:ltr; display:inline-block;">DecompressionStream</code>), בלי ספרייה חיצונית. בדפדפן ישן יותר כפתורי ה־Excel מדווחים שאינם זמינים. אפשר לבדוק זאת ב⚙️ הגדרות ← בדיקת תקינות.</li>
             </ul>
         </div>
 
         <div class="guide-section" style="border-top:1px solid var(--section-border); padding-top:12px; margin-top:4px;">
             <h4>💬 הצעות ייעול</h4>
-            <p>הכלי מפותח ומשתפר על בסיס שימוש בשטח. הצעות ייעול, תקלות ורעיונות לשיפור יתקבלו בברכה - ניתן להעביר אותם ישירות למ"מ 7, 630.</p>
+            <p>הכלי מפותח ומשתפר על בסיס שימוש בשטח. הצעות ייעול, תקלות ורעיונות לשיפור יתקבלו בברכה. אפשר להעביר אותם ישירות למ״מ 7, 630.</p>
+        </div>
+
+        <div class="guide-section">
+            <h4>השורה העליונה</h4>
+            <p>בשורה העליונה, לפי סדר הכפתורים:</p>
+            <ul>
+                <li>📖 מדריך.</li>
+                <li>משקפת. פותחת את פקלון טיווח.</li>
+                <li>ממיר אלפיות ומעלות.</li>
+                <li>⚙️ הגדרות.</li>
+                <li>מצב תצוגה. המחזור הוא יום, לילה, מבצעי, ואז «עקוב אחרי מצב תצוגת מערכת». כשהמעקב פעיל, מצב כהה של הטלפון נותן לילה ומצב בהיר נותן יום. בחירה ביד של יום, לילה או מבצעי מפסיקה את המעקב.</li>
+                <li>בטיחות. עיגול אדום סביב צורת פיצוץ, עם מילוי אדום בהיר. הכפתור פותח את טבלת טווחי הבטיחות בטיווח ואת פקודות הטווחה והתיקון. החומר הזה אינו במדריך ואינו בפקלון.</li>
+            </ul>
+            <p>מתחת לכל כפתור יש כיתוב קצר: מדריך, פקלון טיווח, ממיר זוויות, הגדרות, מצב תצוגה, טווחי בטיחות. אם השורה צרה, הכפתורים יורדים לשתי שורות.</p>
+        </div>
+
+        <div class="guide-section">
+            <h4>⚙️ הגדרות</h4>
+            <p>ארבע קבוצות, בסדר הזה:</p>
+            <ol>
+                <li><strong>חישוב.</strong> מדרגת עיגול התיקון, והצופה המדומה: אזימוט מן הצופה אל המטרה, טווח, והכפתור «מקם צופה מדומה על המטרה».</li>
+                <li><strong>תצוגה.</strong> שפה, והוספה לדף הבית. מעקב אחרי מצב התצוגה של המערכת נמצא במחזור של כפתור מצב התצוגה, לא בקבוצה הזאת.</li>
+                <li><strong>מכשיר.</strong> בדיקת עדכון גרסה, בדיקת תקינות, ומחיקת נתונים מקומיים. המחיקה אינה משנה את מצב התצוגה.</li>
+                <li><strong>נתונים.</strong> ייצוא וייבוא Excel של רשימת המטרות, וגיבוי ושחזור.</li>
+            </ol>
+            <p><strong>בדיקת עדכון גרסה</strong> מבקשת עותק טרי של הדף שפורסם, בכתובת חדשה בכל בדיקה, ולא מסתמכת על עותק שמור של הרשת. אם מספר הבנייה בעותק הזה שונה, מוצע לעדכן, והעדכון טוען את אותו עותק טרי. אם המספר זהה, מופיע שהעותק עדכני. אחרי טעינת הדף החדש נפתח פעם אחת חלון עם טבלת השינויים. הגרסה הגלויה נשארת V1.24 גם כשמספר הבנייה מתחלף.</p>
         </div>
 
         <div class="guide-section">
             <h4>🛠️ מדריך שימוש שלב אחר שלב</h4>
             <ul>
-                <li><strong>שלב 1 (אופציונלי):</strong> הזן את נ"צ הקנה היורה בשדה הייעודי, בחר אותו מהמפה, או קבע אותו מה־GPS של הטלפון. קריאת ה־GPS אינה מדויקת ואינה מחליפה אמצעי תקן לקביעת מיקום. הנ"צ נדרש אך ורק לצורך קבלת תיקוני צידוד.</li>
-                <li><strong>שלב 2:</strong> הזן את נ"צ המטרה המקורית (או בחר משימה מוכנה מראש מטבלת המשימות/רשימת המטרות - טעינה מהטבלה מעדכנת אוטומטית את שם המשימה והנ"צ, לחלופין הוסף משימה חדשה באמצעות דקירה במפה בטאב המשימות). ניתן לצרף שם תיאורי למטרה.</li>
-                <li><strong>שלב 3:</strong> הזן את נ"צ הפגיעה בפועל בשדה השלישי (או לחץ על כפתור "מפה" ובחר את נקודת הפגיעה).</li>
-                <li><strong>שלב 4:</strong> לחץ על <strong>"תיקון ברוחות שמים"</strong> לתיקון מזרח/מערב וצפון/דרום, או על <strong>"תיקון וקטורי בצליפה"</strong> לקבלת אזימוט וטווח למטרה ולפגיעה מהגורם הצופה שעל המטרה (אזימוט 0, טווח 0).</li>
-                <li><strong>שלב 5:</strong> באפשרותך לשתף את הדיווח או להעתיק את ההיסטוריה ישירות מלוח התוצאות, וכן ללחוץ על <strong>"🗺️ מפה"</strong> בלוח ההיסטוריה כדי לראות את כל רצף הפגיעות מצויר על גבי המפה.</li>
-                <li><strong>שלב 6 (אופציונלי) - גיבוי רשימת המשימות:</strong> בסעיף הנתונים, ייצא את הרשימה ל-<strong>Excel</strong> וייבא בחזרה בכל עת - עם בחירה בין החלפת הרשימה להוספה אליה. גיבוי ושחזור של נתוני האפליקציה נשארים שם.</li>
+                <li><strong>שלב 1 (אופציונלי):</strong> מזינים את נ״צ הקנה בשדה שלו, בוחרים אותו מהמפה, או לוחצים «קבע נ״צ מה־GPS». ליד הכפתור כתוב שהקריאה אינה מדויקת ואינה מחליפה אמצעי תקן לקביעת מיקום. אם אין הרשאה או שההמרה נכשלת, הנ״צ שבשדה אינו מוחלף. הנ״צ נדרש רק לתיקוני צידוד.</li>
+                <li><strong>שלב 2:</strong> מזינים את נ״צ המטרה בשדה הראשי, או פותחים את רשימת המטרות. ברשימה יש שדה «נ״צ מטרה». הוא מקבל את אותם פורמטים כמו השדה הראשי, כולל נ״צ עם אזור, בלי אזור, ספרת ה־3 בצפוניות או בלעדיה, ומספר רצוף של 12 או 13 ספרות. נ״צ קצר או לא תקין נחסם על השדה, באותה הודעה כמו בטופס הראשי, והמטרה אינה נשמרת. «הוסף / עדכן ברשימה» שומר את הנ״צ מהשדה הזה. בחירת מטרה מהרשימה ממלאת ממנו את נ״צ המטרה הראשי. אפשר לצרף שם. אפשר גם להוסיף מטרה מדקירה במפה.</li>
+                <li><strong>שלב 3:</strong> מזינים את נ״צ הפגיעה, או בוחרים אותו במפה. גם כאן נ״צ קצר או לא תקין נעצר על השדה, בלי תוצאה.</li>
+                <li><strong>שלב 4:</strong> «תיקון ברוחות שמים» נותן תיקון מזרח/מערב וצפון/דרום. «תיקון וקטורי בצליפה» נותן אזימוט וטווח אל המטרה ואל הפגיעה, מן הצופה המדומה שבהגדרות. טווח 0 משאיר את הצופה על המטרה. אזימוט מחוץ ל־0 עד 6399 נעצר על השדה ופותח את ההגדרות, בלי תוצאה. מספר הפצצה עולה רק כשהפגיעה משתנה. בסיכום הפגיעה, אחרי מזרחיות, מערביות, צפוניות או דרומיות באה נקודתיים.</li>
+                <li><strong>שלב 5:</strong> אפשר לשתף את הדיווח או להעתיק את ההיסטוריה מלוח התוצאות, וללחוץ «🗺️ מפה» בלוח ההיסטוריה כדי לראות את רצף הפגיעות על המפה.</li>
+                <li><strong>שלב 6 (אופציונלי):</strong> בקבוצת הנתונים מייצאים את רשימת המטרות ל־Excel ומייבאים בחזרה, עם בחירה בין החלפת הרשימה להוספה אליה. גיבוי ושחזור נשארים שם.</li>
             </ul>
-        </div>
-        
-        <div style="text-align: center; margin-top: 25px;">
-            <button type="button" class="btn btn-secondary" style="width: auto; padding: 10px 30px; font-size: 16px;" onclick="closeGuide()">הבנתי, אפשר לסגור</button>
+            <p>נ״צ מטרה ונ״צ פגיעה שהוזנו נשמרים כטיוטה וחוזרים אחרי טעינה מחדש. איפוס שדות מוחק אותם, והם לא חוזרים בטעינה הבאה.</p>
         </div>
 
         <div class="guide-section">
-            <h4>📊 פורמט קבוע לייבוא משימות מ-Excel</h4>
+            <h4>📊 פורמט קבוע לייבוא משימות מ־Excel</h4>
             <ul>
                 <li><strong>מבנה הקובץ:</strong> הגיליון הראשון בלבד. שורה ראשונה = כותרות, שאר השורות = נתונים.</li>
-                <li><strong>שלוש עמודות בסדר קבוע:</strong> <code>שם משימה</code> | <code>נ"צ UTM</code> | <code>טווח</code></li>
-                <li><strong>עמודת "טווח":</strong> הערך <code>כן</code> מסמן משימה מטווחת. כל ערך אחר (כולל ריק) נקרא כ-<code>לא</code>.</li>
-                <li><strong>נ"צ UTM:</strong> באותו פורמט שהמחשבון מקבל, לדוגמה <code style="direction:ltr; display:inline-block;">36S E 650500 N 456700</code>. ספרת ה-3 בצפוניות אינה חובה.</li>
-                <li><strong>הדרך הבטוחה:</strong> ייצא קובץ בכפתור "⬇️ Excel", ערוך אותו, וייבא בחזרה - הפורמט מובטח תואם.</li>
+                <li><strong>שלוש עמודות בסדר קבוע:</strong> <code>שם משימה</code> | <code>נ״צ UTM</code> | <code>טווח</code></li>
+                <li><strong>עמודת «טווח»:</strong> הערך <code>כן</code> מסמן משימה מטווחת. כל ערך אחר, כולל ריק, נקרא כ־<code>לא</code>.</li>
+                <li><strong>נ״צ UTM:</strong> באותו פורמט שהמחשבון מקבל, לדוגמה <code style="direction:ltr; display:inline-block;">36S E 650500 N 456700</code>. ספרת ה־3 בצפוניות אינה חובה. נ״צ קצר או לא תקין נחסם כמו בטופס.</li>
+                <li><strong>הדרך הבטוחה:</strong> לייצא קובץ בכפתור «⬇️ Excel», לערוך אותו, ולייבא בחזרה.</li>
             </ul>
         </div>
 
         <div class="guide-section" style="border-top:2px solid var(--error-border); padding-top:12px; margin-top:8px;">
             <h4 style="color: var(--error-text);">⚠️ הצהרה ותנאי שימוש</h4>
-            <p>מערכת זו היא כלי עזר אישי בלבד ואינה תחליף למערכות שו"ב רשמיות. אין לסמוך עליה ככלי מבצעי. חובת המשתמש לבדוק כל נתון וכל פלט, והשימוש באחריותו הבלעדית.</p>
+            <p>מערכת זו היא כלי עזר אישי בלבד ואינה תחליף למערכות שו״ב רשמיות. אין לסמוך עליה ככלי מבצעי. חובת המשתמש לבדוק כל נתון וכל פלט, והשימוש באחריותו הבלעדית.</p>
+            <p>ההצהרה המלאה נפתחת מהקישור שבמדריך ומהקישור שבתחתית המסך. השימוש הראשון עדיין מבקש לאשר את ההצהרה. אין קוד כניסה לפני כן.</p>
             <button type="button" onclick="closeGuide(); openDisclaimer(true);" style="background:none; border:none; padding:0; color: var(--primary); font-size: 13px; font-weight:600; text-decoration: underline; cursor:pointer; font-family: inherit;">קרא את ההצהרה המלאה ←</button>
+        </div>
+
+        <div style="text-align: center; margin-top: 25px;">
+            <button type="button" class="btn btn-secondary" style="width: auto; padding: 10px 30px; font-size: 16px;" onclick="closeGuide()">הבנתי, אפשר לסגור</button>
         </div>
 </div>
 <div data-lang-block="en" style="display:none">
+
         <div class="guide-section">
             <h4>📲 Add to the home screen</h4>
             <p>To keep FireFix on the home screen like an app, open the link in the browser. After you add it, the icon opens without the address bar.</p>
+            <p>The app opens directly. There is no entry code and no time lock.</p>
             <p><strong>iPhone</strong></p>
             <ol>
                 <li>Open the link in Safari.</li>
@@ -1947,18 +2058,24 @@
                 <li>Choose “Add to Home screen” or “Install app”.</li>
                 <li>Confirm.</li>
             </ol>
-            <p>The calculator works without a network once the page has loaded. The map loads only while you are online.</p>
+            <p>The calculator works without a network once the page has loaded. The map loads only while you are online. Fixing a grid from GPS and checking for an update also need a network, and only when you press those controls.</p>
         </div>
 
         <div class="guide-section">
             <h4>⚡ System capabilities</h4>
             <ul>
-                <li><strong>Precise correction calculation:</strong> automatic comparison between the original target grid and the impact grid, producing inverted easting and northing corrections (the compensation required), rounded to multiples of 50 metres.</li>
-                <li><strong>Gun traverse calculation (optional):</strong> if a gun grid is entered, the system computes azimuths and produces precise traverse commands in degrees and mils (6400). <em>Note: a gun grid is not required for the correction itself, but it is required if you want traverse data.</em></li>
-                <li><strong>History and task management:</strong> stores the correction sequence for a target (up to 24 hours), manages a task table, and copies reports to the clipboard. Tasks can be added directly from the interactive map, or loaded from the table (which updates both the task name and the grid).</li>
-                <li><strong>Interactive map:</strong> supports picking points manually on a satellite/street map for the gun, target, impact, and for adding tasks.</li>
-                <li><strong>🗺️ Impact history on the map:</strong> the "Map" button in the correction-history panel opens a read-only graphical view showing the original target as a blue dot, every impact as a numbered red dot with its correction details on tap, and a dashed line connecting them in chronological order - so you can see the convergence toward the target visually.</li>
-                <li><strong>📥 Task list import and export:</strong> the list is imported and exported as <strong>Excel / XLSX</strong>. On import you can choose between replacing the existing list or appending to it. Backup and restore of the app data stay separate.</li>
+                <li><strong>Precise correction calculation:</strong> the original target grid is compared with the impact grid. The correction is the compensation required, east or west and north or south, rounded to multiples of the rounding step. The default step is 50 metres.</li>
+                <li><strong>Round number:</strong> it increases only when the impact grid changes. The first impact counts as one. Another cardinal correction or a vector correction of that same impact does not increase the count. An impact that was already counted keeps its number if you return to it.</li>
+                <li><strong>Impact summary:</strong> on the cardinal line, a colon follows the direction word. The Hebrew words are מזרחיות, מערביות, צפוניות, and דרומיות, matching that component’s direction. The numbers are unchanged. For example: <span style="direction:rtl; display:inline-block;">מערביות: 100 מטר, צפוניות: 0 מטר</span>. The English summary keeps the words easting and northing.</li>
+                <li><strong>Gun traverse calculation (optional):</strong> if a gun grid is entered, the system computes azimuths and traverse in degrees and mils (6400). A gun grid is not required for the correction itself, but it is required if you want traverse data.</li>
+                <li><strong>Simulated observer:</strong> in Settings, under Calculation. Azimuth is from the observer to the target: 0 mils is north, clockwise, 6400 mils to the circle. Range 0 keeps the observer on the target. “Place simulated observer on the target” («מקם צופה מדומה על המטרה») sets both azimuth and range to 0.</li>
+                <li><strong>History and target list:</strong> the correction sequence for a target is stored on the device for up to 24 hours. The target list has a target-grid field. It accepts the same formats and uses the same validation as the main target grid. Saving a planned target stores that grid. Choosing the target fills the main target grid from it. Reports can be copied to the clipboard.</li>
+                <li><strong>Draft:</strong> the target grid, the impact grid, and the other working fields survive leaving the app or reloading. “Reset fields” clears them, and they stay cleared after another reload. Reset does not clear the gun grid.</li>
+                <li><strong>Field checks:</strong> a short or invalid grid, and an azimuth outside 0–6399, stop on the field. No result is shown.</li>
+                <li><strong>Interactive map:</strong> pick a point for the gun, the target, the impact, or a new target. The Map button in the history panel draws the target and the impacts without changing the data. The target is a blue dot, each impact is a numbered red dot, and a dashed line connects them in order.</li>
+                <li><strong>Excel, and backup:</strong> the target list is imported and exported as Excel. On import you can replace the list or append to it. Backup and restore of the app data are separate and stay in Data.</li>
+                <li><strong>Ranging booklet:</strong> the binoculars button on the top row. The title is פקלון טיווח and the subtitle is תיקוף מאי 2026 (validated May 2026). Command headings are bold, blue, underlined, and marked with 📻. אומדנה, רוחות שמיים, and וקטורי are subheadings in that style, without 📻. The maximum-correction note is boxed. The safety-radius table is not in the booklet.</li>
+                <li><strong>Share the calculator:</strong> a small button at the bottom of the screen shares the public FireFix link. If system share is unavailable, the link is copied.</li>
             </ul>
         </div>
 
@@ -1966,47 +2083,79 @@
             <h4>⚠️ System limitations</h4>
             <ul>
                 <li><strong>Gun range limit:</strong> automatically blocked if the distance between gun and target exceeds 7,000 metres.</li>
-                <li><strong>Single correction limit:</strong> a correction over 400 metres in a single component requires resetting the target history, because it exceeds the safety radius.</li>
-                <li><strong>Cumulative correction limit (550 m):</strong> if the sum of the absolute northing and easting corrections together (or the total cumulative offset) exceeds 550 metres, the system shows an error and requires the firing solution to be recomputed.</li>
+                <li><strong>Single correction limit:</strong> a correction over 400 metres in one component stops the calculation and asks for a new firing solution.</li>
+                <li><strong>Cumulative correction limit (550 m):</strong> if the sum of the absolute easting and northing corrections exceeds 550 metres, the system shows an error and asks for the firing solution to be recomputed.</li>
                 <li><strong>Data validity:</strong> target and correction history is stored locally and deleted automatically after 24 hours.</li>
-                <li><strong>The only component requiring internet:</strong> the interactive map (Leaflet + map tiles), which loads <em>only</em> when you actually press the map button. Everything else - correction and traverse calculations, tasks, history, and Excel import/export - runs entirely locally with no network.</li>
-                <li><strong>Browser requirement for Excel import/export:</strong> needs <strong>Chrome 103+, Safari 16.4+, or Firefox 113+</strong>. Excel files are read and written using built-in browser capabilities (<code style="direction:ltr; display:inline-block;">DecompressionStream</code>) rather than an external library, which is what makes them work fully offline. On an older browser the Excel buttons report that they are unavailable. You can check this at any time via ⚙️ Settings → Run diagnostics.</li>
+                <li><strong>Network:</strong> the map loads only when you press the map button. Fixing a grid from GPS and checking for an update use the network only when you press them. Correction and traverse calculations, the list, history, and Excel run with no network.</li>
+                <li><strong>Browser requirement for Excel import/export:</strong> Chrome 103+, Safari 16.4+, or Firefox 113+. Excel files are read and written with built-in browser capabilities (<code style="direction:ltr; display:inline-block;">DecompressionStream</code>), not an external library. On an older browser the Excel buttons report that they are unavailable. Check this in ⚙️ Settings → Run diagnostics.</li>
             </ul>
         </div>
 
         <div class="guide-section" style="border-top:1px solid var(--section-border); padding-top:12px; margin-top:4px;">
             <h4>💬 Suggestions</h4>
-            <p>This tool is developed and refined based on field use. Suggestions, bug reports and ideas for improvement are welcome - pass them directly to Platoon Commander 7, 630.</p>
+            <p>This tool is developed and refined based on field use. Suggestions, bug reports, and ideas for improvement are welcome. Pass them directly to Platoon Commander 7, 630.</p>
+        </div>
+
+        <div class="guide-section">
+            <h4>The top row</h4>
+            <p>On the top row, in button order:</p>
+            <ul>
+                <li>📖 Guide.</li>
+                <li>Binoculars. Opens פקלון טיווח.</li>
+                <li>Mils and degrees converter.</li>
+                <li>⚙️ Settings.</li>
+                <li>Display mode. The cycle is day, night, tactical, then “Follow system” («עקוב אחרי מצב תצוגת מערכת»). While follow is active, a dark phone appearance selects night and a light appearance selects day. Choosing day, night, or tactical by hand stops following.</li>
+                <li>Safety. A red circle around an explosion shape, with a light-red fill. The button opens the ranging safety-distance table together with the ranging and correction orders. That material is not in the guide and not in the booklet.</li>
+            </ul>
+            <p>Each button has a short caption: Guide, Ranging booklet, Angle converter, Settings, Display mode, Safety ranges. If the row is narrow, the buttons wrap onto two rows.</p>
+        </div>
+
+        <div class="guide-section">
+            <h4>⚙️ Settings</h4>
+            <p>Four groups, in this order:</p>
+            <ol>
+                <li><strong>Calculation.</strong> Correction rounding step, and the simulated observer: azimuth from the observer to the target, range, and “Place simulated observer on the target”.</li>
+                <li><strong>Display.</strong> Language, and add to the home screen. Following the system display mode is in the display-mode button cycle, not in this group.</li>
+                <li><strong>Device.</strong> Check for update, diagnostics, and delete local data. Deleting data does not change the display mode.</li>
+                <li><strong>Data.</strong> Excel import and export of the target list, plus backup and restore.</li>
+            </ol>
+            <p><strong>Check for update</strong> requests a fresh copy of the published page at a new address on every check, so a stored network copy cannot answer. If that copy’s build id differs, an update is offered, and Update loads that same fresh page. If the build id matches, the app says this copy is current. After the new page loads, a changelog opens once. The visible version stays V1.24 even when the build id changes.</p>
         </div>
 
         <div class="guide-section">
             <h4>🛠️ Step-by-step usage guide</h4>
             <ul>
-                <li><strong>Step 1 (optional):</strong> enter the firing gun grid in its field, pick it from the map, or fix it from the phone GPS. The GPS reading is not accurate and does not replace standard means of fixing a position. The grid is required only to obtain traverse corrections.</li>
-                <li><strong>Step 2:</strong> enter the original target grid, or choose a prepared task from the task table / saved targets list - loading from the table updates both the task name and the grid. Alternatively add a new task by dropping a pin on the map in the tasks section. You can attach a descriptive name to the target.</li>
-                <li><strong>Step 3:</strong> enter the actual impact grid in the third field (or press the "Map" button and pick the impact point).</li>
-                <li><strong>Step 4:</strong> press <strong>"Cardinal correction"</strong> for east/west and north/south, or <strong>"Vector correction (sniper)"</strong> for azimuth and range to the target and to the impact, from the observer on the target at azimuth 0 and range 0.</li>
-                <li><strong>Step 5:</strong> you can share the report or copy the history straight from the results panel, and press <strong>"🗺️ Map"</strong> in the history panel to see the whole impact sequence drawn on the map.</li>
-                <li><strong>Step 6 (optional) - backing up the task list:</strong> in Data, export the list to <strong>Excel</strong> and import it back at any time - choosing between replacing the list or appending to it. Backup and restore of the app data stay there too.</li>
+                <li><strong>Step 1 (optional):</strong> enter the firing gun grid, pick it from the map, or press “Fix grid from GPS”. Beside the button, the note says the reading is not accurate and does not replace standard means of fixing a position. If permission is denied or the conversion fails, the grid already in the field is left as it is. The grid is required only for traverse corrections.</li>
+                <li><strong>Step 2:</strong> enter the target grid in the main field, or open the target list. The list has a “Target grid” field (נ״צ מטרה). It accepts the same formats as the main field, including a zone, no zone, northing with or without the leading 3, and a run of 12 or 13 digits. A short or invalid grid is blocked on the field, with the same message as on the main form, and the target is not saved. “Add / update in list” stores the grid from this field. Choosing a target from the list fills the main target grid from it. You can attach a name. You can also add a target by dropping a pin on the map.</li>
+                <li><strong>Step 3:</strong> enter the impact grid, or pick it on the map. A short or invalid grid stops on the field, with no result.</li>
+                <li><strong>Step 4:</strong> “Cardinal correction” gives east/west and north/south. “Vector correction (sniper)” gives azimuth and range to the target and to the impact, from the simulated observer in Settings. Range 0 keeps the observer on the target. An azimuth outside 0–6399 stops on the field and opens Settings, with no result. The round number increases only when the impact changes. In the impact summary, a colon follows מזרחיות, מערביות, צפוניות, or דרומיות.</li>
+                <li><strong>Step 5:</strong> share the report or copy the history from the results panel, and press “🗺️ Map” in the history panel to see the impact sequence on the map.</li>
+                <li><strong>Step 6 (optional):</strong> in Data, export the target list to Excel and import it back, choosing between replacing the list and appending to it. Backup and restore stay there.</li>
             </ul>
+            <p>A target grid and an impact grid you have entered are kept as a draft and return after a reload. Reset fields clears them, and they do not return on the next load.</p>
+        </div>
 
         <div class="guide-section">
             <h4>📊 Fixed format for importing tasks from Excel</h4>
             <ul>
                 <li><strong>File structure:</strong> first sheet only. First row = headers, remaining rows = data.</li>
                 <li><strong>Three columns in fixed order:</strong> <code>Task name</code> | <code>UTM grid</code> | <code>Ranged</code></li>
-                <li><strong>The "Ranged" column:</strong> the value <code>כן</code> (or <code>Yes</code>) marks a ranged task. Any other value, including empty, is read as not ranged.</li>
-                <li><strong>UTM grid:</strong> in the same format the calculator accepts, for example <code style="direction:ltr; display:inline-block;">36S E 650500 N 456700</code>. The leading 3 in northing is optional.</li>
-                <li><strong>The safe route:</strong> export a file with the "⬇️ Excel" button, edit it, and import it back - the format is guaranteed to match.</li>
+                <li><strong>The “Ranged” column:</strong> <code>כן</code> or <code>Yes</code> marks a ranged task. Any other value, including empty, is read as not ranged.</li>
+                <li><strong>UTM grid:</strong> the same formats the calculator accepts, for example <code style="direction:ltr; display:inline-block;">36S E 650500 N 456700</code>. The leading 3 in northing is optional. A short or invalid grid is blocked the same way as on the form.</li>
+                <li><strong>The safe route:</strong> export a file with “⬇️ Excel”, edit it, and import it back.</li>
             </ul>
         </div>
 
         <div class="guide-section" style="border-top:2px solid var(--error-border); padding-top:12px; margin-top:8px;">
-            <h4 style="color: var(--error-text);">⚠️ Disclaimer &amp; Terms of Use</h4>
-            <p>This system is a personal aid only and is not a substitute for official command-and-control systems. It must not be relied upon as an operational tool. It is the user's duty to verify every value and every output, and use is at the user's sole responsibility.</p>
+            <h4 style="color: var(--error-text);">⚠️ Disclaimer and terms of use</h4>
+            <p>This system is a personal aid only and is not a substitute for official command-and-control systems. It must not be relied upon as an operational tool. It is the user’s duty to verify every value and every output, and use is at the user’s sole responsibility.</p>
+            <p>The full disclaimer opens from the link in the guide and from the link at the bottom of the screen. The first use still asks you to accept the disclaimer. There is no entry code before that.</p>
             <button type="button" onclick="closeGuide(); openDisclaimer(true);" style="background:none; border:none; padding:0; color: var(--primary); font-size: 13px; font-weight:600; text-decoration: underline; cursor:pointer; font-family: inherit;">Read the full disclaimer →</button>
         </div>
-    </div>
+
+        <div style="text-align: center; margin-top: 25px;">
+            <button type="button" class="btn btn-secondary" style="width: auto; padding: 10px 30px; font-size: 16px;" onclick="closeGuide()">Got it, you can close</button>
+        </div>
 </div>
     </div>
 </div>
@@ -2215,7 +2364,7 @@ const CONFIG = {
     MAX_SINGLE_CORRECTION: 400,
     MAX_CUMULATIVE_CORRECTION: 550,
     APP_VERSION: 'V1.24',
-    BUILD_ID: '20261007-v124-fresh-check',
+    BUILD_ID: '20261008-v124-captions',
     STORAGE_TASKS_MERGED_KEY: 'firefix_tasks_merged_v110',
     ROUND_STEP: 50,                 // default correction rounding step (metres)
     ROUND_STEP_OPTIONS: [10, 25, 50, 100],
@@ -2347,7 +2496,13 @@ const I18N = {
         'settings.clear': '🗑️ Clear local data',
         'settings.privacy': '🔐 Privacy, Backup & Diagnostics',
         'settings.privacyNote': 'The app stays local-first. Its data is stored on this device only and is never sent to any server. One optional online component loads <em>only</em> when you actually press the matching button: the interactive map. Everything else - correction calculations, tasks, history, and Excel import/export - works fully offline. Diagnostics make no network requests.',
-        'settings.followSystem': 'Follow system display mode',
+        'cap.guide': 'Guide',
+        'cap.booklet': 'Ranging booklet',
+        'cap.converter': 'Angle converter',
+        'cap.settings': 'Settings',
+        'cap.display': 'Display mode',
+        'cap.safety': 'Safety ranges',
+        'btn.shareCalculator': 'Share the calculator',
         'settings.clearNote': 'Clearing data does not change the display mode. Restoring replaces local app state only after the file passes structure and validity checks.',
         'btn.wipeAll': 'Delete all data',
         'btn.downloadFile': 'Download file',
@@ -3241,9 +3396,12 @@ function wipeAllCalculatorData() {
 
 function clearLocalAppData() {
     const displayModeBeforeClear = getStoredDisplayMode();
-    const modeName = currentLang === 'en'
+    const followingBeforeClear = isFollowingSystemDisplay();
+    const modeName = followingBeforeClear
+        ? (currentLang === 'en' ? 'Follow system' : 'עקוב אחרי מצב תצוגת מערכת')
+        : (currentLang === 'en'
         ? (displayModeBeforeClear === 'operational' ? 'Tactical' : displayModeBeforeClear === 'night' ? 'Night' : 'Day')
-        : (displayModeBeforeClear === 'operational' ? 'מבצעי' : displayModeBeforeClear === 'night' ? 'לילה' : 'יום');
+        : (displayModeBeforeClear === 'operational' ? 'מבצעי' : displayModeBeforeClear === 'night' ? 'לילה' : 'יום'));
     const displayModeMessage = currentLang === 'en'
         ? `The display mode will stay unchanged: ${modeName}.`
         : `מצב התצוגה יישאר ללא שינוי: ${modeName}.`;
@@ -3285,24 +3443,32 @@ function getStoredDisplayMode() {
     return DEFAULT_DISPLAY_MODE;
 }
 
-const DISPLAY_MODE_ICONS = { day: '☀️', night: '🌙', operational: '🔴' };
+const DISPLAY_CYCLE = Object.freeze(['day', 'night', 'operational', 'system']);
+const DISPLAY_MODE_ICONS = { day: '☀️', night: '🌙', operational: '🔴', system: '📱' };
 
 function displayModeName(mode) {
     if (mode === 'day') return i18nT('יום', 'Day');
     if (mode === 'operational') return i18nT('מבצעי', 'Tactical');
+    if (mode === 'system') return i18nT('עקוב אחרי מצב תצוגת מערכת', 'Follow system');
     return i18nT('לילה', 'Night');
 }
 
-// One compact button cycles day -> night -> tactical, replacing the old
-// three-button banner. The tooltip names the current mode and the next one,
-// so the button is self-explanatory without taking extra space.
+function shownDisplayChoice(mode) {
+    if (isFollowingSystemDisplay()) return 'system';
+    return DISPLAY_MODES.includes(mode) ? mode : getStoredDisplayMode();
+}
+
+// One compact button cycles day -> night -> tactical -> follow system.
+// The tooltip names the current choice and the next one. Choosing day, night,
+// or tactical by hand turns following off.
 function updateDisplayModeControls(mode) {
     const btn = document.getElementById('displayModeToggle');
     if (!btn) return;
-    const idx = DISPLAY_MODES.indexOf(mode);
-    const next = DISPLAY_MODES[(idx + 1) % DISPLAY_MODES.length];
-    btn.textContent = DISPLAY_MODE_ICONS[mode] || '🌙';
-    const label = i18nT('מצב תצוגה: ', 'Display mode: ') + displayModeName(mode) +
+    const shown = shownDisplayChoice(mode);
+    const idx = DISPLAY_CYCLE.indexOf(shown);
+    const next = DISPLAY_CYCLE[(idx + 1) % DISPLAY_CYCLE.length];
+    btn.textContent = DISPLAY_MODE_ICONS[shown] || '🌙';
+    const label = i18nT('מצב תצוגה: ', 'Display mode: ') + displayModeName(shown) +
                   i18nT(' — לחץ למעבר ל', ' — tap for ') + displayModeName(next);
     btn.setAttribute('title', label);
     btn.setAttribute('aria-label', label);
@@ -3469,22 +3635,26 @@ function bindSystemDisplayListener() {
 }
 
 function setFollowSystemDisplay(on) {
-    const box = document.getElementById('followSystemDisplay');
     if (on) {
         SafeStorage.set(CONFIG.STORAGE_FOLLOW_SYSTEM_KEY, 'true');
-        if (box) box.checked = true;
         applyDisplayMode(systemDisplayMode(), true);
     } else {
         SafeStorage.remove(CONFIG.STORAGE_FOLLOW_SYSTEM_KEY);
-        if (box) box.checked = false;
+        updateDisplayModeControls(getStoredDisplayMode());
     }
 }
 
 function cycleDisplayMode() {
-    if (isFollowingSystemDisplay()) setFollowSystemDisplay(false);
+    if (isFollowingSystemDisplay()) {
+        setFollowSystemDisplay(false);
+        applyDisplayMode('day', true);
+        return;
+    }
     const current = getStoredDisplayMode();
-    const idx = DISPLAY_MODES.indexOf(current);
-    applyDisplayMode(DISPLAY_MODES[(idx + 1) % DISPLAY_MODES.length], true);
+    const idx = DISPLAY_CYCLE.indexOf(current);
+    const next = DISPLAY_CYCLE[(idx + 1) % DISPLAY_CYCLE.length];
+    if (next === 'system') setFollowSystemDisplay(true);
+    else applyDisplayMode(next, true);
 }
 
 function applyDisplayMode(mode, persist = true) {
@@ -3515,12 +3685,6 @@ function applyDisplayMode(mode, persist = true) {
 }
 
 function initDisplayMode() {
-    const box = document.getElementById('followSystemDisplay');
-    if (box && box.dataset.bound !== '1') {
-        box.dataset.bound = '1';
-        box.addEventListener('change', () => setFollowSystemDisplay(box.checked));
-    }
-    if (box) box.checked = isFollowingSystemDisplay();
     bindSystemDisplayListener();
     if (isFollowingSystemDisplay()) applyDisplayMode(systemDisplayMode(), true);
     else applyDisplayMode(getStoredDisplayMode(), false);
@@ -6134,6 +6298,22 @@ async function copyTextRobust(text, successMessage = 'הטקסט הועתק לל
     console.warn('Automatic clipboard access is unavailable in this local browser context.');
     window.prompt('העתקה אוטומטית אינה זמינה. העתק ידנית את הטקסט:', text);
     return false;
+}
+
+const SHARE_CALCULATOR_URL = 'https://yondi-2026.github.io/FireFix/';
+
+async function shareCalculator() {
+    const title = i18nT('FireFix', 'FireFix');
+    if (navigator.share) {
+        try {
+            await navigator.share({ title: title, url: SHARE_CALCULATOR_URL });
+            return;
+        } catch (e) {
+            if (e && e.name === 'AbortError') return;
+            console.warn('Web Share failed, falling back to copy', e);
+        }
+    }
+    await copyTextRobust(SHARE_CALCULATOR_URL, i18nT('הקישור הועתק.', 'The link was copied.'));
 }
 
 async function shareFiringReport() {
